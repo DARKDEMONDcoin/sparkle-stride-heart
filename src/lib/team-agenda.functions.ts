@@ -12,7 +12,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
  */
 export type AgendaItem = {
   id: string;
-  kind: "article" | "meeting" | "cadence";
+  kind: "article" | "meeting" | "cadence" | "task";
   employeeId: string;
   title: string;
   start: string;
@@ -22,6 +22,10 @@ export type AgendaItem = {
   link?: string | null;
   body?: string | null;
   taskId?: string | null;
+  /** موعد بيعي (يظهر في أجندة سالم أيضاً). */
+  sales?: boolean;
+  /** للمقالات: هل لها موعد نشر مخطط فعلاً؟ */
+  planned?: boolean;
 };
 
 export type TeamAgenda = {
@@ -48,7 +52,8 @@ function parsePlanned(v: string | null): string | null {
   return Number.isNaN(d.getTime()) ? null : d.toISOString();
 }
 
-const SALES = /demo|عرض|مكالمة|متابعة|follow|عميل|client|sales|مبيعات|صفقة/i;
+const SALES = /demo|عرض سعر|عرض تقديمي|مكالمة|follow.?up|عميل|عملاء|client|customer|sales|مبيعات|صفقة|deal|proposal|عقد|تفاوض|lead|prospect/i;
+const DELIVERY_EMPLOYEES = ["eva", "sam", "adam", "dana"];
 
 export const getTeamAgenda = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -68,7 +73,9 @@ export const getTeamAgenda = createServerFn({ method: "POST" })
 
     const items: AgendaItem[] = [];
 
-    const [{ data: articles }, { data: autos }, { data: calAcc }] = await Promise.all([
+    const fromDay = data.from.slice(0, 10);
+    const toDay = data.to.slice(0, 10);
+    const [{ data: articles }, { data: autos }, { data: calAcc }, { data: deliveries }, { data: collab }, { data: alerts }] = await Promise.all([
       sb
         .from("tasks")
         .select("id, title, status, updated_at, detail, output, kind, scheduled")
@@ -94,6 +101,36 @@ export const getTeamAgenda = createServerFn({ method: "POST" })
         .eq("provider", "calendar")
         .eq("status", "connected")
         .limit(1),
+      // مهام/مخرجات بقية الموظفين: موعد مخطط أو يوم التسليم.
+      sb
+        .from("tasks")
+        .select("id, employee_id, title, status, updated_at, scheduled, output, kind")
+        .eq("workspace_id", data.workspaceId)
+        .in("employee_id", DELIVERY_EMPLOYEES)
+        .neq("status", "rejected")
+        .or(
+          `and(updated_at.gte.${data.from},updated_at.lte.${data.to}),and(scheduled.gte.${data.from},scheduled.lte.${data.to})`,
+        )
+        .order("updated_at", { ascending: false })
+        .limit(200),
+      // مهام المشاريع المسندة لموظف رقمي بموعد تسليم.
+      sb
+        .from("collaboration_tasks")
+        .select("id, ai_employee_id, title, status, due_date, project_id, ai_output")
+        .eq("workspace_id", data.workspaceId)
+        .not("ai_employee_id", "is", null)
+        .gte("due_date", fromDay)
+        .lt("due_date", toDay)
+        .limit(200),
+      // رسائل بريد تحتاج متابعة أمَل.
+      sb
+        .from("inbox_alerts")
+        .select("id, kind, subject, sender, summary, created_at")
+        .eq("workspace_id", data.workspaceId)
+        .gte("created_at", data.from)
+        .lte("created_at", data.to)
+        .order("created_at", { ascending: false })
+        .limit(60),
     ]);
 
     const seen = new Set<string>();
@@ -116,6 +153,60 @@ export const getTeamAgenda = createServerFn({ method: "POST" })
         detail: `${isArticle ? "مقال" : "مخرج سيو"}${planned ? " · موعد نشر مخطط" : ""}`,
         body: (a.output ?? "").slice(0, 4000) || null,
         taskId: a.id,
+        planned: !!planned,
+      });
+    }
+
+    const DELIVERY_LABEL: Record<string, string> = {
+      eva: "مهمة تنفيذية",
+      sam: "متابعة بيعية",
+      adam: "تقرير",
+      dana: "تصميم",
+    };
+    for (const t of deliveries ?? []) {
+      const planned = parsePlanned(t.scheduled);
+      // بلا موعد مخطط: نعرض فقط ما سُلّم فعلاً (منجز/للمراجعة) بيوم تسليمه.
+      if (!planned && t.status !== "done" && t.status !== "review") continue;
+      const when = planned ?? t.updated_at;
+      if (when < data.from || when > data.to) continue;
+      items.push({
+        id: `t-${t.id}`,
+        kind: "task",
+        employeeId: t.employee_id,
+        title: t.title,
+        start: when,
+        status: t.status,
+        detail: `${DELIVERY_LABEL[t.employee_id] ?? "مهمة"}${planned ? " · موعد مخطط" : " · سُلّم"}`,
+        body: (t.output ?? "").slice(0, 4000) || null,
+        taskId: t.id,
+        sales: t.employee_id === "sam",
+      });
+    }
+    for (const t of collab ?? []) {
+      if (!t.ai_employee_id || !t.due_date) continue;
+      items.push({
+        id: `p-${t.id}`,
+        kind: "task",
+        employeeId: t.ai_employee_id,
+        title: t.title,
+        start: t.due_date,
+        status: t.status,
+        detail: t.status === "done" ? "مهمة مشروع · منجزة" : "مهمة مشروع · موعد تسليم",
+        body: (t.ai_output ?? "").slice(0, 4000) || null,
+        sales: t.ai_employee_id === "sam",
+      });
+    }
+    for (const a of alerts ?? []) {
+      const title = a.subject?.trim() || a.summary?.trim() || "رسالة تحتاج متابعة";
+      items.push({
+        id: `i-${a.id}`,
+        kind: "task",
+        employeeId: SALES.test(`${title} ${a.summary ?? ""}`) ? "sam" : "eva",
+        title,
+        start: a.created_at,
+        detail: ["متابعة بريد", a.sender ?? ""].filter(Boolean).join(" · "),
+        body: a.summary ?? null,
+        sales: SALES.test(`${title} ${a.summary ?? ""}`),
       });
     }
 
@@ -173,7 +264,9 @@ export const getTeamAgenda = createServerFn({ method: "POST" })
           items.push({
             id: `m-${e.id ?? start}`,
             kind: "meeting",
-            employeeId: SALES.test(title) ? "sam" : "eva",
+            // كل المواعيد في أجندة أمَل؛ البيعية منها تظهر لسالم أيضاً.
+            employeeId: "eva",
+            sales: SALES.test(`${title} ${e.location ?? ""}`),
             title,
             start,
             end: e.end?.dateTime ?? e.end?.date ?? null,

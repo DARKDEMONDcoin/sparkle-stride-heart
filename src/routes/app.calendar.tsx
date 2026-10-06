@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTeamAgenda, setArticleDate, type AgendaItem } from "@/lib/team-agenda.functions";
-import { AgendaChip, AgendaItemDialog, TeamAgendaList } from "@/components/app/TeamAgenda";
+import { AgendaChip, AgendaItemDialog, AgendaMonthGrid, TeamAgendaList } from "@/components/app/TeamAgenda";
 import { useServerFn } from "@tanstack/react-start";
 import {
   CalendarDays,
@@ -84,7 +84,7 @@ const LENSES: Record<
   dana: {
     view: "content",
     title: "تقويم تصاميم دانة",
-    lead: "كل منشور بصورة أو تصميم من دانة، بموعد نشره ومعاينته.",
+    lead: "كل منشور يحمل صورة أو تصميماً أو فيديو، بموعد نشره ومعاينته — أياً كان من كتب نصه.",
     empty: "اطلب من دانة تصميماً لمنشور قادم وسيظهر هنا.",
   },
   nour: {
@@ -96,23 +96,23 @@ const LENSES: Record<
   eva: {
     view: "meetings",
     title: "أجندة أمَل",
-    lead: "مواعيدك واجتماعاتك من تقويم جوجل، ومهام المتابعة المتكررة.",
-    empty: "اربط تقويم جوجل لتظهر مواعيدك هنا وتجهّز لها أمَل.",
-    kinds: ["meeting", "cadence"],
+    lead: "اجتماعاتك من تقويم جوجل، رسائل البريد التي تحتاج متابعة، مهامها المسلّمة ومواعيد تسليم المشاريع.",
+    empty: "لا شيء هذا الشهر — اطلب من أمَل متابعة بريد أو تنظيم اجتماع.",
+    kinds: ["meeting", "cadence", "task"],
   },
   sam: {
     view: "meetings",
     title: "أجندة مبيعات سالم",
-    lead: "اجتماعات العملاء والعروض ومواعيد المتابعة البيعية.",
-    empty: "عند ربط التقويم تظهر هنا اجتماعات العملاء ومتابعاتها.",
-    kinds: ["meeting", "cadence"],
+    lead: "اجتماعات العملاء والعروض، مواعيد المتابعة البيعية، ورسائل العملاء التي تنتظر رداً.",
+    empty: "لا متابعات هذا الشهر — اطلب من سالم خطة متابعة لعملائك بمواعيد.",
+    kinds: ["meeting", "cadence", "task"],
   },
   adam: {
     view: "meetings",
     title: "تقويم تقارير آدم",
-    lead: "مواعيد التقارير الدورية وقراءات الأداء القادمة.",
+    lead: "التقارير المسلّمة، مواعيد التقارير الدورية القادمة، ومواعيد قراءات الأداء في المشاريع.",
     empty: "اطلب من آدم تقريراً أسبوعياً وسيظهر موعده القادم هنا.",
-    kinds: ["cadence"],
+    kinds: ["cadence", "task"],
   },
 };
 
@@ -230,7 +230,9 @@ function CalendarPage() {
   const meetings = agendaItems.filter(
     (i) =>
       i.kind !== "article" &&
-      (!employee || (i.employeeId === employee && (!lens?.kinds || lens.kinds.includes(i.kind)))),
+      (!employee ||
+        ((i.employeeId === employee || (employee === "sam" && i.sales)) &&
+          (!lens?.kinds || lens.kinds.includes(i.kind)))),
   );
   const articlesByDay = useMemo(() => {
     const m: Record<string, AgendaItem[]> = {};
@@ -246,7 +248,10 @@ function CalendarPage() {
         ? allPosts
         : member === "nour"
           ? []
-          : allPosts.filter((p) => p.employee_id === member),
+          : member === "dana"
+            ? // المنشورات تُحفظ باسم سِراج دائماً؛ عمل دانة = كل منشور بصورة أو فيديو.
+              allPosts.filter((p) => !!p.image_url || !!videoOf(p))
+            : allPosts.filter((p) => p.employee_id === member),
     [allPosts, member],
   );
   const byDay = useMemo(() => {
@@ -613,8 +618,18 @@ function CalendarPage() {
               <ChevronLeft className="size-5" />
             </button>
           </div>
+          <div className="mb-4 flex flex-wrap gap-2 text-xs">
+            <Stat label="مواعيد" n={meetings.filter((i) => i.kind === "meeting").length} cls="bg-sky/15 text-sky" />
+            <Stat label="تسليمات ومتابعات" n={meetings.filter((i) => i.kind === "task").length} cls="bg-jade/12 text-jade-deep" />
+            <Stat label="دورات متكررة" n={meetings.filter((i) => i.kind === "cadence").length} cls="bg-amber/15 text-amber" />
+          </div>
+          <AgendaMonthGrid month={cursor} items={meetings} onOpen={setOpenItem} />
+          <h3 className="mb-3 mt-5 hidden text-sm font-black md:block">بالتفصيل</h3>
           <TeamAgendaList
             items={meetings}
+            onOpen={setOpenItem}
+            needsCalendar={employee !== "adam"}
+            emptyText={lens?.empty}
             loading={agenda.isLoading}
             calendarConnected={agenda.data?.calendarConnected ?? false}
             calendarError={agenda.data?.calendarError ?? (agenda.error ? "تعذّر تحميل أجندة الفريق." : null)}
@@ -622,8 +637,11 @@ function CalendarPage() {
         </section>
       ) : (
       <>
+      {member === "nour" ? (
+        <NourEditorialBar articles={articles} onOpen={setOpenItem} />
+      ) : null}
       {/* شريط الحالة */}
-      <div className="mb-4 flex flex-wrap items-center gap-2 text-xs">
+      <div className={cn("mb-4 flex flex-wrap items-center gap-2 text-xs", member === "nour" && "hidden")}>
         <Stat label="أفكار" n={ideas.length} cls="bg-amber/15 text-amber" />
         <Stat label="جاهز للمراجعة" n={drafts.length} cls="bg-sky/15 text-sky" />
         <Stat
@@ -1205,6 +1223,36 @@ function CalendarPage() {
       ) : null}
       {openItem ? <AgendaItemDialog item={openItem} onClose={() => setOpenItem(null)} /> : null}
     </AppShell>
+  );
+}
+
+/** حالة المقالات + المقالات بلا موعد نشر (تظهر في يوم كتابتها مؤقتاً حتى تُسحب لموعد). */
+function NourEditorialBar({ articles, onOpen }: { articles: AgendaItem[]; onOpen: (i: AgendaItem) => void }) {
+  const unplanned = articles.filter((a) => !a.planned && a.status !== "done");
+  const count = (st: string[]) => articles.filter((a) => st.includes(a.status ?? "")).length;
+  return (
+    <div className="mb-4 space-y-3">
+      <div className="flex flex-wrap gap-2 text-xs">
+        <Stat label="قيد الكتابة" n={count(["queued", "running", "in_progress", "todo"])} cls="bg-amber/15 text-amber" />
+        <Stat label="بانتظار مراجعتك" n={count(["review", "awaiting_approval"])} cls="bg-sky/15 text-sky" />
+        <Stat label="معتمد" n={count(["done"])} cls="bg-jade/12 text-jade-deep" />
+        <Stat label="بموعد نشر" n={articles.filter((a) => a.planned).length} cls="bg-foreground text-background" />
+      </div>
+      {unplanned.length ? (
+        <div className="rounded-2xl border border-dashed border-coral/40 bg-coral/5 p-3">
+          <p className="mb-2 text-xs font-black">
+            بلا موعد نشر ({unplanned.length}) — تظهر في يوم كتابتها؛ اسحبها إلى اليوم المناسب لتحديد موعدها.
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {unplanned.slice(0, 8).map((a) => (
+              <span key={a.id} className="max-w-56">
+                <AgendaChip item={a} onOpen={onOpen} />
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }
 
