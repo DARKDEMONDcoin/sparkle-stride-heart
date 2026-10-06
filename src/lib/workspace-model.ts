@@ -1,11 +1,14 @@
 export const WORKSPACE_VIEWS = ["today", "projects", "mine", "calendar", "activity", "people", "settings"] as const;
 export type WorkspaceView = typeof WORKSPACE_VIEWS[number];
 
-export function workspaceSearch(search: Record<string, unknown>) {
+export function workspaceSearch(search: Record<string, unknown>): { workspaceId?: string; view?: WorkspaceView; projectId?: string } {
+  const workspaceId = search["workspaceId"];
+  const view = search["view"];
+  const projectId = search["projectId"];
   return {
-    workspaceId: typeof search.workspaceId === "string" ? search.workspaceId : undefined,
-    view: WORKSPACE_VIEWS.includes(search.view as WorkspaceView) ? search.view as WorkspaceView : undefined,
-    projectId: typeof search.projectId === "string" ? search.projectId : undefined,
+    workspaceId: typeof workspaceId === "string" ? workspaceId : undefined,
+    view: WORKSPACE_VIEWS.includes(view as WorkspaceView) ? view as WorkspaceView : undefined,
+    projectId: typeof projectId === "string" ? projectId : undefined,
   };
 }
 
