@@ -116,6 +116,34 @@ const LENSES: Record<
   },
 };
 
+/** إرشاد اللوحة الجانبية حسب صاحب التقويم. */
+const SIDE_GUIDE: Record<"sonny" | "dana" | "nour", { lead: string; steps: [typeof Check, string, string][] }> = {
+  sonny: {
+    lead: "اختر منشوراً من التقويم لمعاينته بالصورة، تعديله، اعتماده أو نشره فوراً. أو اطلب مني خطة جديدة بمحور معيّن.",
+    steps: [
+      [Lightbulb, "فكرة → أكتبها وأصمّم صورتها على هوية علامتك.", "text-amber"],
+      [Check, "جاهز → تراجعه وتعتمده، فيُنشر في موعده تلقائياً.", "text-sky"],
+      [TrendingUp, "أتعلّم من أداء منشوراتك وأعدّل الخطة تلقائياً.", "text-jade"],
+    ],
+  },
+  dana: {
+    lead: "هنا كل منشور يحمل تصميماً أو صورة أو فيديو. افتح أي عنصر لتعاين التصميم كما سيظهر على المنصة، أو اطلب نسخة بديلة.",
+    steps: [
+      [ImageIcon, "معاينة بحجم كل منصة قبل النشر.", "text-sky"],
+      [Pencil, "عدّل النص أو أعد توليد الصورة من نافذة المنشور.", "text-amber"],
+      [Sparkles, "اطلب مني في المحادثة هوية أو قالباً لسلسلة كاملة.", "text-jade"],
+    ],
+  },
+  nour: {
+    lead: "مقالاتي ومخرجات السيو بمواعيد نشرها. افتح أي مقال لقراءته كاملاً، واسحبه إلى يوم لتحديد موعد نشره.",
+    steps: [
+      [Pencil, "قيد الكتابة → مراجعتك → معتمد → بموعد نشر.", "text-amber"],
+      [Eye, "اقرأ المقال كاملاً وانسخه أو اطلب تعديلاً.", "text-sky"],
+      [CalendarDays, "المقالات بلا موعد تظهر في الشريط العلوي حتى تحدّدها.", "text-jade"],
+    ],
+  },
+};
+
 type Meta = {
   title?: string;
   pillar?: string;
@@ -546,7 +574,7 @@ function CalendarPage() {
       ) : null}
 
       {lens && employee ? (
-        <EmployeeLensBar employee={employee} lens={lens} count={lens.view === "meetings" ? meetings.length : employee === "nour" ? articles.length : list.length} />
+        <EmployeeLensBar employee={employee} lens={lens} count={lens.view === "meetings" ? meetings.length : employee === "nour" ? articles.length : list.filter((p) => { const d = new Date(p.scheduled_at); return d.getFullYear() === cursor.getFullYear() && d.getMonth() === cursor.getMonth(); }).length} />
       ) : null}
       {/* تبويب نوع التقويم */}
       <div className={cn("mb-4 flex flex-wrap items-center gap-2", lens && "hidden")}>
@@ -679,7 +707,7 @@ function CalendarPage() {
         اسحب أي منشور غير منشور إلى يوم آخر لإعادة جدولته بنفس الساعة، واسحب مقالات نور لتحديد موعد نشرها.
       </p>
 
-      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_20rem]">
+      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_17rem]">
         {/* الشبكة */}
         <section className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card shadow-card">
           <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-secondary/35 px-4 py-4 sm:px-5">
@@ -720,7 +748,7 @@ function CalendarPage() {
             </button>
           </div>
           <div className="hidden overflow-x-auto pb-1 md:block">
-            <div className="min-w-[760px] p-3 sm:p-4">
+            <div className="min-w-[34rem] p-2 sm:p-3">
               <div className="grid grid-cols-7 border-b border-border text-center text-[0.68rem] font-bold text-muted-foreground">
                 {DAYS_AR.map((d) => (
                   <div key={d} className="py-2.5">
@@ -990,42 +1018,39 @@ function CalendarPage() {
             </SheetOnSmall>
           ) : (
             <section className="rounded-2xl border border-border bg-card p-5 shadow-card">
-              <div className="flex items-center gap-3">
-                <span className="size-12 shrink-0 overflow-hidden rounded-2xl">
-                  {siraj ? (
-                    <Portrait memberId="sonny" name={siraj.name} className="size-full" />
-                  ) : null}
-                </span>
-                <div>
-                  <p className="font-display font-black">سِراج</p>
-                  <p className="text-xs text-muted-foreground">مدير السوشيال ميديا</p>
-                </div>
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-ink-soft">
-                اختر منشوراً من التقويم لمعاينته بالصورة، تعديله، اعتماده أو نشره فوراً. أو اطلب مني
-                خطة جديدة بمحور معيّن.
-              </p>
-              <ul className="mt-4 space-y-2 text-xs text-ink-soft">
-                <li className="flex gap-2">
-                  <Lightbulb className="size-3.5 shrink-0 text-amber" /> فكرة → أكتبها وأصمّم صورتها
-                  على هوية علامتك.
-                </li>
-                <li className="flex gap-2">
-                  <Check className="size-3.5 shrink-0 text-sky" /> جاهز → تراجعه وتعتمده، فيُنشر في
-                  موعده تلقائياً.
-                </li>
-                <li className="flex gap-2">
-                  <TrendingUp className="size-3.5 shrink-0 text-jade" /> أتعلّم من أداء منشوراتك
-                  وأعدّل الخطة تلقائياً.
-                </li>
-              </ul>
-              <Link
-                to="/app/chat/$id"
-                params={{ id: "sonny" }}
-                className="mt-4 inline-flex min-h-10 items-center gap-1.5 px-1 text-sm font-bold text-primary"
-              >
-                تحدّث مع سِراج
-              </Link>
+              {(() => {
+                const pid = member === "dana" || member === "nour" ? member : "sonny";
+                const pm = getMember(pid);
+                const guide = SIDE_GUIDE[pid];
+                return (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <span className="size-12 shrink-0 overflow-hidden rounded-2xl">
+                        {pm ? <Portrait memberId={pid} name={pm.name} className="size-full" /> : null}
+                      </span>
+                      <div>
+                        <p className="font-display font-black">{pm?.name}</p>
+                        <p className="text-xs text-muted-foreground">{pm?.title}</p>
+                      </div>
+                    </div>
+                    <p className="mt-4 text-sm leading-relaxed text-ink-soft">{guide.lead}</p>
+                    <ul className="mt-4 space-y-2 text-xs text-ink-soft">
+                      {guide.steps.map(([Icon, text, cls]) => (
+                        <li key={text} className="flex gap-2">
+                          <Icon className={cn("size-3.5 shrink-0", cls)} /> {text}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      to="/app/chat/$id"
+                      params={{ id: pid }}
+                      className="mt-4 inline-flex min-h-10 items-center gap-1.5 px-1 text-sm font-bold text-primary"
+                    >
+                      تحدّث مع {pm?.name}
+                    </Link>
+                  </>
+                );
+              })()}
             </section>
           )}
           {!connected.size ? (

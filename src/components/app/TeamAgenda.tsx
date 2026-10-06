@@ -14,6 +14,13 @@ const KIND: Record<AgendaItem["kind"], { label: string; icon: typeof Users; cls:
   task: { label: "تسليم", icon: CheckSquare, cls: "bg-jade/12 text-jade-deep" },
 };
 
+const EMPTY_BODY: Record<AgendaItem["kind"], string> = {
+  meeting: "موعد من تقويم جوجل. اطلب تجهيز ملخص عن الحضور وجدول أعمال ونقاط متابعة.",
+  cadence: "دورة متكررة مفعّلة — يُنفَّذ المخرج تلقائياً في هذا الموعد ويصلك للمراجعة.",
+  article: "لا يوجد نص محفوظ لهذا المقال بعد.",
+  task: "لا يوجد مخرج محفوظ لهذه المهمة بعد — سيظهر هنا فور تسليمها.",
+};
+
 const time = (iso: string) =>
   iso.length <= 10
     ? "طوال اليوم"
@@ -56,6 +63,7 @@ export function AgendaItemDialog({ item, onClose }: { item: AgendaItem; onClose:
       role="dialog"
       aria-modal="true"
       aria-label={item.title}
+      tabIndex={-1}
     >
       <div className="flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
         <div className="flex items-start gap-3 border-b border-border p-5">
@@ -65,14 +73,15 @@ export function AgendaItemDialog({ item, onClose }: { item: AgendaItem; onClose:
           <div className="min-w-0 flex-1">
             <p className="font-display text-lg font-black leading-snug">{item.title}</p>
             <p className="mt-1 flex flex-wrap gap-1.5 text-xs text-muted-foreground">
-              <span className="rounded-full bg-coral/15 px-2 py-0.5 font-bold text-coral">
+              <span className={cn("rounded-full px-2 py-0.5 font-bold", KIND[item.kind].cls)}>
                 {item.detail ?? KIND[item.kind].label}
               </span>
               <span>{m?.name}</span>
               <span>
-                · {new Date(item.start).toLocaleDateString("ar-EG", { weekday: "long", day: "numeric", month: "long" })}
+                · {new Date(item.start.length <= 10 ? `${item.start}T12:00:00` : item.start).toLocaleDateString("ar-EG", { weekday: "long", day: "numeric", month: "long" })}
+                {item.start.length > 10 ? ` · ${time(item.start)}` : ""}
               </span>
-              {item.status === "review" ? (
+              {item.status === "review" || item.status === "awaiting_approval" ? (
                 <span className="rounded-full bg-sky/15 px-2 py-0.5 font-bold text-sky">بانتظار مراجعتك</span>
               ) : item.status === "done" ? (
                 <span className="rounded-full bg-jade/12 px-2 py-0.5 font-bold text-jade-deep">معتمد</span>
@@ -84,10 +93,19 @@ export function AgendaItemDialog({ item, onClose }: { item: AgendaItem; onClose:
           </button>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto p-5 text-sm leading-7">
-          {item.body ? <Markdown body={item.body} /> : <p className="text-ink-soft">لا يوجد نص محفوظ لهذا المخرج.</p>}
+          {item.body ? (
+            <Markdown body={item.body} />
+          ) : (
+            <p className="text-ink-soft">{EMPTY_BODY[item.kind]}</p>
+          )}
         </div>
         <div className="flex flex-wrap gap-2 border-t border-border p-4">
-          {item.status === "review" ? (
+          {item.link ? (
+            <a href={item.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-4 py-2.5 text-sm font-bold text-background">
+              <ExternalLink className="size-4" /> افتح في تقويم جوجل
+            </a>
+          ) : null}
+          {item.status === "review" || item.status === "awaiting_approval" ? (
             <Link to="/app/approvals" className="rounded-xl bg-foreground px-4 py-2.5 text-sm font-bold text-background">
               راجِع واعتمد
             </Link>
@@ -97,7 +115,7 @@ export function AgendaItemDialog({ item, onClose }: { item: AgendaItem; onClose:
             params={{ id: item.employeeId }}
             className="rounded-xl border border-border px-4 py-2.5 text-sm font-bold hover:bg-secondary"
           >
-            اطلب تعديلاً من {m?.name}
+            {item.kind === "meeting" ? `جهّزني لهذا الموعد يا ${m?.name}` : item.kind === "cadence" ? `عدّل هذه الدورة مع ${m?.name}` : `اطلب تعديلاً من ${m?.name}`}
           </Link>
           {item.body ? (
             <button
@@ -253,8 +271,8 @@ export function TeamAgendaList({
                   return (
                     <div
                       key={it.id}
-                      className={cn("flex items-center gap-3 rounded-xl border border-border bg-card p-3", onOpen && it.kind !== "meeting" && "cursor-pointer hover:bg-secondary/40")}
-                      onClick={onOpen && it.kind !== "meeting" ? () => onOpen(it) : undefined}
+                      className={cn("flex items-center gap-3 rounded-xl border border-border bg-card p-3", onOpen && "cursor-pointer hover:bg-secondary/40")}
+                      onClick={onOpen ? () => onOpen(it) : undefined}
                     >
                       <span className="size-9 shrink-0 overflow-hidden rounded-xl">
                         {m ? (
