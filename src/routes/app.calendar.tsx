@@ -641,7 +641,7 @@ function CalendarPage() {
         <NourEditorialBar articles={articles} onOpen={setOpenItem} />
       ) : null}
       {/* شريط الحالة */}
-      <div className="mb-4 flex flex-wrap items-center gap-2 text-xs">
+      <div className={cn("mb-4 flex flex-wrap items-center gap-2 text-xs", member === "nour" && "hidden")}>
         <Stat label="أفكار" n={ideas.length} cls="bg-amber/15 text-amber" />
         <Stat label="جاهز للمراجعة" n={drafts.length} cls="bg-sky/15 text-sky" />
         <Stat
@@ -1234,7 +1234,7 @@ function NourEditorialBar({ articles, onOpen }: { articles: AgendaItem[]; onOpen
     <div className="mb-4 space-y-3">
       <div className="flex flex-wrap gap-2 text-xs">
         <Stat label="قيد الكتابة" n={count(["queued", "running", "in_progress", "todo"])} cls="bg-amber/15 text-amber" />
-        <Stat label="بانتظار مراجعتك" n={count(["review"])} cls="bg-sky/15 text-sky" />
+        <Stat label="بانتظار مراجعتك" n={count(["review", "awaiting_approval"])} cls="bg-sky/15 text-sky" />
         <Stat label="معتمد" n={count(["done"])} cls="bg-jade/12 text-jade-deep" />
         <Stat label="بموعد نشر" n={articles.filter((a) => a.planned).length} cls="bg-foreground text-background" />
       </div>
