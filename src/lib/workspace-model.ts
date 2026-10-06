@@ -18,7 +18,7 @@ export const WORKSPACE_TEMPLATES: { id: string; label: string; name: string; tas
   { id: "launch", label: "إطلاق منتج", name: "إطلاق منتج جديد", tasks: [["استراتيجية الإطلاق والرسالة الأساسية", "nour", "high"], ["كتابة صفحة الهبوط", "nour", "high"], ["منشورات أسبوع الإطلاق", "sonny", "medium"], ["رسالة بريدية للعملاء بالإطلاق", "eva", "medium"], ["تصاميم الإطلاق والصور", "dana", "medium"], ["مراجعة نهائية قبل الإطلاق", null, "urgent"]] },
   { id: "social", label: "حملة سوشيال", name: "حملة سوشيال شهرية", tasks: [["تقويم المحتوى للشهر", "sonny", "high"], ["كتابة منشورات الحملة", "nour", "medium"], ["تصميم صور الحملة", "dana", "medium"], ["قياس أداء الحملة آخر الشهر", "adam", "low"]] },
   { id: "seo", label: "تحسين الظهور في جوجل", name: "تحسين الظهور في جوجل", tasks: [["بحث الكلمات المفتاحية", "nour", "high"], ["تحسين عناوين ووصف الصفحات", "nour", "medium"], ["كتابة مقالين للمدونة", "nour", "medium"], ["تحليل نتائج الظهور أسبوعياً", "adam", "low"]] },
-  { id: "sales", label: "المبيعات والتواصل", name: "المبيعات ومتابعة العملاء", tasks: [["تجهيز قائمة العملاء المحتملين", "sam", "high"], ["متابعة الصفقات المفتوحة", "sam", "high"], ["رسائل متابعة للعملاء", "eva", "medium"], ["تقرير نتائج المبيعات", "adam", "low"]] },
+  { id: "sales", label: "المبيعات والتواصل", name: "المبيعات ومتابعة العملاء", tasks: [["تجهيز قائمة العملاء المحتملين", "sam", "high"], ["متابعة الصفقات المفتوحة", "sam", "high"], ["رسائل متابعة للعملاء", "eva", "medium"]] },
 ];
 
 type FollowUpTask = { id: string; status: string; ai_employee_id: string | null; ai_status: string | null; assignee_id: string | null; due_date: string | null };
