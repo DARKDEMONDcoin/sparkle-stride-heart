@@ -574,7 +574,7 @@ function CalendarPage() {
       ) : null}
 
       {lens && employee ? (
-        <EmployeeLensBar employee={employee} lens={lens} count={lens.view === "meetings" ? meetings.length : employee === "nour" ? articles.length : list.length} />
+        <EmployeeLensBar employee={employee} lens={lens} count={lens.view === "meetings" ? meetings.length : employee === "nour" ? articles.length : list.filter((p) => { const d = new Date(p.scheduled_at); return d.getFullYear() === cursor.getFullYear() && d.getMonth() === cursor.getMonth(); }).length} />
       ) : null}
       {/* تبويب نوع التقويم */}
       <div className={cn("mb-4 flex flex-wrap items-center gap-2", lens && "hidden")}>
