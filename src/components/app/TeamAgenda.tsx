@@ -193,7 +193,7 @@ export function TeamAgendaList({
   calendarConnected: boolean;
   calendarError: string | null;
   needsCalendar?: boolean;
-  emptyText?: string;
+  emptyText?: string | undefined;
   onOpen?: (i: AgendaItem) => void;
 }) {
   const groups = new Map<string, AgendaItem[]>();
