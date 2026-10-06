@@ -1,7 +1,7 @@
 export const WORKSPACE_VIEWS = ["today", "projects", "mine", "calendar", "activity", "people", "settings"] as const;
 export type WorkspaceView = typeof WORKSPACE_VIEWS[number];
 
-export function workspaceSearch(search: Record<string, unknown>): { workspaceId?: string; view?: WorkspaceView; projectId?: string } {
+export function workspaceSearch(search: Record<string, unknown>): { workspaceId?: string | undefined; view?: WorkspaceView | undefined; projectId?: string | undefined } {
   const workspaceId = search["workspaceId"];
   const view = search["view"];
   const projectId = search["projectId"];
