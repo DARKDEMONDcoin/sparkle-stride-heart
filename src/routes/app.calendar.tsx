@@ -637,6 +637,9 @@ function CalendarPage() {
         </section>
       ) : (
       <>
+      {member === "nour" ? (
+        <NourEditorialBar articles={articles} onOpen={setOpenItem} />
+      ) : null}
       {/* شريط الحالة */}
       <div className="mb-4 flex flex-wrap items-center gap-2 text-xs">
         <Stat label="أفكار" n={ideas.length} cls="bg-amber/15 text-amber" />
@@ -1220,6 +1223,36 @@ function CalendarPage() {
       ) : null}
       {openItem ? <AgendaItemDialog item={openItem} onClose={() => setOpenItem(null)} /> : null}
     </AppShell>
+  );
+}
+
+/** حالة المقالات + المقالات بلا موعد نشر (تظهر في يوم كتابتها مؤقتاً حتى تُسحب لموعد). */
+function NourEditorialBar({ articles, onOpen }: { articles: AgendaItem[]; onOpen: (i: AgendaItem) => void }) {
+  const unplanned = articles.filter((a) => !a.planned && a.status !== "done");
+  const count = (st: string[]) => articles.filter((a) => st.includes(a.status ?? "")).length;
+  return (
+    <div className="mb-4 space-y-3">
+      <div className="flex flex-wrap gap-2 text-xs">
+        <Stat label="قيد الكتابة" n={count(["queued", "running", "in_progress", "todo"])} cls="bg-amber/15 text-amber" />
+        <Stat label="بانتظار مراجعتك" n={count(["review"])} cls="bg-sky/15 text-sky" />
+        <Stat label="معتمد" n={count(["done"])} cls="bg-jade/12 text-jade-deep" />
+        <Stat label="بموعد نشر" n={articles.filter((a) => a.planned).length} cls="bg-foreground text-background" />
+      </div>
+      {unplanned.length ? (
+        <div className="rounded-2xl border border-dashed border-coral/40 bg-coral/5 p-3">
+          <p className="mb-2 text-xs font-black">
+            بلا موعد نشر ({unplanned.length}) — تظهر في يوم كتابتها؛ اسحبها إلى اليوم المناسب لتحديد موعدها.
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {unplanned.slice(0, 8).map((a) => (
+              <span key={a.id} className="max-w-56">
+                <AgendaChip item={a} onOpen={onOpen} />
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }
 
