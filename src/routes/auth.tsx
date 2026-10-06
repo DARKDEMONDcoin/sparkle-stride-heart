@@ -7,7 +7,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { LogoMark } from "@/components/site/LogoMark";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { signIn } from "@/lib/auth";
+import { signIn, signUp } from "@/lib/auth";
 import { GUEST_EMAIL } from "@/lib/guest.functions";
 import { createAccount } from "@/lib/signup.functions";
 import { SITE_ORIGIN } from "@/lib/site-origin";
@@ -223,16 +223,23 @@ function AuthPage() {
     setBusy(true);
     try {
       if (isSignup) {
-        const res = await createAccountFn({
-          data: {
-            email: email.trim(),
-            password,
-            fullName: fullName.trim(),
-            company: fullName.trim(),
-            dialect: "فصحى",
-            referralCode: search.ref,
-          },
-        });
+        let res: Awaited<ReturnType<typeof createAccountFn>>;
+        try {
+          res = await createAccountFn({
+            data: {
+              email: email.trim(),
+              password,
+              fullName: fullName.trim(),
+              company: fullName.trim(),
+              dialect: "فصحى",
+              referralCode: search.ref,
+            },
+          });
+        } catch {
+          // Host without server functions (e.g. static deploy): sign up directly.
+          await signUp({ email: email.trim(), password, fullName: fullName.trim(), company: fullName.trim(), dialect: "فصحى" });
+          res = { ok: true as const };
+        }
         if (!res.ok) {
           setFormError(
             res.reason === "duplicate"
@@ -272,7 +279,9 @@ function AuthPage() {
     try {
       // Always return to the public site. Preview/local origins are not reachable from
       // a user's phone after Google completes the external OAuth round trip.
-      const callback = new URL("/auth", SITE_ORIGIN);
+      const here = window.location.origin;
+      const isPublic = !/localhost|lovable\.app|lovableproject\.com/.test(here);
+      const callback = new URL("/auth", isPublic ? here : SITE_ORIGIN);
       callback.searchParams.set("mode", mode);
       callback.searchParams.set("oauth", mode);
       if (search.invite) callback.searchParams.set("invite", search.invite);
