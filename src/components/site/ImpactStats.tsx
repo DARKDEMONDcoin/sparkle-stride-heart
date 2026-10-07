@@ -89,7 +89,7 @@ export function ImpactStats() {
   const activeNode = cursor;
 
   return (
-    <section className="impact-strip" aria-label="جدول عمل فريق سهل خلال اليوم">
+    <section className="impact-strip" aria-label="جدول عمل فريق زياد خلال اليوم">
       <div className="mx-auto max-w-5xl px-5">
         <header className="flow-head">
           <span className="flow-chip">

@@ -18,7 +18,7 @@ export const posts: Post[] = [
     category: "استراتيجية",
     date: "2026-08-18",
     readMinutes: 7,
-    author: "فريق سهل",
+    author: "فريق زياد",
     body: [
       {
         h: "التكلفة الحقيقية ليست الفاتورة",

@@ -13,9 +13,9 @@ export const Route = createFileRoute("/app/guidelines/$id")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: loaderData ? `تعليمات ${loaderData.name} | سهل` : "تعليمات الموظف | سهل" },
+      { title: loaderData ? `تعليمات ${loaderData.name} | زياد` : "تعليمات الموظف | زياد" },
       { name: "description", content: loaderData ? `خصّص تعليمات ${loaderData.name} وتفضيلاته لكل مهمة.` : "خصّص تعليمات موظفك الرقمي لكل مهمة." },
-      { property: "og:title", content: loaderData ? `تعليمات ${loaderData.name} | سهل` : "تعليمات الموظف | سهل" },
+      { property: "og:title", content: loaderData ? `تعليمات ${loaderData.name} | زياد` : "تعليمات الموظف | زياد" },
       { property: "og:description", content: loaderData ? `خصّص تعليمات ${loaderData.name} وتفضيلاته لكل مهمة.` : "خصّص تعليمات موظفك الرقمي لكل مهمة." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

@@ -12,7 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 
-/** لون واجهة المتصفح الرسمي لسهل — المصدر الوحيد لهذا اللون في المشروع. */
+/** لون واجهة المتصفح الرسمي لزياد — المصدر الوحيد لهذا اللون في المشروع. */
 export const BROWSER_THEME = "#9B741E";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { RegionProvider } from "@/hooks/use-region";
@@ -85,14 +85,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "msapplication-TileColor", content: BROWSER_THEME },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-      { title: "سهل | فريق موظفين ذكاء اصطناعي لشركتك" },
+      { title: "زياد | فريق موظفين ذكاء اصطناعي لشركتك" },
       {
         name: "description",
         content:
-          "سهل يمنحك فريق موظفين بالذكاء الاصطناعي يعملون 24/7: تسويق ونشر على السوشيال، رد على العملاء، مبيعات، وتصميم — بالعربي وبفهم كامل للسوق.",
+          "زياد يمنحك فريق موظفين بالذكاء الاصطناعي يعملون 24/7: تسويق ونشر على السوشيال، رد على العملاء، مبيعات، وتصميم — بالعربي وبفهم كامل للسوق.",
       },
-      { name: "author", content: "Sahl" },
-      { property: "og:title", content: "سهل | فريق موظفين ذكاء اصطناعي لشركتك" },
+      { name: "author", content: "Ziad" },
+      { property: "og:title", content: "زياد | فريق موظفين ذكاء اصطناعي لشركتك" },
       {
         property: "og:description",
         content: "موظفو ذكاء اصطناعي ينشرون، يردون، ويبيعون نيابة عنك — بالعربي، على مدار الساعة.",

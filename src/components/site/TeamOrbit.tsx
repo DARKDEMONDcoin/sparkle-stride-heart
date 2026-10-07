@@ -145,7 +145,7 @@ export function TeamOrbit({
         </LiquidGlass>
       )}
 
-      <div className="orbit-rail" aria-label="فريق سهل">
+      <div className="orbit-rail" aria-label="فريق زياد">
         {team.map((member, index) => {
           const isActive = active === index;
           return (

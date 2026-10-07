@@ -43,7 +43,7 @@ export const telegramStatus = createServerFn({ method: "POST" })
     ]);
     if (platform) {
       try {
-        // بوت سهل واحد لكل العملاء؛ فتح صفحة تيليجرام يعيد توجيهه تلقائياً
+        // بوت زياد واحد لكل العملاء؛ فتح صفحة تيليجرام يعيد توجيهه تلقائياً
         // إلى أحدث نسخة من المشروع إن كان ما زال مربوطاً بعنوان قديم.
         await registerWebhook(data.workspaceId, platform.token, true);
       } catch (error) {
@@ -62,14 +62,14 @@ export const telegramStatus = createServerFn({ method: "POST" })
     };
   });
 
-/** ربط بوت العميل (أو بوت سهل الجاهز) بقناته: تحقق فوري ثم تسجيل الويبهوك. */
+/** ربط بوت العميل (أو بوت زياد الجاهز) بقناته: تحقق فوري ثم تسجيل الويبهوك. */
 export const connectTelegram = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
     z
       .object({
         workspaceId: z.string().uuid(),
-        /** فارغ = استخدام بوت سهل الجاهز. */
+        /** فارغ = استخدام بوت زياد الجاهز. */
         botToken: z
           .string()
           .trim()
@@ -91,7 +91,7 @@ export const connectTelegram = createServerFn({ method: "POST" })
     const shared = data.botToken === "";
     const botToken = shared ? await platformBotToken() : data.botToken;
     if (!botToken) {
-      throw new Error("بوت سهل الجاهز غير مُفعّل حالياً — اربط بوت شركتك من BotFather.");
+      throw new Error("بوت زياد الجاهز غير مُفعّل حالياً — اربط بوت شركتك من BotFather.");
     }
 
     const me = await tg<{ username?: string; first_name?: string }>(botToken, "getMe");
@@ -158,7 +158,7 @@ export const testTelegram = createServerFn({ method: "POST" })
     await registerWebhook(data.workspaceId, config.botToken, Boolean(config.shared));
     await tg(config.botToken, "sendMessage", {
       chat_id: config.chatId,
-      text: "✅ اختبار ناجح — تيليجرام مربوط وفريق سهل جاهز للنشر.",
+      text: "✅ اختبار ناجح — تيليجرام مربوط وفريق زياد جاهز للنشر.",
     });
     return {
       ok: true as const,
@@ -174,7 +174,7 @@ export const disconnectTelegram = createServerFn({ method: "POST" })
     const admin = await assertOwner(context.supabase, data.workspaceId);
     const { loadTelegramConfig, tg } = await import("./telegram.server");
     const config = await loadTelegramConfig(admin, data.workspaceId);
-    // بوت سهل المشترك يخدم عملاء آخرين — لا نوقف ويبهوكه عند فكّ ربط مساحة عمل واحدة.
+    // بوت زياد المشترك يخدم عملاء آخرين — لا نوقف ويبهوكه عند فكّ ربط مساحة عمل واحدة.
     if (config && !config.shared) {
       try {
         await tg(config.botToken, "deleteWebhook", { drop_pending_updates: true });
@@ -218,7 +218,7 @@ export const discoverTelegramChats = createServerFn({ method: "POST" })
     const token = data.botToken || (saved?.shared ? "" : (saved?.botToken ?? ""));
     if (!token) {
       throw new Error(
-        "مع بوت سهل الجاهز اكتب معرّف القناة مباشرة (مثل ‎@mychannel) بعد إضافة البوت مشرفاً فيها.",
+        "مع بوت زياد الجاهز اكتب معرّف القناة مباشرة (مثل ‎@mychannel) بعد إضافة البوت مشرفاً فيها.",
       );
     }
     const chats = await discoverChats(token);

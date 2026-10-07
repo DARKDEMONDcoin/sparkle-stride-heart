@@ -60,7 +60,7 @@ export function SiteFooter() {
             <div>
               <Link to="/" className="flex items-center gap-2.5">
                 <LogoMark className="size-12" size={48} />
-                <span className="font-display text-xl font-extrabold">سهل</span>
+                <span className="font-display text-xl font-extrabold">زياد</span>
               </Link>
               <p className="mt-4 max-w-xs leading-relaxed text-muted-foreground">
                 فريق موظفين بالذكاء الاصطناعي، يعمل بالعربية على مدار الساعة لأصحاب المشاريع — ينشر،
@@ -106,7 +106,7 @@ export function SiteFooter() {
           <div className="site-footer-divider" />
 
           <div className="flex flex-col items-center justify-between gap-3 text-sm text-muted-foreground sm:flex-row">
-            <p>© {new Date().getFullYear()} سهل. جميع الحقوق محفوظة.</p>
+            <p>© {new Date().getFullYear()} زياد. جميع الحقوق محفوظة.</p>
             <div className="flex flex-wrap items-center justify-center gap-2">
               <span className="site-footer-pill">
                 <span className="site-footer-dot" />

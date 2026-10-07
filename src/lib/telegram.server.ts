@@ -9,9 +9,9 @@ import type { Database } from "@/integrations/supabase/types";
 type Admin = SupabaseClient<Database>;
 
 export type TelegramConfig = {
-  /** توكن بوت العميل، أو فارغ عند استخدام بوت سهل المشترك. */
+  /** توكن بوت العميل، أو فارغ عند استخدام بوت زياد المشترك. */
   botToken: string;
-  /** true عندما تستخدم مساحة العمل بوت سهل الجاهز بدل بوت خاص. */
+  /** true عندما تستخدم مساحة العمل بوت زياد الجاهز بدل بوت خاص. */
   shared?: boolean;
   botUsername?: string;
   chatId: string;
@@ -32,18 +32,18 @@ export function webhookUrlFor(workspaceId: string): string {
   return `${publicOrigin()}/api/public/telegram/webhook?ws=${workspaceId}`;
 }
 
-/** ويبهوك واحد لبوت سهل المشترك — نستنتج مساحة العمل من المحادثة نفسها. */
+/** ويبهوك واحد لبوت زياد المشترك — نستنتج مساحة العمل من المحادثة نفسها. */
 export function sharedWebhookUrl(): string {
   return `${publicOrigin()}/api/public/telegram/webhook?shared=1`;
 }
 
-/** توكن بوت سهل الجاهز (اختياري) — يسمح بالنشر بلا إنشاء بوت من BotFather. */
+/** توكن بوت زياد الجاهز (اختياري) — يسمح بالنشر بلا إنشاء بوت من BotFather. */
 export async function platformBotToken(): Promise<string> {
   const { getSecret } = await import("./secrets.server");
   return (await getSecret("TELEGRAM_BOT_TOKEN")).trim();
 }
 
-/** بيانات بوت سهل الجاهز، أو null إن لم يُضبط أو كان توكنه غير صالح. */
+/** بيانات بوت زياد الجاهز، أو null إن لم يُضبط أو كان توكنه غير صالح. */
 export async function platformBot(): Promise<{ token: string; username: string } | null> {
   const token = await platformBotToken();
   if (!token) return null;
@@ -126,7 +126,7 @@ export async function loadTelegramConfig(
   return { ...config, botToken: token };
 }
 
-/** مساحة العمل صاحبة محادثة تيليجرام — يُستخدم مع بوت سهل المشترك. */
+/** مساحة العمل صاحبة محادثة تيليجرام — يُستخدم مع بوت زياد المشترك. */
 export async function workspaceForChat(admin: Admin, chatId: string): Promise<string | null> {
   const { data: link } = await admin
     .from("command_links")

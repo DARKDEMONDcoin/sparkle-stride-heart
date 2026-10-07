@@ -8,12 +8,12 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "تواصل معنا | نرد خلال ساعات عمل قليلة — سهل" },
+      { title: "تواصل معنا | نرد خلال ساعات عمل قليلة — زياد" },
       {
         name: "description",
         content: "اسأل عن الباقات، اطلب عرضاً للمؤسسات، أو احصل على دعم تقني بالعربية.",
       },
-      { property: "og:title", content: "تواصل مع فريق سهل" },
+      { property: "og:title", content: "تواصل مع فريق زياد" },
       { property: "og:description", content: "مبيعات، دعم، وشراكات — بالعربية." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

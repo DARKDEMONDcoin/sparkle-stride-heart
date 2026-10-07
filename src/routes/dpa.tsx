@@ -5,13 +5,13 @@ import { LegalDoc, type LegalSection } from "@/components/site/LegalDoc";
 export const Route = createFileRoute("/dpa")({
   head: () => ({
     meta: [
-      { title: "اتفاقية معالجة البيانات (DPA) | التزاماتنا كمعالِج — سهل" },
+      { title: "اتفاقية معالجة البيانات (DPA) | التزاماتنا كمعالِج — زياد" },
       {
         name: "description",
         content:
           "اتفاقية معالجة بيانات متوافقة مع GDPR: أدوار الأطراف، تعليمات المعالجة، السرية، الأمان، المعالِجون الفرعيون، النقل الدولي، والتدقيق.",
       },
-      { property: "og:title", content: "اتفاقية معالجة البيانات — سهل" },
+      { property: "og:title", content: "اتفاقية معالجة البيانات — زياد" },
       { property: "og:description", content: "بنود جاهزة لمراجعة الفرق القانونية في الشركات." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

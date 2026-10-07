@@ -932,7 +932,7 @@ export async function runEmployeeTurn(
 
     const system = [
       `أنت ${persona.name}، ${persona.role}`,
-      `تعمل داخل منصة «سهل» لصالح العلامة المسجلة في المرجع الموحّد أدناه.`,
+      `تعمل داخل منصة «زياد» لصالح العلامة المسجلة في المرجع الموحّد أدناه.`,
       // الحاكمان أولاً: سلّم السلطة ثم الالتزام القانوني — كل ما بعدهما محكوم بهما.
       ...governanceBlocks(agentId),
       nowBlock(timezone, ws.country),

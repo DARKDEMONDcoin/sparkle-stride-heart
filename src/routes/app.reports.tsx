@@ -14,7 +14,7 @@ import { buildReport } from "@/lib/reports.functions";
 export const Route = createFileRoute("/app/reports")({
   head: () => ({
     meta: [
-      { title: "تقارير السيو | سهل" },
+      { title: "تقارير السيو | زياد" },
       {
         name: "description",
         content: "تقرير سيو قابل للطباعة من بيانات Search Console وGA4 الحقيقية.",

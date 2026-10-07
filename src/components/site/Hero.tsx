@@ -26,7 +26,7 @@ export function Hero() {
         <p className="sahl-video-eyebrow">فريق ذكاء اصطناعي عربي يفهم شغلك ولهجتك</p>
         <h1 id="hero-title">
           خلّي شغلك يكبر.
-          <span>فريق سهل يتولّى الباقي.</span>
+          <span>فريق زياد يتولّى الباقي.</span>
         </h1>
         <p className="sahl-video-lead">
           ستة موظفين رقميين ينفّذون التسويق والمبيعات والمحتوى والتنظيم داخل حساباتك — وأنت تقودهم
@@ -42,7 +42,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="sahl-video-team" dir="rtl" aria-label="موظفو سهل الرقميون">
+      <div className="sahl-video-team" dir="rtl" aria-label="موظفو زياد الرقميون">
         <p>فريقك جاهز</p>
         <ul>
           {team.map((employee, index) => (

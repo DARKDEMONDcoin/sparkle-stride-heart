@@ -12,13 +12,13 @@ import { getAutopilot, runAutopilotNow, saveAutopilot } from "@/lib/autopilot.fu
 export const Route = createFileRoute("/app/autopilot")({
   head: () => ({
     meta: [
-      { title: "الطيار الآلي | سهل" },
+      { title: "الطيار الآلي | زياد" },
       {
         name: "description",
         content:
           "خلّ سِراج يشتغل لوحده: يكتب منشوراتك اليومية بصورها وينشرها على إنستجرام وفيسبوك ولينكدإن وإكس في مواعيدها.",
       },
-      { property: "og:title", content: "الطيار الآلي | سهل" },
+      { property: "og:title", content: "الطيار الآلي | زياد" },
       { property: "og:description", content: "محتوى يومي يُكتب ويُنشر تلقائياً بلا تدخّل منك." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

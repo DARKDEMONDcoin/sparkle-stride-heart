@@ -15,9 +15,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/team-tasks")({
   head: () => ({
     meta: [
-      { title: "مهام الفريق المشتركة | سهل" },
+      { title: "مهام الفريق المشتركة | زياد" },
       { name: "description", content: "هدف واحد ينفّذه عدة موظفين معاً، ثم تعتمد التسليم النهائي بضغطة." },
-      { property: "og:title", content: "مهام الفريق المشتركة | سهل" },
+      { property: "og:title", content: "مهام الفريق المشتركة | زياد" },
       { property: "og:description", content: "هدف واحد ينفّذه عدة موظفين معاً، ثم تعتمد التسليم النهائي بضغطة." },
       { name: "robots", content: "noindex" },
     ],

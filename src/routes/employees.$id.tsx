@@ -20,10 +20,10 @@ export const Route = createFileRoute("/employees/$id")({
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
-        meta: [{ title: "الموظف غير موجود — سهل" }, { name: "robots", content: "noindex" }],
+        meta: [{ title: "الموظف غير موجود — زياد" }, { name: "robots", content: "noindex" }],
       };
     }
-    const t = `${loaderData.name} — ${loaderData.role} | سهل`;
+    const t = `${loaderData.name} — ${loaderData.role} | زياد`;
     return {
       meta: [
         { title: t },

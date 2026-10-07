@@ -10,9 +10,9 @@ import { inboxTime } from "@/lib/inbox-time";
 export const Route = createFileRoute("/app/chat/")({
   head: () => ({
     meta: [
-      { title: "المحادثات | سهل" },
+      { title: "المحادثات | زياد" },
       { name: "description", content: "تحدث مع أي موظف من فريقك الرقمي." },
-      { property: "og:title", content: "المحادثات | سهل" },
+      { property: "og:title", content: "المحادثات | زياد" },
       { property: "og:description", content: "تحدث مع أي موظف من فريقك الرقمي." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

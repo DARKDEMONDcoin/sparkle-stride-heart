@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/inbox-watch")({
   head: () => ({
     meta: [
-      { title: "رسائل بانتظار ردك | سهل" },
+      { title: "رسائل بانتظار ردك | زياد" },
       { name: "description", content: "أمَل تكتشف الرسائل التي لم ترد عليها، وتجهّز الرد، وتحذّرك من الاحتيال." },
-      { property: "og:title", content: "رسائل بانتظار ردك | سهل" },
+      { property: "og:title", content: "رسائل بانتظار ردك | زياد" },
       { property: "og:description", content: "أمَل تكتشف الرسائل التي لم ترد عليها، وتجهّز الرد، وتحذّرك من الاحتيال." },
       { name: "robots", content: "noindex" },
     ],

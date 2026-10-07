@@ -15,7 +15,7 @@ export function ProductShowcase() {
               ستة موظفين ينفّذون العمل داخل حساباتك، وأنت تديرهم من مكان واحد
             </h2>
             <p className="section-lead">
-              سهل يمنحك فريقًا رقميًا عربيًا يعمل داخل حساباتك: يناقشك، ينفّذ مهامك، وينظّم وقتك —
+              زياد يمنحك فريقًا رقميًا عربيًا يعمل داخل حساباتك: يناقشك، ينفّذ مهامك، وينظّم وقتك —
               وأنت تتابع كل شيء من مساحة عمل واضحة تجمع النقاش، الجدولة، والإنجاز في مكان واحد.
             </p>
           </div>
@@ -27,23 +27,23 @@ export function ProductShowcase() {
                 <span />
                 <span />
                 <span />
-                <b>مساحة عمل سهل</b>
+                <b>مساحة عمل زياد</b>
               </div>
               <img
                 src={dashboard}
-                alt="النظرة العامة لمساحة عمل سهل على الكمبيوتر"
+                alt="النظرة العامة لمساحة عمل زياد على الكمبيوتر"
                 loading="lazy"
               />
               <div className="laptop-base" />
             </div>
             <figure className="phone-frame phone-calendar">
               <span className="phone-island" />
-              <img src={calendar} alt="تقويم المحتوى في سهل" loading="lazy" />
+              <img src={calendar} alt="تقويم المحتوى في زياد" loading="lazy" />
               <figcaption>تحديث حي</figcaption>
             </figure>
             <figure className="phone-frame phone-chat">
               <span className="phone-island" />
-              <img src={chat} alt="محادثة سِراج داخل تطبيق سهل على الهاتف" loading="lazy" />
+              <img src={chat} alt="محادثة سِراج داخل تطبيق زياد على الهاتف" loading="lazy" />
               <figcaption>الفريق متاح</figcaption>
             </figure>
           </div>

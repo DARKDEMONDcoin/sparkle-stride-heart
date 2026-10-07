@@ -1,7 +1,7 @@
 import { LogoMark } from "@/components/site/LogoMark";
 import { cn } from "@/lib/utils";
 
-/** علامة التحميل الرسمية: شعار سهل داخل حلقة ضوئية دوّارة. */
+/** علامة التحميل الرسمية: شعار زياد داخل حلقة ضوئية دوّارة. */
 export function BrandLoader({
   label = "جارٍ التحميل…",
   size = "md",

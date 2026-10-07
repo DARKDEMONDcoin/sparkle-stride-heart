@@ -36,7 +36,7 @@ import { BrandLoader } from "@/components/site/BrandLoader";
 export const Route = createFileRoute("/app/integrations")({
   head: () => ({
     meta: [
-      { title: "التكاملات | سهل" },
+      { title: "التكاملات | زياد" },
       { name: "description", content: "اربط حسابات علامتك ليعمل فريقك مباشرة عليها." },
       { name: "robots", content: "noindex" },
     ],

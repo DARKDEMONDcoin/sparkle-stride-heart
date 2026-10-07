@@ -39,7 +39,7 @@ export const runTeamTask = createServerFn({ method: "POST" })
         [
           {
             role: "system",
-            content: `أنت مدير فريق «سهل». قسّم الهدف إلى 2–5 خطوات متتابعة، كل خطوة لموظف واحد مناسب من:\n${roster}\nلا تُضف خطوات نشر أو إرسال أو دفع — المالك يعتمد في النهاية. أعد JSON فقط: {"steps":[{"employee":"id","instruction":"تعليمات محددة بالعربية"}]}`,
+            content: `أنت مدير فريق «زياد». قسّم الهدف إلى 2–5 خطوات متتابعة، كل خطوة لموظف واحد مناسب من:\n${roster}\nلا تُضف خطوات نشر أو إرسال أو دفع — المالك يعتمد في النهاية. أعد JSON فقط: {"steps":[{"employee":"id","instruction":"تعليمات محددة بالعربية"}]}`,
           },
           { role: "user", content: data.goal },
         ],
@@ -73,7 +73,7 @@ export const runTeamTask = createServerFn({ method: "POST" })
           [
             {
               role: "system",
-              content: `أنت ${e.name} — ${e.role} في فريق «سهل». ${brand}\nالهدف العام للفريق: ${data.goal}\nنفّذ جزءك فقط باحتراف وبالعربية، وسلّم مخرجاً جاهزاً للاستخدام. لا تنشر ولا ترسل شيئاً.`,
+              content: `أنت ${e.name} — ${e.role} في فريق «زياد». ${brand}\nالهدف العام للفريق: ${data.goal}\nنفّذ جزءك فقط باحتراف وبالعربية، وسلّم مخرجاً جاهزاً للاستخدام. لا تنشر ولا ترسل شيئاً.`,
             },
             {
               role: "user",
@@ -160,7 +160,7 @@ export const reviseTeamStep = createServerFn({ method: "POST" })
         if (s.position === step.position) { outputs.push(`### ${e?.name ?? s.employee_id} (نسخة المالك المعتمدة)\n${data.output}`); continue; }
         await db.from("team_task_steps").update({ status: "running" }).eq("id", s.id);
         const out = await freeChat(`team-${s.employee_id}`, [
-          { role: "system", content: `أنت ${e?.name} — ${e?.role} في فريق «سهل». ${brand}\nالهدف العام للفريق: ${task.goal}\nالمالك عدّل جزء زميل؛ ابنِ على نسخته المعتمدة حرفياً. نفّذ جزءك فقط بالعربية. لا تنشر ولا ترسل شيئاً.` },
+          { role: "system", content: `أنت ${e?.name} — ${e?.role} في فريق «زياد». ${brand}\nالهدف العام للفريق: ${task.goal}\nالمالك عدّل جزء زميل؛ ابنِ على نسخته المعتمدة حرفياً. نفّذ جزءك فقط بالعربية. لا تنشر ولا ترسل شيئاً.` },
           { role: "user", content: `مخرجات الزملاء السابقة:\n${outputs.join("\n\n---\n\n").slice(-8000)}\n\nمهمتك: ${s.instruction}` },
         ], { reasoningEffort: "medium" });
         outputs.push(`### ${e?.name}\n${out}`);

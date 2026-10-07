@@ -5,7 +5,7 @@ export function LogoMark({ className, size = 36 }: { className?: string; size?: 
   return (
     <img
       src={logo}
-      alt="شعار سهل"
+      alt="شعار زياد"
       width={size}
       height={size}
       className={cn("shrink-0 select-none object-contain", className)}

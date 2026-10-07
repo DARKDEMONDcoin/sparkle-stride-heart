@@ -10,13 +10,13 @@ import { Portrait } from "@/components/site/Portrait";
 export const Route = createFileRoute("/stories")({
   head: () => ({
     meta: [
-      { title: "قصص النجاح | نتائج حقيقية من مشاريع عربية — سهل" },
+      { title: "قصص النجاح | نتائج حقيقية من مشاريع عربية — زياد" },
       {
         name: "description",
         content:
           "كيف ضاعف متجر أزياء طلباته، وملأت شركة برمجيات خط مبيعاتها، ورفعت سلسلة مطاعم تقييمها — بفريق رقمي واحد.",
       },
-      { property: "og:title", content: "قصص نجاح عملاء سهل" },
+      { property: "og:title", content: "قصص نجاح عملاء زياد" },
       { property: "og:description", content: "أرقام قبل وبعد من مشاريع عربية حقيقية." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

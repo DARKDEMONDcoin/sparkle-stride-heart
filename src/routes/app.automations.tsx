@@ -20,7 +20,7 @@ import { BrandLoader } from "@/components/site/BrandLoader";
 export const Route = createFileRoute("/app/automations")({
   head: () => ({
     meta: [
-      { title: "الجدولة التلقائية | سهل" },
+      { title: "الجدولة التلقائية | زياد" },
       { name: "description", content: "اجعل نور تنفّذ مهامها تلقائياً كل يوم أو أسبوع أو شهر." },
       { name: "robots", content: "noindex" },
     ],

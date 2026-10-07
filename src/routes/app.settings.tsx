@@ -48,15 +48,15 @@ export const Route = createFileRoute("/app/settings")({
   }),
   head: () => ({
     meta: [
-      { title: "الإعدادات | سهل" },
+      { title: "الإعدادات | زياد" },
       {
         name: "description",
-        content: "إدارة مساحة عمل سهل والحساب والأمان والتنبيهات والاستخدام.",
+        content: "إدارة مساحة عمل زياد والحساب والأمان والتنبيهات والاستخدام.",
       },
-      { property: "og:title", content: "الإعدادات | سهل" },
+      { property: "og:title", content: "الإعدادات | زياد" },
       {
         property: "og:description",
-        content: "إدارة مساحة عمل سهل والحساب والأمان والتنبيهات والاستخدام.",
+        content: "إدارة مساحة عمل زياد والحساب والأمان والتنبيهات والاستخدام.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -486,7 +486,7 @@ function AccountPanel({ profile, onNotice }: { profile: ProfileData; onNotice: N
                 ))}
               </select>
             </Field>
-            <Field label="زيّ الفريق في الصور" hint="يغيّر مظهر الموظفين في الصور التي ينشئها سهل">
+            <Field label="زيّ الفريق في الصور" hint="يغيّر مظهر الموظفين في الصور التي ينشئها زياد">
               <select
                 value={country}
                 onChange={(event) => setCountry(event.target.value)}

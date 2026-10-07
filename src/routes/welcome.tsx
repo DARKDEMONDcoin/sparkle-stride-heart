@@ -25,10 +25,10 @@ export const Route = createFileRoute("/welcome")({
   ssr: false,
   validateSearch: z.object({ plan: z.enum(["start", "growth"]).optional() }),
   head: () => ({ meta: [
-    { title: "تعرّف على فريقك قبل التسجيل | سهل" },
-    { name: "description", content: "اكتشف فريق سهل وحلّل موقعك واختَر نشاطك قبل إنشاء حسابك." },
-    { property: "og:title", content: "تعرّف على فريقك الرقمي — سهل" },
-    { property: "og:description", content: "جولة تفاعلية للتعرف على فريق سهل واكتشاف نشاطك من موقعك قبل التسجيل." },
+    { title: "تعرّف على فريقك قبل التسجيل | زياد" },
+    { name: "description", content: "اكتشف فريق زياد وحلّل موقعك واختَر نشاطك قبل إنشاء حسابك." },
+    { property: "og:title", content: "تعرّف على فريقك الرقمي — زياد" },
+    { property: "og:description", content: "جولة تفاعلية للتعرف على فريق زياد واكتشاف نشاطك من موقعك قبل التسجيل." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
@@ -121,7 +121,7 @@ function Welcome() {
 
   return <div className="welcome-stage" dir="rtl">
     <header className="welcome-header">
-      <Link to="/" className="font-display text-xl font-black" aria-label="سهل — الرئيسية">سهل<span className="text-primary">.</span></Link>
+      <Link to="/" className="font-display text-xl font-black" aria-label="زياد — الرئيسية">زياد<span className="text-primary">.</span></Link>
       <span className="welcome-header-note">مساحة تبدأ منك</span>
       <Link to="/auth" search={{ mode: "signin" }} className="text-xs font-bold text-foreground underline decoration-primary/50 underline-offset-4">لديك حساب؟ ادخل</Link>
     </header>
@@ -131,7 +131,7 @@ function Welcome() {
         {step === 0 && <section className="welcome-centered">
           <span className="welcome-eyebrow"><Sparkles className="size-4" /> البداية</span>
           <h1 className="welcome-title">فريقك يبدأ من قصتك.</h1>
-          <p className="welcome-lead">كيف تريد أن يساعدك سهل؟</p>
+          <p className="welcome-lead">كيف تريد أن يساعدك زياد؟</p>
            <div className="welcome-choices">{[["business", "لإدارة مشروعي", "تسويق ومبيعات وتنظيم في مكان واحد"], ["job", "لعملي اليومي", "فريق يساعدك في المهام ويوفر وقتك"], ["personal", "لاستكشاف الإمكانيات", "تعرّف على الفريق ثم قرر"]].map(([value, label, hint]) => <Button key={value} type="button" variant="outline" aria-pressed={purpose === value} onClick={() => { if (purpose !== value) { setWebsite(""); setPreview(null); setIndustry(""); setOtherSelected(false); setRecommendation(null); } setPurpose(value ?? ""); }} className={cn("welcome-choice", purpose === value && "welcome-choice-active")}><span className="min-w-0 flex-1 text-start"><strong className="block text-sm sm:text-base">{label}</strong><span className="block whitespace-normal text-xs font-normal text-muted-foreground">{hint}</span></span><span className="welcome-radio">{purpose === value && <Check className="size-3" />}</span></Button>)}</div>
         </section>}
         {step === 1 && <section className="welcome-centered welcome-website">

@@ -38,7 +38,7 @@ async function understand(preview: WelcomePreview, corpus: string): Promise<Welc
     name: preview.name, url: preview.url, platform: preview.platform, products: preview.products, offers: preview.offers,
     socials: preview.socials, locations: preview.locations, actions: preview.actions, language: preview.language,
   };
-  const system = `أنت محلل أعمال لدى «سهل» (فريق من ستة موظفين رقميين: سِراج للسوشيال، نور للبحث والمقالات وSEO، سالم للمبيعات والعملاء، أمَل للتنظيم والإيميل، دانة للتصميم، آدم للأرقام والإعلانات).
+  const system = `أنت محلل أعمال لدى «زياد» (فريق من ستة موظفين رقميين: سِراج للسوشيال، نور للبحث والمقالات وSEO، سالم للمبيعات والعملاء، أمَل للتنظيم والإيميل، دانة للتصميم، آدم للأرقام والإعلانات).
 اقرأ نص موقع العميل وافهم نشاطه كما يفهمه مستشار خبير، ثم أعد JSON فقط بالشكل:
 {"oneLiner":"جملة واحدة واضحة بالعربية: ماذا يقدم النشاط ولمن","industry":"واحد بالضبط من القائمة أو أقرب وصف قصير إن لم يطابق","offerings":["خدمة أو منتج حقيقي مذكور"],"audience":"من هم العملاء المستهدفون","valueProps":["ما يميزهم كما يقولون"],"tone":"نبرة الموقع في كلمات (مثلاً: رسمية واثقة، ودودة شبابية)","market":"الدولة أو السوق إن ظهر، وإلا فارغ","opportunities":[{"employee":"اسم موظف","text":"فرصة محددة لهذا النشاط بالذات مبنية على ما في الموقع"}]}
 القائمة: ${welcomeIndustries.filter((i) => i !== "أخرى").join("، ")}.

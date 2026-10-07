@@ -4,7 +4,7 @@ import { secretsMatch } from "@/lib/timing-safe";
 
 /**
  * ويبهوك تيليجرام: يستقبل رسائل صاحب البيزنس ويرد بمسودة أو بنتيجة الطلب.
- * يدعم وضعين: بوت خاص بكل مساحة عمل (‎?ws=…‎)، وبوت سهل المشترك (‎?shared=1‎)
+ * يدعم وضعين: بوت خاص بكل مساحة عمل (‎?ws=…‎)، وبوت زياد المشترك (‎?shared=1‎)
  * حيث نستنتج مساحة العمل من المحادثة نفسها. الأمان: سرّ مشتق من توكن البوت.
  */
 type TgUpdate = {
@@ -24,11 +24,11 @@ type TgUpdate = {
 
 const setupDone = new Set<string>();
 const seenCallbacks = new Set<string>();
-const SAHL_BOT_NAME = "سهل";
+const SAHL_BOT_NAME = "زياد";
 const SAHL_BOT_SHORT_DESCRIPTION =
   "فريقك العربي بالذكاء الاصطناعي، جاهز لتنفيذ شغلك من Telegram.";
 const SAHL_BOT_DESCRIPTION =
-  "فريقك الذكي في مكان واحد:\n\n📱 سِراج — السوشيال ميديا\n🔎 نور — المحتوى والسيو\n🎨 دانة — التصميم والهوية\n💼 سالم — المبيعات والعملاء\n📅 أمَل — التنظيم والمهام\n📊 آدم — البيانات والإعلانات\n\nاكتب ما تريد، وسيتولى الموظف المناسب تنفيذه.\nكل شيء متزامن مع حسابك على سهل.";
+  "فريقك الذكي في مكان واحد:\n\n📱 سِراج — السوشيال ميديا\n🔎 نور — المحتوى والسيو\n🎨 دانة — التصميم والهوية\n💼 سالم — المبيعات والعملاء\n📅 أمَل — التنظيم والمهام\n📊 آدم — البيانات والإعلانات\n\nاكتب ما تريد، وسيتولى الموظف المناسب تنفيذه.\nكل شيء متزامن مع حسابك على زياد.";
 /** يضمن أن الويبهوك يستقبل ضغطات الأزرار وأن قائمة الأوامر مسجّلة (مرة لكل بوت). */
 async function ensureBotSetup(botToken: string, requestUrl: string, shared: boolean) {
   if (setupDone.has(botToken)) return;
@@ -228,14 +228,14 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
 
         const text = (message.text ?? message.caption ?? "").trim();
 
-        // مع بوت سهل المشترك نعرف صاحب المحادثة من قنوات التحكّم المسجّلة.
+        // مع بوت زياد المشترك نعرف صاحب المحادثة من قنوات التحكّم المسجّلة.
         let workspaceId = wsParam;
         if (shared) {
           const resolved = await workspaceForChat(supabaseAdmin, String(chatId));
           if (!resolved) {
             // تسجيل مباشر من البوت أو ربط بكود/رابط — بلا حاجة لفتح الموقع.
             if (message.chat?.type && message.chat.type !== "private") {
-              await telegramReply(botToken, chatId, "ابدأ مع سهل من محادثة خاصة مع البوت.").catch(() => null);
+              await telegramReply(botToken, chatId, "ابدأ مع زياد من محادثة خاصة مع البوت.").catch(() => null);
               return Response.json({ ok: true });
             }
             const { handleOnboardingMessage } = await import("@/lib/telegram-onboarding.server");
@@ -252,7 +252,7 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
         void workspaceId;
 
         try {
-          // محادثة المالك الخاصة: فريق سهل كامل (نص/صوت/صور/ملفات) بعقل الموقع نفسه.
+          // محادثة المالك الخاصة: فريق زياد كامل (نص/صوت/صور/ملفات) بعقل الموقع نفسه.
           // منشورات القنوات والمحادثات غير المربوطة تبقى على المسار القديم.
           const isChannel = Boolean(update.channel_post ?? update.edited_channel_post);
           if (!isChannel && !update.edited_message) {

@@ -20,7 +20,7 @@ export function AccountMenu(props: Props) {
       <div className="account-menu-identity">
         <Button type="button" variant="ghost" size="icon" onClick={props.onPhoto} aria-label="عرض الصورة الشخصية كاملة" className="account-menu-photo app-user-avatar-trigger">{props.avatar}</Button>
         <div className="min-w-0 flex-1">
-          <span className="account-menu-eyebrow">حسابك في سهل</span>
+          <span className="account-menu-eyebrow">حسابك في زياد</span>
           <p className="account-menu-name" dir="auto">{props.name || "حسابك"}</p>
           {props.email && <p className="account-menu-email" dir="ltr" title={props.email}>{props.email}</p>}
         </div>

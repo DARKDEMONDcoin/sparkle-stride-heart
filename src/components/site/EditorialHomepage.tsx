@@ -40,18 +40,18 @@ import ecommerceSector from "@/assets/sectors/ecommerce.jpg";
 import restaurantsSector from "@/assets/sectors/restaurants.jpg";
 import clinicsSector from "@/assets/sectors/clinics.jpg";
 import realestateSector from "@/assets/sectors/realestate.jpg";
-import sonnyDesktopAsset from "@/assets/employee-chat-captures/sonny-desktop.webp.asset.json";
-import sonnyMobileAsset from "@/assets/employee-chat-captures/sonny-mobile.webp.asset.json";
-import evaDesktopAsset from "@/assets/employee-chat-captures/eva-desktop.webp.asset.json";
-import evaMobileAsset from "@/assets/employee-chat-captures/eva-mobile.webp.asset.json";
-import samDesktopAsset from "@/assets/employee-chat-captures/sam-desktop.webp.asset.json";
-import samMobileAsset from "@/assets/employee-chat-captures/sam-mobile.webp.asset.json";
-import nourDesktopAsset from "@/assets/employee-chat-captures/nour-desktop.webp.asset.json";
-import nourMobileAsset from "@/assets/employee-chat-captures/nour-mobile.webp.asset.json";
-import danaDesktopAsset from "@/assets/employee-chat-captures/dana-desktop.webp.asset.json";
-import danaMobileAsset from "@/assets/employee-chat-captures/dana-mobile.webp.asset.json";
-import adamDesktopAsset from "@/assets/employee-chat-captures/adam-desktop.webp.asset.json";
-import adamMobileAsset from "@/assets/employee-chat-captures/adam-mobile.webp.asset.json";
+const sonnyDesktopAsset = { url: "/chat-captures/sonny-desktop.webp" };
+const sonnyMobileAsset = { url: "/chat-captures/sonny-mobile.webp" };
+const evaDesktopAsset = { url: "/chat-captures/eva-desktop.webp" };
+const evaMobileAsset = { url: "/chat-captures/eva-mobile.webp" };
+const samDesktopAsset = { url: "/chat-captures/sam-desktop.webp" };
+const samMobileAsset = { url: "/chat-captures/sam-mobile.webp" };
+const nourDesktopAsset = { url: "/chat-captures/nour-desktop.webp" };
+const nourMobileAsset = { url: "/chat-captures/nour-mobile.webp" };
+const danaDesktopAsset = { url: "/chat-captures/dana-desktop.webp" };
+const danaMobileAsset = { url: "/chat-captures/dana-mobile.webp" };
+const adamDesktopAsset = { url: "/chat-captures/adam-desktop.webp" };
+const adamMobileAsset = { url: "/chat-captures/adam-mobile.webp" };
 import planFlowWide from "@/assets/product/plan-flow-wide.png";
 import planFlowTall from "@/assets/product/plan-flow-tall.png";
 import adsVisual from "@/assets/product/ads-visual.png";
@@ -199,7 +199,7 @@ const proofs = [
   {
     kicker: "تحقق بنفسك",
     title: "القدرة تبدأ من طلبك، لا من قائمة أزرار",
-    body: "اكتب المطلوب كما تكلّم موظفاً؛ يختار سهل المهارة والأداة المناسبة، ثم يعرض النتيجة والإجراء التالي داخل المحادثة نفسها.",
+    body: "اكتب المطلوب كما تكلّم موظفاً؛ يختار زياد المهارة والأداة المناسبة، ثم يعرض النتيجة والإجراء التالي داخل المحادثة نفسها.",
   },
   {
     kicker: "بيانات حقيقية",
@@ -281,7 +281,7 @@ const sampleBoards = [
   },
 ] as const;
 
-/** الفرق بين سهل ومحادثة ذكاء اصطناعي عامة. */
+/** الفرق بين زياد ومحادثة ذكاء اصطناعي عامة. */
 const versus = [
   {
     q: "الذاكرة",
@@ -468,7 +468,7 @@ function ToolConnections() {
   return (
     <div
       className="sahl-tool-connections"
-      aria-label="إنستجرام وواتساب وجوجل وفيسبوك وشوبيفاي متصلة بسهل"
+      aria-label="إنستجرام وواتساب وجوجل وفيسبوك وشوبيفاي متصلة بزياد"
     >
       <svg className="sahl-tool-wires" viewBox="0 0 560 136" aria-hidden="true">
         <path id="sahl-tool-wire-1" d="M74 28 C164 28 194 68 280 68" />
@@ -506,7 +506,7 @@ function ToolConnections() {
       </div>
       <div className="sahl-tool-core">
         <LogoMark size={34} />
-        <span>سهل</span>
+        <span>زياد</span>
       </div>
     </div>
   );
@@ -699,7 +699,7 @@ export function EditorialHomepage() {
               mobileSrc={sonnyMobileAsset.url}
 
 
-              alt="مساحة عمل سهل: محادثة سِراج داخل المنصة"
+              alt="مساحة عمل زياد: محادثة سِراج داخل المنصة"
               hero
             />
             <div className="sahl-float-note liquid-glass-sahl" role="status">
@@ -715,7 +715,7 @@ export function EditorialHomepage() {
         </div>
       </section>
 
-      <section className="sahl-trust" aria-label="مزايا تشغيل فريق سهل">
+      <section className="sahl-trust" aria-label="مزايا تشغيل فريق زياد">
         <div className="sahl-shell">
           <strong className="sahl-arabic-first">أول منصة عربية تجمع فريق ذكاء اصطناعي ينفّذ العمل داخل أدواتك</strong>
           <p>
@@ -842,7 +842,7 @@ export function EditorialHomepage() {
                   <ProductFrame
                     src={item.image}
                     mobileSrc={item.mobileImage}
-                    alt={`واجهة ${item.kicker} داخل سهل`}
+                    alt={`واجهة ${item.kicker} داخل زياد`}
                   />
                 ) : null}
               </Reveal>
@@ -918,7 +918,7 @@ export function EditorialHomepage() {
                 <source media="(max-width: 720px)" srcSet={planFlowTall} />
                 <img
                   src={planFlowWide}
-                  alt="طلب واحد يتفرع إلى ست مهام ملونة يتسلمها موظفو سهل"
+                  alt="طلب واحد يتفرع إلى ست مهام ملونة يتسلمها موظفو زياد"
                   loading="lazy"
                   width={1536}
                   height={864}
@@ -940,7 +940,7 @@ export function EditorialHomepage() {
               <h2>
                 ولماذا لا أستخدم محادثة ذكاء اصطناعي عادية؟
                 <br />
-                <em>لأن المحادثة تكتب، وسهل يشتغل.</em>
+                <em>لأن المحادثة تكتب، وزياد يشتغل.</em>
               </h2>
             </header>
           </Reveal>
@@ -949,7 +949,7 @@ export function EditorialHomepage() {
               <span>الفرق</span>
               <span>محادثة عامة</span>
               <span>
-                <LogoMark size={18} /> سهل
+                <LogoMark size={18} /> زياد
               </span>
             </div>
             {versus.map((row) => (
@@ -1007,7 +1007,7 @@ export function EditorialHomepage() {
             <figure id="sahl-sector-content" role="tabpanel" key={currentSector.id}>
               <img
                 src={currentSector.image}
-                alt={`مشهد يوضح عمل فريق سهل في قطاع ${currentSector.label}`}
+                alt={`مشهد يوضح عمل فريق زياد في قطاع ${currentSector.label}`}
                 loading="lazy"
                 width={1280}
                 height={900}
@@ -1149,7 +1149,7 @@ export function EditorialHomepage() {
             <figure>
               <img
                 src={proofVisual}
-                alt="طبقات من السجلات والموافقات المتسلسلة داخل سهل"
+                alt="طبقات من السجلات والموافقات المتسلسلة داخل زياد"
                 loading="lazy"
                 width={1280}
                 height={960}
@@ -1197,7 +1197,7 @@ export function EditorialHomepage() {
             <figure>
               <img
                 src={adsVisual}
-                alt="قمع إعلاني ومنحنى أداء ودوائر استهداف بألوان سهل"
+                alt="قمع إعلاني ومنحنى أداء ودوائر استهداف بألوان زياد"
                 loading="lazy"
                 width={1280}
                 height={960}

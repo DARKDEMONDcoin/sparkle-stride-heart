@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/decisions")({
   head: () => ({
     meta: [
-      { title: "سجل القرارات | سهل" },
+      { title: "سجل القرارات | زياد" },
       {
         name: "description",
         content: "كل ما اتفقت عليه مع فريقك محفوظ وملزم — لا يُنسى ولا يُعاد سؤاله.",

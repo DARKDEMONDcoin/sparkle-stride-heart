@@ -127,8 +127,8 @@ async function callModel(
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "https://stride-forge-spark.lovable.app",
-      "X-Title": "Sahl AI Team",
+      "HTTP-Referer": "https://getziad.com",
+      "X-Title": "Ziad AI Team",
     },
     body: JSON.stringify({
       model,
@@ -284,8 +284,10 @@ async function freeChatInner(
         return await withRetry(() =>
           callOpenAICompatible(GEMINI, geminiKey, model, messages, scoped()),
         );
-      } catch {
-        /* المزوّد التالي */
+      } catch (error) {
+        // نحفظ سبب فشل Gemini حتى لا يختفي خلف خطأ المزوّد التالي.
+        lastError = `Gemini: ${(error as Error).message}`;
+        console.error("[ai] gemini failed:", lastError.slice(0, 300));
       }
     }
   }
@@ -310,7 +312,11 @@ async function freeChatInner(
       const fatal = errors.find(
         (e) => e instanceof DailyFreeLimitError || e.message.includes("مفتاح OpenRouter"),
       );
-      if (fatal) throw fatal;
+      if (fatal) {
+        if (lastError && fatal.message.includes("مفتاح OpenRouter"))
+          throw new Error(`${fatal.message} (${lastError.slice(0, 160)})`);
+        throw fatal;
+      }
       lastError = errors[0]?.message ?? "فشل النموذجان الأسرع";
     }
   }

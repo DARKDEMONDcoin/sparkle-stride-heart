@@ -22,13 +22,13 @@ import { BrandLoader } from "@/components/site/BrandLoader";
 export const Route = createFileRoute("/app/queue")({
   head: () => ({
     meta: [
-      { title: "طابور النشر | سهل" },
+      { title: "طابور النشر | زياد" },
       {
         name: "description",
         content:
           "تابع منشوراتك المجدولة على إنستجرام وفيسبوك ولينكدإن وإكس، وانشرها أو ألغِها بضغطة.",
       },
-      { property: "og:title", content: "طابور النشر | سهل" },
+      { property: "og:title", content: "طابور النشر | زياد" },
       { property: "og:description", content: "منشوراتك المجدولة والمنشورة في مكان واحد." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

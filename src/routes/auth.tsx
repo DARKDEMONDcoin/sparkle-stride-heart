@@ -26,13 +26,13 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "أنشئ حسابك في سهل | فريق موظفين ذكاء اصطناعي بالعربية" },
+      { title: "أنشئ حسابك في زياد | فريق موظفين ذكاء اصطناعي بالعربية" },
       {
         name: "description",
         content:
-          "سجّل حساباً مجانياً في سهل خلال دقيقة، أو سجّل الدخول إلى مساحة عملك — فريق موظفين بالذكاء الاصطناعي يعمل بالعربية.",
+          "سجّل حساباً مجانياً في زياد خلال دقيقة، أو سجّل الدخول إلى مساحة عملك — فريق موظفين بالذكاء الاصطناعي يعمل بالعربية.",
       },
-      { property: "og:title", content: "أنشئ حسابك في سهل" },
+      { property: "og:title", content: "أنشئ حسابك في زياد" },
       {
         property: "og:description",
         content: "حساب مجاني بدون بطاقة — ستة موظفين بالذكاء الاصطناعي يعملون بالعربية.",
@@ -324,7 +324,7 @@ function AuthPage() {
       <CornerGlow />
 
       <header className="sauth-topbar">
-        <Link to="/" className="sauth-logo" aria-label="سهل — الصفحة الرئيسية">
+        <Link to="/" className="sauth-logo" aria-label="زياد — الصفحة الرئيسية">
           <LogoMark className="size-7" size={28} />
         </Link>
       </header>
@@ -332,7 +332,7 @@ function AuthPage() {
       <div className="sauth-center">
         <div className="sauth-card">
           <div className="sauth-card-body">
-            <h1 className="sauth-title">{isSignup ? "أنشئ حساب سهل" : "سجّل الدخول إلى سهل"}</h1>
+            <h1 className="sauth-title">{isSignup ? "أنشئ حساب زياد" : "سجّل الدخول إلى زياد"}</h1>
 
             <Button type="button" variant="outline" className="sauth-google" onClick={onGoogle} disabled={googleBusy || busy}>
               <span>{googleBusy ? "نفتح Google…" : isSignup ? "التسجيل عبر Google" : "المتابعة عبر Google"}</span>
@@ -431,7 +431,7 @@ function AuthPage() {
                     onChange={(e) => setUpdates(e.target.checked)}
                   />
                   <span>
-                    أوافق على تلقي تحديثات وعروض من سهل. يمكنك إلغاء الاشتراك في أي وقت.{" "}
+                    أوافق على تلقي تحديثات وعروض من زياد. يمكنك إلغاء الاشتراك في أي وقت.{" "}
                     <Link to="/privacy" className="sauth-link">
                       سياسة الخصوصية
                     </Link>
@@ -470,7 +470,7 @@ function AuthPage() {
         </div>
 
         <footer className="sauth-footer">
-          <span>© سهل</span>
+          <span>© زياد</span>
           <span className="sauth-footer-links">
             <Link to="/privacy">الخصوصية</Link>
             <Link to="/terms">الشروط</Link>

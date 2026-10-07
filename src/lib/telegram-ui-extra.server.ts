@@ -565,7 +565,7 @@ export async function viewAccount(ctx: UiCtx, note?: string) {
     ctx,
     [
       note ?? "",
-      "<b>👤 حسابي في سهل</b>",
+      "<b>👤 حسابي في زياد</b>",
       "نفس الحساب والبيانات على الموقع وتيليجرام — أي تعديل هنا يظهر هناك فوراً والعكس.",
       "",
       row("البريد", u?.user?.email),
@@ -606,7 +606,7 @@ async function loginLink(ctx: UiCtx) {
   const url = data?.properties?.action_link;
   if (error || !url) return "تعذّر إنشاء الرابط";
   await show(ctx, "🔑 رابط دخول لمرة واحدة لنفس حسابك على الموقع (صالح لفترة قصيرة، لا تشاركه مع أحد):", [
-    [{ text: "🌐 افتح لوحتي في سهل", url }],
+    [{ text: "🌐 افتح لوحتي في زياد", url }],
     back("za"),
   ]);
   return undefined;

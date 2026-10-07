@@ -27,7 +27,7 @@ import {
 export const Route = createFileRoute("/app/rankings")({
   head: () => ({
     meta: [
-      { title: "تتبّع الترتيب | سهل" },
+      { title: "تتبّع الترتيب | زياد" },
       {
         name: "description",
         content:

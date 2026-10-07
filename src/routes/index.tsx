@@ -7,13 +7,13 @@ import { faqs } from "@/components/site/Faq";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "سهل | أول منصة ذكاء اصطناعي عربية لفريقك" },
+      { title: "زياد | أول منصة ذكاء اصطناعي عربية لفريقك" },
       {
         name: "description",
         content:
-          "سهل يجمع ستة موظفين رقميين بالعربية: للمحتوى والتصميم والمبيعات والتنظيم والبحث والتحليل، داخل مساحة عمل واحدة.",
+          "زياد يجمع ستة موظفين رقميين بالعربية: للمحتوى والتصميم والمبيعات والتنظيم والبحث والتحليل، داخل مساحة عمل واحدة.",
       },
-      { property: "og:title", content: "سهل | أول منصة ذكاء اصطناعي عربية لفريقك" },
+      { property: "og:title", content: "زياد | أول منصة ذكاء اصطناعي عربية لفريقك" },
       {
         property: "og:description",
         content: "سِراج وأمَل وسالم ونور ودانة وآدم يعملون معًا، وأنت تراجع كل خطوة قبل التنفيذ.",
@@ -29,15 +29,15 @@ export const Route = createFileRoute("/")({
           "@graph": [
             {
               "@type": "Organization",
-              name: "سهل",
-              alternateName: "Sahl",
-              url: "https://stride-forge-spark.lovable.app",
+              name: "زياد",
+              alternateName: "Ziad",
+              url: "https://getziad.com",
               description:
                 "منصة عربية تمنح أصحاب المشاريع فريق موظفين بالذكاء الاصطناعي ينشر ويصمّم ويردّ ويبيع على مدار الساعة.",
             },
             {
               "@type": "SoftwareApplication",
-              name: "سهل",
+              name: "زياد",
               applicationCategory: "BusinessApplication",
               operatingSystem: "Web",
               inLanguage: "ar",

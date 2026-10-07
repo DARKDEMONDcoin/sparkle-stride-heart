@@ -18,9 +18,9 @@ import { SITE_ORIGIN } from "@/lib/site-origin";
 
 export const Route = createFileRoute("/app/referral")({
   head: () => ({ meta: [
-    { title: "شارك واربح حتى ٥٠٪ | سهل" },
-    { name: "description", content: "لوحة إحالات سهل: شارك رابطك، تابع عملاءك وأرباحك، وارتقِ بعمولتك حتى ٥٠٪." },
-    { property: "og:title", content: "شارك واربح حتى ٥٠٪ | سهل" },
+    { title: "شارك واربح حتى ٥٠٪ | زياد" },
+    { name: "description", content: "لوحة إحالات زياد: شارك رابطك، تابع عملاءك وأرباحك، وارتقِ بعمولتك حتى ٥٠٪." },
+    { property: "og:title", content: "شارك واربح حتى ٥٠٪ | زياد" },
     { property: "og:description", content: "تابع الإحالات والعمولات وطلبات السحب من مكان واحد." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
@@ -98,7 +98,7 @@ function ReferralPage() {
 
   async function shareLink() {
     if (!referralUrl) return;
-    if (navigator.share) await navigator.share({ title: "جرّب سهل", text: "ترشيحي لك لتجربة سهل وفريقه الذكي. (رابط إحالة: قد أحصل على عمولة إذا اشتركت)", url: referralUrl });
+    if (navigator.share) await navigator.share({ title: "جرّب زياد", text: "ترشيحي لك لتجربة زياد وفريقه الذكي. (رابط إحالة: قد أحصل على عمولة إذا اشتركت)", url: referralUrl });
     else await copyLink();
   }
 
@@ -108,9 +108,9 @@ function ReferralPage() {
         <LuxStage variant="radar" />
         <div className="relative z-10 grid gap-8 lg:grid-cols-[1fr_22rem] lg:items-center">
           <div>
-            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 text-sm font-black text-gold"><Sparkles className="size-4" /> نادي شركاء سهل</motion.p>
+            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 text-sm font-black text-gold"><Sparkles className="size-4" /> نادي شركاء زياد</motion.p>
             <motion.h2 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .08 }} className="mt-3 max-w-3xl font-display text-3xl font-black leading-tight sm:text-5xl">كل ترشيح صادق يمكن أن يبني لك دخلاً يتكرر.</motion.h2>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-primary-foreground/70">شارك سهل مع أصحاب الأعمال الذين تثق بهم، واربح من مدفوعاتهم المؤكدة بنسبة تبدأ من ٢٠٪ وتصل إلى ٥٠٪.</p>
+            <p className="mt-4 max-w-xl text-sm leading-7 text-primary-foreground/70">شارك زياد مع أصحاب الأعمال الذين تثق بهم، واربح من مدفوعاتهم المؤكدة بنسبة تبدأ من ٢٠٪ وتصل إلى ٥٠٪.</p>
             <div className="mt-6 flex flex-wrap gap-2 text-xs font-black"><span className="rounded-full border border-gold/25 bg-primary-foreground/5 px-3 py-1.5 backdrop-blur"><Zap className="me-1 inline size-3.5 text-gold" /> تتبع لحظي</span><span className="rounded-full border border-gold/25 bg-primary-foreground/5 px-3 py-1.5 backdrop-blur"><CheckCircle2 className="me-1 inline size-3.5 text-jade" /> مدفوعات موثقة</span><span className="rounded-full border border-gold/25 bg-primary-foreground/5 px-3 py-1.5 backdrop-blur"><Scale className="me-1 inline size-3.5 text-gold" /> شروط شفافة</span></div>
           </div>
           <PartnerCard rate={dashboard.rate} level={currentLevel.name} code={dashboard.code} />

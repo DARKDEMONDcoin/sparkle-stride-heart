@@ -5,13 +5,13 @@ import { LegalDoc, type LegalSection } from "@/components/site/LegalDoc";
 export const Route = createFileRoute("/refunds")({
   head: () => ({
     meta: [
-      { title: "سياسة الاشتراك والاسترداد | إلغاء بلا رسوم — سهل" },
+      { title: "سياسة الاشتراك والاسترداد | إلغاء بلا رسوم — زياد" },
       {
         name: "description",
         content:
           "كيف يعمل التجديد، متى يحقّ لك الاسترداد، مدة معالجة المبالغ، وماذا يحدث لبياناتك بعد الإلغاء.",
       },
-      { property: "og:title", content: "سياسة الاشتراك والاسترداد — سهل" },
+      { property: "og:title", content: "سياسة الاشتراك والاسترداد — زياد" },
       { property: "og:description", content: "قواعد فوترة واضحة بلا شروط مخفية." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

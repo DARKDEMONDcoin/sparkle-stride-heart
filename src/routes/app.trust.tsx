@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/trust")({
   head: () => ({
     meta: [
-      { title: "الثقة والصلاحيات | سهل" },
+      { title: "الثقة والصلاحيات | زياد" },
       { name: "description", content: "ما يعرفه الفريق عنك، وما يُسمح لكل موظف بفعله، وسجل كامل لكل إجراء." },
-      { property: "og:title", content: "الثقة والصلاحيات | سهل" },
+      { property: "og:title", content: "الثقة والصلاحيات | زياد" },
       { property: "og:description", content: "ما يعرفه الفريق عنك، وما يُسمح لكل موظف بفعله، وسجل كامل لكل إجراء." },
       { name: "robots", content: "noindex" },
     ],
