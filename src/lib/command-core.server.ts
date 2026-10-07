@@ -63,7 +63,7 @@ async function answerAsEmployee(
     ? await liveFactsBlock(request, 20_000, { country: ws?.country ?? null, timeZone })
     : "";
   const system = [
-    `أنت ${member?.name ?? employee.name}، ${member?.role ?? "عضو في فريق سهل"}، ترد بالعربية باختصار وعملية.`,
+    `أنت ${member?.name ?? employee.name}، ${member?.role ?? "عضو في فريق زياد"}، ترد بالعربية باختصار وعملية.`,
     ws?.name ? `العلامة: ${ws.name}${ws.industry ? ` · ${ws.industry}` : ""}` : "",
     ws?.tone ? `النبرة: ${ws.tone}` : "",
     "لا تنفّذ أي إجراء خارجي؛ اقترح الخطوة التالية بوضوح واطلب موافقة صاحب العمل قبل أي نشر أو إرسال.",

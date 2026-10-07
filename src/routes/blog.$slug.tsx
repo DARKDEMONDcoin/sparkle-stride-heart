@@ -14,13 +14,13 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
-        meta: [{ title: "المقال غير متاح — سهل" }, { name: "robots", content: "noindex" }],
+        meta: [{ title: "المقال غير متاح — زياد" }, { name: "robots", content: "noindex" }],
       };
     }
     const { post } = loaderData;
     return {
       meta: [
-        { title: `${post.title} — مدونة سهل` },
+        { title: `${post.title} — مدونة زياد` },
         { name: "description", content: post.excerpt.slice(0, 155) },
         { property: "og:title", content: post.title },
         { property: "og:description", content: post.excerpt.slice(0, 155) },

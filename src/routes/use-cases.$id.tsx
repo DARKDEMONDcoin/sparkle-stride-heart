@@ -18,9 +18,9 @@ export const Route = createFileRoute("/use-cases/$id")({
     if (!u) return {};
     return {
       meta: [
-        { title: `${u.name} | خطة تسويق وتشغيل يومية بالذكاء الاصطناعي — سهل` },
+        { title: `${u.name} | خطة تسويق وتشغيل يومية بالذكاء الاصطناعي — زياد` },
         { name: "description", content: u.lead.slice(0, 155) },
-        { property: "og:title", content: `${u.name} — سهل` },
+        { property: "og:title", content: `${u.name} — زياد` },
         { property: "og:description", content: u.lead.slice(0, 155) },
         { property: "og:type", content: "article" },
         { name: "twitter:card", content: "summary_large_image" },
@@ -126,7 +126,7 @@ function UseCasePage() {
       <section className="px-5 py-16">
         <div className="mx-auto max-w-4xl">
           <Reveal>
-            <h2 className="font-display text-2xl font-black md:text-3xl">أسبوعك مع سهل</h2>
+            <h2 className="font-display text-2xl font-black md:text-3xl">أسبوعك مع زياد</h2>
           </Reveal>
           <ol className="mt-8 space-y-3">
             {u.week.map((w, i) => (

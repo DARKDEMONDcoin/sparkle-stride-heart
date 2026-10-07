@@ -51,7 +51,7 @@ const SLIDES: Slide[] = [
     glow: "#7FA3C4",
     name: "فيصل الدوسري",
     role: "منصة رقمية · الدمام",
-    quote: "بدل وكالة كاملة، فريق سهل جهّز لي خطة المحتوى والفيديوهات في يوم واحد.",
+    quote: "بدل وكالة كاملة، فريق زياد جهّز لي خطة المحتوى والفيديوهات في يوم واحد.",
     metric: "توفير ٧٠٪ من التكلفة",
   },
 ];
@@ -108,7 +108,7 @@ export function AuthCover() {
       <div aria-hidden className="auth-cover-grain" />
 
       <span aria-hidden className="auth-cover-ghost">
-        سهل
+        زياد
       </span>
 
       <div className="auth-cover-stage" aria-hidden>
@@ -122,7 +122,7 @@ export function AuthCover() {
       <div className="auth-cover-top">
         <span className="auth-cover-brand">
           <LogoMark className="size-5" size={20} />
-          عملاء سهل
+          عملاء زياد
         </span>
       </div>
 

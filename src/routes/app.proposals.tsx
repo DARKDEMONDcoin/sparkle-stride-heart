@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/proposals")({
   head: () => ({
     meta: [
-      { title: "مبادرات الفريق | سهل" },
+      { title: "مبادرات الفريق | زياد" },
       {
         name: "description",
         content: "ما يقترحه موظفوك من تلقاء أنفسهم بناءً على بيانات مساحة عملك الحقيقية.",

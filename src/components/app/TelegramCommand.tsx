@@ -58,7 +58,7 @@ export function TelegramCommand({ workspaceId }: { workspaceId: string }) {
     queryKey: ["telegram-channel", workspaceId],
     queryFn: () => status({ data: { workspaceId } }),
   });
-  // الوضع الافتراضي: بوت سهل الجاهز متى كان متاحاً، إلا إن اختار المستخدم غير ذلك.
+  // الوضع الافتراضي: بوت زياد الجاهز متى كان متاحاً، إلا إن اختار المستخدم غير ذلك.
   const activeMode: "shared" | "own" =
     mode ?? (data?.usesSharedBot || (!data?.connected && data?.sharedBotAvailable) ? "shared" : "own");
   const invalidate = () =>
@@ -148,7 +148,7 @@ export function TelegramCommand({ workspaceId }: { workspaceId: string }) {
         <h3 className="text-sm font-black">اربط البوت والقناة</h3>
         {data?.connected ? (
           <p className="text-sm font-semibold text-jade-deep">
-            مربوط · {data.usesSharedBot ? "بوت سهل الجاهز" : "بوت شركتك"}
+            مربوط · {data.usesSharedBot ? "بوت زياد الجاهز" : "بوت شركتك"}
             {data.botUsername ? ` · @${data.botUsername}` : ""}
             {data.chatTitle ? ` · ${data.chatTitle}` : ""}
           </p>
@@ -165,7 +165,7 @@ export function TelegramCommand({ workspaceId }: { workspaceId: string }) {
                   activeMode === m ? "border-jade bg-jade/12" : "border-border hover:bg-secondary"
                 }`}
               >
-                {m === "shared" ? "بوت سهل الجاهز (بدون إعداد)" : "بوت شركتك من BotFather"}
+                {m === "shared" ? "بوت زياد الجاهز (بدون إعداد)" : "بوت شركتك من BotFather"}
               </button>
             ))}
           </div>
@@ -176,7 +176,7 @@ export function TelegramCommand({ workspaceId }: { workspaceId: string }) {
             {activeMode === "shared" ? (
               <>
                 <li>
-                  أضف بوت سهل{data?.sharedBotUsername ? ` @${data.sharedBotUsername}` : ""} مشرفاً في
+                  أضف بوت زياد{data?.sharedBotUsername ? ` @${data.sharedBotUsername}` : ""} مشرفاً في
                   قناتك بصلاحية نشر الرسائل (أو ابعت له /start في محادثة خاصة).
                 </li>
                 <li>اكتب معرّف القناة (مثل ‎@mychannel) أو رقمها، ثم اضغط ربط.</li>

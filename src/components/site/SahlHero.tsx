@@ -13,7 +13,7 @@ type Stage = "typing-user" | "thinking" | "typing-reply" | "pending" | "publishe
 const reduced = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** المعاينة الحية: مساحة عمل سهل تعمل أمام الزائر مباشرة. */
+/** المعاينة الحية: مساحة عمل زياد تعمل أمام الزائر مباشرة. */
 export function SahlHero() {
   const [userText, setUserText] = useState("");
   const [replyText, setReplyText] = useState("");
@@ -96,7 +96,7 @@ export function SahlHero() {
           <span />
           <span />
           <span />
-          <p>مساحة عمل سهل</p>
+          <p>مساحة عمل زياد</p>
         </div>
 
         <div className="sahl-window-body">

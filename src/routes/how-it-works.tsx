@@ -7,13 +7,13 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
     meta: [
-      { title: "كيف يعمل سهل | من التسجيل إلى أول منشور في 11 دقيقة" },
+      { title: "كيف يعمل زياد | من التسجيل إلى أول منشور في 11 دقيقة" },
       {
         name: "description",
         content:
           "خمس خطوات واضحة: أنشئ حسابك، عرّفنا على علامتك، اربط أدواتك، وافق على الخطة، ثم راقب النتائج أسبوعياً.",
       },
-      { property: "og:title", content: "كيف يعمل سهل" },
+      { property: "og:title", content: "كيف يعمل زياد" },
       {
         property: "og:description",
         content: "أول منشور خلال دقائق وأول تقرير خلال أسبوع — بدون فريق إضافي.",

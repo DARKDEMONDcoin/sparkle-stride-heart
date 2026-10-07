@@ -104,9 +104,9 @@ function SidebarBody({ onNavigate, collapsed = false, onToggle }: { onNavigate?:
   return (
     <div className={cn("flex h-full flex-col gap-4 p-3", collapsed && "items-center gap-3 px-2")}>
       <div className={cn("flex w-full items-center border-b border-border pb-3", collapsed ? "flex-col gap-1" : "justify-between gap-1")}>
-        <Link to="/" aria-label="سهل — الرئيسية" title={collapsed ? "سهل — الرئيسية" : undefined} className={cn("flex h-9 min-w-0 items-center gap-2 font-display text-xl font-black", collapsed && "justify-center")}>
+        <Link to="/" aria-label="زياد — الرئيسية" title={collapsed ? "زياد — الرئيسية" : undefined} className={cn("flex h-9 min-w-0 items-center gap-2 font-display text-xl font-black", collapsed && "justify-center")}>
           <LogoMark className="size-8 shrink-0" size={40} />
-          {!collapsed && <>سهل<span className="text-jade">.</span></>}
+          {!collapsed && <>زياد<span className="text-jade">.</span></>}
         </Link>
         {onToggle && <Button type="button" variant="ghost" size="icon" onClick={onToggle} aria-label={collapsed ? "فتح القائمة الجانبية" : "طي القائمة الجانبية"} aria-expanded={!collapsed} aria-controls="app-desktop-sidebar" title={collapsed ? "فتح القائمة الجانبية" : "طي القائمة الجانبية"} className="size-9 shrink-0">
           {collapsed ? <PanelRightOpen className="size-4" /> : <PanelRightClose className="size-4" />}
@@ -299,7 +299,7 @@ function PrimaryNavigation({ expanded, onToggle, mobile = false, onNavigate }: {
         <Button type="button" variant="ghost" size="icon" onClick={onToggle} aria-label={expanded ? "طي التنقل الرئيسي" : "توسيع التنقل الرئيسي"} title={expanded ? "طي التنقل الرئيسي" : "توسيع التنقل الرئيسي"} aria-expanded={expanded} className="size-10 shrink-0">
           {expanded ? <PanelLeftClose /> : <PanelLeftOpen />}
         </Button>
-        {expanded && <span className="min-w-0 flex-1 truncate px-2 text-sm font-black">سهل</span>}
+        {expanded && <span className="min-w-0 flex-1 truncate px-2 text-sm font-black">زياد</span>}
       </div>}
       <div className="space-y-1">{primaryLinks.map(renderLink)}</div>
       <div className="mt-auto space-y-1 border-t border-border pt-3">{secondaryLinks.map(renderLink)}</div>

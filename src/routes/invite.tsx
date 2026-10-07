@@ -10,10 +10,10 @@ import { acceptHumanInvite } from "@/lib/collaboration.functions";
 export const Route = createFileRoute("/invite")({
   validateSearch: (search: Record<string, unknown>) => ({ token: typeof search["token"] === "string" ? search["token"] : "" }),
   head: () => ({ meta: [
-    { title: "دعوة مساحة العمل | سهل" },
-    { name: "description", content: "اقبل دعوتك للانضمام إلى مساحة عمل فريقك في سهل." },
-    { property: "og:title", content: "دعوة مساحة العمل | سهل" },
-    { property: "og:description", content: "اقبل دعوتك للانضمام إلى مساحة عمل فريقك في سهل." },
+    { title: "دعوة مساحة العمل | زياد" },
+    { name: "description", content: "اقبل دعوتك للانضمام إلى مساحة عمل فريقك في زياد." },
+    { property: "og:title", content: "دعوة مساحة العمل | زياد" },
+    { property: "og:description", content: "اقبل دعوتك للانضمام إلى مساحة عمل فريقك في زياد." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },

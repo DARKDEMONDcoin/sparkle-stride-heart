@@ -19,7 +19,7 @@ export function Portrait({ memberId, name, className, eager }: PortraitProps) {
     <img
       key={`${memberId}-${region}`}
       src={portraitOf(memberId, region)}
-      alt={`${name} — موظف رقمي في سهل`}
+      alt={`${name} — موظف رقمي في زياد`}
       width={768}
       height={768}
       loading={eager ? "eager" : "lazy"}

@@ -5,13 +5,13 @@ import { LegalDoc, type LegalSection } from "@/components/site/LegalDoc";
 export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
-      { title: "سياسة ملفات الارتباط | ما نستخدمه وكيف تتحكم به — سهل" },
+      { title: "سياسة ملفات الارتباط | ما نستخدمه وكيف تتحكم به — زياد" },
       {
         name: "description",
         content:
           "شرح تفصيلي لملفات الارتباط الضرورية والوظيفية والتحليلية، مددها، وطريقة قبولها أو رفضها في أي وقت.",
       },
-      { property: "og:title", content: "سياسة ملفات الارتباط — سهل" },
+      { property: "og:title", content: "سياسة ملفات الارتباط — زياد" },
       { property: "og:description", content: "لا تتبّع إعلانياً. تحكم كامل من جانبك." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

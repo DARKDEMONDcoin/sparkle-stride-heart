@@ -25,10 +25,10 @@ export const Route = createFileRoute("/welcome")({
   ssr: false,
   validateSearch: z.object({ plan: z.enum(["start", "growth"]).optional() }),
   head: () => ({ meta: [
-    { title: "تعرّف على فريقك قبل التسجيل | سهل" },
-    { name: "description", content: "اكتشف فريق سهل وحلّل موقعك واختَر نشاطك قبل إنشاء حسابك." },
-    { property: "og:title", content: "تعرّف على فريقك الرقمي — سهل" },
-    { property: "og:description", content: "جولة تفاعلية للتعرف على فريق سهل واكتشاف نشاطك من موقعك قبل التسجيل." },
+    { title: "تعرّف على فريقك قبل التسجيل | زياد" },
+    { name: "description", content: "اكتشف فريق زياد وحلّل موقعك واختَر نشاطك قبل إنشاء حسابك." },
+    { property: "og:title", content: "تعرّف على فريقك الرقمي — زياد" },
+    { property: "og:description", content: "جولة تفاعلية للتعرف على فريق زياد واكتشاف نشاطك من موقعك قبل التسجيل." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
@@ -121,7 +121,7 @@ function Welcome() {
 
   return <div className="welcome-stage" dir="rtl">
     <header className="welcome-header">
-      <Link to="/" className="font-display text-xl font-black" aria-label="سهل — الرئيسية">سهل<span className="text-primary">.</span></Link>
+      <Link to="/" className="font-display text-xl font-black" aria-label="زياد — الرئيسية">زياد<span className="text-primary">.</span></Link>
       <span className="welcome-header-note">مساحة تبدأ منك</span>
       <Link to="/auth" search={{ mode: "signin" }} className="text-xs font-bold text-foreground underline decoration-primary/50 underline-offset-4">لديك حساب؟ ادخل</Link>
     </header>

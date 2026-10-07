@@ -11,8 +11,8 @@ export const Route = createFileRoute("/s/$token")({
     return r;
   },
   head: ({ loaderData }) => {
-    const title = loaderData ? `${loaderData.title} | ${loaderData.company}` : "صفحة مشاركة | سهل";
-    const desc = loaderData ? loaderData.body.replace(/[#*_>`-]/g, "").slice(0, 150) : "صفحة مشاركة من سهل";
+    const title = loaderData ? `${loaderData.title} | ${loaderData.company}` : "صفحة مشاركة | زياد";
+    const desc = loaderData ? loaderData.body.replace(/[#*_>`-]/g, "").slice(0, 150) : "صفحة مشاركة من زياد";
     return {
       meta: [
         { title },
@@ -51,7 +51,7 @@ function SharedPage() {
           <Markdown body={r.body} />
         </div>
       </article>
-      <p className="mt-6 text-center text-xs text-muted-foreground">أُعدّت بواسطة فريق سهل</p>
+      <p className="mt-6 text-center text-xs text-muted-foreground">أُعدّت بواسطة فريق زياد</p>
     </main>
   );
 }

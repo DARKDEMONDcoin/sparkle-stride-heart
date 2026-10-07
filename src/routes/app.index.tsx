@@ -33,9 +33,9 @@ import { splitReview } from "@/lib/task-freshness";
 export const Route = createFileRoute("/app/")({
   head: () => ({
     meta: [
-      { title: "مساحة عملك | سهل" },
+      { title: "مساحة عملك | زياد" },
       { name: "description", content: "نظرة عامة على عمل فريقك الرقمي اليوم." },
-      { property: "og:title", content: "مساحة عملك | سهل" },
+      { property: "og:title", content: "مساحة عملك | زياد" },
       { property: "og:description", content: "نظرة عامة على عمل فريقك الرقمي اليوم." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

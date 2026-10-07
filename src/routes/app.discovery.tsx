@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/discovery")({
   head: () => ({
     meta: [
-      { title: "كشف العلامة والموقع | سهل" },
+      { title: "كشف العلامة والموقع | زياد" },
       {
         name: "description",
         content:

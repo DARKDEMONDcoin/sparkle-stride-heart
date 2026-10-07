@@ -1,5 +1,5 @@
 /**
- * أدوات نقية لمحادثة فريق سهل على تيليجرام: اختيار الموظف وتنسيق الرد.
+ * أدوات نقية لمحادثة فريق زياد على تيليجرام: اختيار الموظف وتنسيق الرد.
  * بلا اعتماديات سيرفر حتى تُختبر مباشرة.
  */
 export type TeamMember = { id: string; name: string; cmd: string; names: string[]; topic: RegExp; working: string };
@@ -180,7 +180,7 @@ function balanceTags(parts: string[]): string[] {
 
 export function teamCard(activeId?: string | null): string {
   return [
-    "<b>فريق سهل معاك هنا 👋</b>",
+    "<b>فريق زياد معاك هنا 👋</b>",
     "اكتب اسم الموظف في أول رسالتك أو استخدم الأمر:",
     ...TEAM.map((m) => `${m.id === activeId ? "▶️" : "•"} <b>${m.name}</b> — /${m.cmd}`),
     "",

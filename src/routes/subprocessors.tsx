@@ -5,13 +5,13 @@ import { LegalDoc, type LegalSection } from "@/components/site/LegalDoc";
 export const Route = createFileRoute("/subprocessors")({
   head: () => ({
     meta: [
-      { title: "المعالِجون الفرعيون | من يشارك في تشغيل الخدمة — سهل" },
+      { title: "المعالِجون الفرعيون | من يشارك في تشغيل الخدمة — زياد" },
       {
         name: "description",
         content:
           "قائمة محدّثة بمزوّدي الخدمة الذين قد يعالجون بيانات نيابة عنا: الغرض، نوع البيانات، ومكان المعالجة.",
       },
-      { property: "og:title", content: "المعالِجون الفرعيون — سهل" },
+      { property: "og:title", content: "المعالِجون الفرعيون — زياد" },
       { property: "og:description", content: "شفافية كاملة في سلسلة تشغيل الخدمة." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

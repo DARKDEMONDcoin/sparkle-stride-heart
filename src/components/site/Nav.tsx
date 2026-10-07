@@ -59,7 +59,7 @@ const groups = [
   },
   {
     label: "المصادر",
-    intro: "اعرف كيف يعمل سهل",
+    intro: "اعرف كيف يعمل زياد",
     links: [
       { label: "قصص النجاح", desc: "نتائج من مشروعات عربية", to: "/stories", icon: BarChart3 },
       {
@@ -170,7 +170,7 @@ export function Nav({ variant = "over" }: { variant?: "over" | "solid" }) {
       <nav className="sahl-white-nav-inner" aria-label="التنقل الرئيسي">
         <Link to="/" className="sahl-white-brand">
           <LogoMark size={36} />
-          <span>سهل</span>
+          <span>زياد</span>
         </Link>
         <div className="sahl-white-links">
           <div onMouseEnter={() => setActive("الموظفون")}>
@@ -188,7 +188,7 @@ export function Nav({ variant = "over" }: { variant?: "over" | "solid" }) {
               <div className="sahl-mega sahl-workers-mega" role="menu">
                 <div className="sahl-workers-heading">
                   <span>
-                    <b>موظفو سهل</b>
+                    <b>موظفو زياد</b>
                     <small>ستة تخصصات تعمل معاً كفريق واحد</small>
                   </span>
                   <Link to="/employees" onClick={() => setActive(null)}>كل الفريق ←</Link>
@@ -282,7 +282,7 @@ export function Nav({ variant = "over" }: { variant?: "over" | "solid" }) {
           <DialogPrimitive.Overlay className="sahl-nav-backdrop" />
           <DialogPrimitive.Content className="sahl-nav-drawer" dir="rtl" aria-describedby={undefined}>
             <header className="sahl-nav-drawer-header">
-              <DialogPrimitive.Title className="sahl-nav-drawer-brand"><LogoMark size={30} />سهل</DialogPrimitive.Title>
+              <DialogPrimitive.Title className="sahl-nav-drawer-brand"><LogoMark size={30} />زياد</DialogPrimitive.Title>
               <DialogPrimitive.Close asChild><Button variant="ghost" size="icon" aria-label="إغلاق القائمة"><X /></Button></DialogPrimitive.Close>
             </header>
             <nav className="sahl-nav-drawer-scroll" aria-label="قائمة الموقع">

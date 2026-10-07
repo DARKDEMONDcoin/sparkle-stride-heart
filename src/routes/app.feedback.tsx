@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/feedback")({
   head: () => ({ meta: [
-    { title: "الملاحظات والآراء | سهل" },
-    { name: "description", content: "شارك رأيك أو بلّغ فريق سهل عن مشكلة." },
-    { property: "og:title", content: "الملاحظات والآراء | سهل" },
-    { property: "og:description", content: "شارك رأيك أو بلّغ فريق سهل عن مشكلة." },
+    { title: "الملاحظات والآراء | زياد" },
+    { name: "description", content: "شارك رأيك أو بلّغ فريق زياد عن مشكلة." },
+    { property: "og:title", content: "الملاحظات والآراء | زياد" },
+    { property: "og:description", content: "شارك رأيك أو بلّغ فريق زياد عن مشكلة." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
@@ -57,7 +57,7 @@ function FeedbackPage() {
       <section className="relative isolate overflow-hidden rounded-2xl border border-gold/20 bg-ink px-6 py-10 text-primary-foreground sm:px-10 sm:py-12">
         <LuxStage variant="ledger" />
         <div className="relative z-10 max-w-2xl">
-          <span className="inline-flex items-center gap-2 text-sm font-black text-gold"><MessageSquareText className="size-4" /> نبني سهل معك</span>
+          <span className="inline-flex items-center gap-2 text-sm font-black text-gold"><MessageSquareText className="size-4" /> نبني زياد معك</span>
           <h2 className="mt-3 font-display text-3xl font-black leading-tight sm:text-4xl">قلها كما هي. <span className="lux-gold-text">كل ملاحظة تصنع قراراً أفضل.</span></h2>
           <p className="mt-3 max-w-xl text-sm leading-7 text-primary-foreground/70">لا توجد إجابات مثالية هنا. أخبرنا ما الذي سهّل عملك، وما الذي عطّلك، وما الذي تتمنى رؤيته.</p>
         </div>
@@ -66,7 +66,7 @@ function FeedbackPage() {
       <section className="mt-7 grid gap-7 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="rounded-lg border border-border bg-card p-5 shadow-card sm:p-7">
           {sent ? <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid min-h-[28rem] place-items-center text-center">
-            <div><span className="mx-auto grid size-16 place-items-center rounded-full bg-jade/10 text-jade-deep"><CheckCircle2 className="size-8" /></span><h2 className="mt-5 font-display text-2xl font-black">وصل صوتك</h2><p className="mx-auto mt-2 max-w-md text-sm leading-7 text-muted-foreground">شكراً لأنك تساعدنا على تحسين سهل. سيفحص فريق المنتج ملاحظتك ضمن المراجعة القادمة.</p><Button variant="outline" className="mt-6" onClick={() => { setSent(false); setMessage(""); setRating(0); }}>إرسال ملاحظة أخرى</Button></div>
+            <div><span className="mx-auto grid size-16 place-items-center rounded-full bg-jade/10 text-jade-deep"><CheckCircle2 className="size-8" /></span><h2 className="mt-5 font-display text-2xl font-black">وصل صوتك</h2><p className="mx-auto mt-2 max-w-md text-sm leading-7 text-muted-foreground">شكراً لأنك تساعدنا على تحسين زياد. سيفحص فريق المنتج ملاحظتك ضمن المراجعة القادمة.</p><Button variant="outline" className="mt-6" onClick={() => { setSent(false); setMessage(""); setRating(0); }}>إرسال ملاحظة أخرى</Button></div>
           </motion.div> : <>
             <div><p className="text-xs font-black text-muted-foreground">١. اختر نوع الملاحظة</p><div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">{kinds.map((item) => <Button key={item.value} type="button" variant="outline" onClick={() => setKind(item.value)} className={cn("h-auto min-h-24 flex-col gap-3 whitespace-normal border-border px-2 py-4", kind === item.value && "border-primary bg-primary/5 ring-1 ring-primary")}><span className={cn("grid size-9 place-items-center rounded-full", item.tone)}><item.icon className="size-4" /></span><span className="text-xs font-black">{item.label}</span></Button>)}</div></div>
             <div className="mt-7"><p className="text-xs font-black text-muted-foreground">٢. كيف كانت تجربتك إجمالاً؟</p><div className="mt-3 flex gap-1" dir="ltr">{[1,2,3,4,5].map((value) => <Button key={value} type="button" variant="ghost" size="icon" aria-label={`${value} من 5`} onClick={() => setRating(value)} className="size-11"><Star className={cn("size-7 transition-all", value <= rating ? "fill-gold text-gold" : "text-border")} /></Button>)}</div></div>

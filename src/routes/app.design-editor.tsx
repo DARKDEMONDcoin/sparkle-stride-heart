@@ -8,10 +8,10 @@ import { ArrowLeft, ArrowRight, Check, Download, FileArchive, FileText, Layers3,
 
 export const Route = createFileRoute("/app/design-editor")({
   head: () => ({ meta: [
-    { title: "محرر التصاميم — سهل" },
+    { title: "محرر التصاميم — زياد" },
     { name: "description", content: "حرّر تصاميم دانة بصريًا وصدّرها بالمقاس المناسب لكل منصة." },
-    { property: "og:title", content: "محرر التصاميم — سهل" },
-    { property: "og:description", content: "مساحة تحرير احترافية لتصاميمك داخل سهل." },
+    { property: "og:title", content: "محرر التصاميم — زياد" },
+    { property: "og:description", content: "مساحة تحرير احترافية لتصاميمك داخل زياد." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
   ] }),
@@ -124,7 +124,7 @@ function DesignEditorPage() {
     ctx.textAlign = center ? "center" : align === "left" ? "left" : "right";
     const x = center ? size.width / 2 : align === "left" ? pad : size.width - pad;
     ctx.direction = "rtl"; ctx.fillStyle = scheme.accent; ctx.font = `700 ${Math.round(size.width * .026)}px sans-serif`;
-    ctx.fillText("سهل × دانة", x, size.height * .14);
+    ctx.fillText("زياد × دانة", x, size.height * .14);
     const wrap = (text: string, maxWidth: number, font: string, y: number, line: number) => {
       ctx.font = font; const words = text.split(/\s+/); const lines: string[] = []; let current = "";
       words.forEach((word) => { const test = `${current} ${word}`.trim(); if (ctx.measureText(test).width > maxWidth && current) { lines.push(current); current = word; } else current = test; });
@@ -186,7 +186,7 @@ function DesignEditorPage() {
         <div className="design-stage-meta"><span>{size.width} × {size.height}</span><span className={cn("design-check", contrast && "is-good")}>{contrast ? "تباين ممتاز" : "ارفع وضوح النص"}</span></div>
         <div className="design-canvas-wrap"><article className="design-canvas" style={{ aspectRatio: ratio, backgroundColor: scheme.bg, color: scheme.text, textAlign: align }}>
           {slide.image ? <><img src={slide.image} alt="" style={{ objectPosition: `${imageX}% ${imageY}%`, transform: `scale(${imageZoom / 100})` }} /><div className="design-canvas-overlay" style={{ opacity: overlay / 100 }} /></> : null}
-          <div className="design-safe-area"><span className="design-brand" style={{ color: scheme.accent }}>سهل × دانة</span><div className="design-copy"><h2 contentEditable suppressContentEditableWarning onBlur={(event) => updateSlide({ title: event.currentTarget.textContent || "" })}>{slide.title}</h2><p contentEditable suppressContentEditableWarning onBlur={(event) => updateSlide({ subtitle: event.currentTarget.textContent || "" })}>{slide.subtitle}</p></div><span className="design-cta" style={{ backgroundColor: scheme.accent, color: scheme.bg }}>{slide.cta}</span></div>
+          <div className="design-safe-area"><span className="design-brand" style={{ color: scheme.accent }}>زياد × دانة</span><div className="design-copy"><h2 contentEditable suppressContentEditableWarning onBlur={(event) => updateSlide({ title: event.currentTarget.textContent || "" })}>{slide.title}</h2><p contentEditable suppressContentEditableWarning onBlur={(event) => updateSlide({ subtitle: event.currentTarget.textContent || "" })}>{slide.subtitle}</p></div><span className="design-cta" style={{ backgroundColor: scheme.accent, color: scheme.bg }}>{slide.cta}</span></div>
         </article></div>
         <div className="design-slide-nav"><Button variant="ghost" size="icon" onClick={() => setActive((value) => Math.max(0, value - 1))} disabled={active === 0}><ArrowRight /></Button><span>{active + 1} / {slides.length}</span><Button variant="ghost" size="icon" onClick={() => setActive((value) => Math.min(slides.length - 1, value + 1))} disabled={active === slides.length - 1}><ArrowLeft /></Button></div>
       </main>

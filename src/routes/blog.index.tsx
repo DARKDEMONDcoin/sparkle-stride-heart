@@ -8,13 +8,13 @@ import { posts } from "@/data/blog";
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "المدونة | دلائل عملية للتشغيل بالذكاء الاصطناعي بالعربية — سهل" },
+      { title: "المدونة | دلائل عملية للتشغيل بالذكاء الاصطناعي بالعربية — زياد" },
       {
         name: "description",
         content:
           "مقالات تطبيقية عن نبرة العلامة العربية، تقويم النشر، الأمان، والمقارنة بين الوكالة والموظف الرقمي.",
       },
-      { property: "og:title", content: "مدونة سهل" },
+      { property: "og:title", content: "مدونة زياد" },
       { property: "og:description", content: "تجارب وأرقام من تشغيل فرق رقمية عربية." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

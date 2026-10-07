@@ -247,14 +247,14 @@ export const Route = createFileRoute("/app/chat/$id")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: loaderData ? `محادثة ${loaderData.name} | سهل` : "محادثة | سهل" },
+      { title: loaderData ? `محادثة ${loaderData.name} | زياد` : "محادثة | زياد" },
       {
         name: "description",
         content: loaderData ? `تحدث مع ${loaderData.name} — ${loaderData.role}.` : "محادثة الموظف.",
       },
       {
         property: "og:title",
-        content: loaderData ? `محادثة ${loaderData.name} | سهل` : "محادثة | سهل",
+        content: loaderData ? `محادثة ${loaderData.name} | زياد` : "محادثة | زياد",
       },
       {
         property: "og:description",

@@ -13,10 +13,10 @@ import { submitSupportRequest } from "@/lib/support.functions";
 
 export const Route = createFileRoute("/app/help")({
   head: () => ({ meta: [
-    { title: "المساعدة والدعم | سهل" },
-    { name: "description", content: "إجابات الأسئلة الشائعة والتواصل مع فريق دعم سهل." },
-    { property: "og:title", content: "المساعدة والدعم | سهل" },
-    { property: "og:description", content: "إجابات الأسئلة الشائعة والتواصل مع فريق دعم سهل." },
+    { title: "المساعدة والدعم | زياد" },
+    { name: "description", content: "إجابات الأسئلة الشائعة والتواصل مع فريق دعم زياد." },
+    { property: "og:title", content: "المساعدة والدعم | زياد" },
+    { property: "og:description", content: "إجابات الأسئلة الشائعة والتواصل مع فريق دعم زياد." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
     { name: "robots", content: "noindex" },
@@ -78,7 +78,7 @@ function HelpPage() {
     <div className="mx-auto max-w-6xl pb-14">
       <section className="relative isolate overflow-hidden rounded-2xl border border-gold/20 bg-ink px-5 py-10 text-center text-primary-foreground sm:px-10 sm:py-14">
         <LuxStage variant="rise" />
-        <div className="relative z-10 mx-auto max-w-2xl"><span className="inline-flex items-center gap-2 text-sm font-black text-gold"><LifeBuoy className="size-4" /> مركز مساعدة سهل</span><h2 className="mt-3 font-display text-3xl font-black sm:text-5xl">ما الذي تريد <span className="lux-gold-text">حله اليوم؟</span></h2><p className="mt-3 text-sm leading-7 text-primary-foreground/65">ابحث عن إجابة مباشرة، أو افتح طلباً يصل إلى فريقنا مع تفاصيل مساحة عملك.</p><div className="relative mx-auto mt-7 max-w-xl"><Search className="absolute right-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" /><Input value={search} onChange={(event) => setSearch(event.target.value)} className="h-14 rounded-md border-primary-foreground/15 bg-card pr-12 text-foreground shadow-lift" placeholder="ابحث: دعوة عضو، نشر، عمولة، تكامل…" /></div></div>
+        <div className="relative z-10 mx-auto max-w-2xl"><span className="inline-flex items-center gap-2 text-sm font-black text-gold"><LifeBuoy className="size-4" /> مركز مساعدة زياد</span><h2 className="mt-3 font-display text-3xl font-black sm:text-5xl">ما الذي تريد <span className="lux-gold-text">حله اليوم؟</span></h2><p className="mt-3 text-sm leading-7 text-primary-foreground/65">ابحث عن إجابة مباشرة، أو افتح طلباً يصل إلى فريقنا مع تفاصيل مساحة عملك.</p><div className="relative mx-auto mt-7 max-w-xl"><Search className="absolute right-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" /><Input value={search} onChange={(event) => setSearch(event.target.value)} className="h-14 rounded-md border-primary-foreground/15 bg-card pr-12 text-foreground shadow-lift" placeholder="ابحث: دعوة عضو، نشر، عمولة، تكامل…" /></div></div>
       </section>
 
       <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{paths.map((path) => <Link key={path.title} to={path.to} className="group rounded-lg border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/40 hover:shadow-card"><path.icon className="size-5 text-primary" /><h3 className="mt-4 text-sm font-black">{path.title}</h3><p className="mt-1 text-xs leading-6 text-muted-foreground">{path.text}</p></Link>)}</section>

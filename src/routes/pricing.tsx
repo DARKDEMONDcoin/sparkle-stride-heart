@@ -20,13 +20,13 @@ import { LogoMark } from "@/components/site/LogoMark";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "الأسعار | فريق كامل بأقل من راتب موظف واحد — سهل" },
+      { title: "الأسعار | فريق كامل بأقل من راتب موظف واحد — زياد" },
       {
         name: "description",
         content:
           "ثلاث باقات واضحة بدون رسوم خفية: البداية، النمو، والمؤسسات. جرّب 14 يوماً مجاناً وألغِ في أي وقت.",
       },
-      { property: "og:title", content: "أسعار سهل" },
+      { property: "og:title", content: "أسعار زياد" },
       {
         property: "og:description",
         content: "ابدأ بـ 149 ريالاً شهرياً لموظف رقمي كامل يعمل 24/7 بالعربية.",
@@ -79,7 +79,7 @@ function PricingPage() {
             <h1 id="mobile-pricing-title">اختر باقتك</h1>
           </header>
 
-          <div className="sahl-upgrade-tabs" role="tablist" aria-label="باقات سهل">
+          <div className="sahl-upgrade-tabs" role="tablist" aria-label="باقات زياد">
             {plans.map((plan) => (
               <Button
                 key={plan.id}

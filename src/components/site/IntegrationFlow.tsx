@@ -20,7 +20,7 @@ export function IntegrationFlow() {
               <span className="text-amber"> وفريقك يتولّى الباقي</span>
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-background/70 sm:text-lg">
-              اربط منصاتك مرة واحدة. يفهم موظفو سهل السياق، ينسّقون العمل معاً، ثم ينفّذون داخل
+              اربط منصاتك مرة واحدة. يفهم موظفو زياد السياق، ينسّقون العمل معاً، ثم ينفّذون داخل
               أدواتك بعد موافقتك.
             </p>
           </div>

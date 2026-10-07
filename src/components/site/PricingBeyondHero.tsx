@@ -135,7 +135,7 @@ export function PricingBeyondHero() {
       <header className="sahl-beyond-copy">
         <h1 id="sahl-pricing-hero-title">
           <span>منصة</span>
-          سهل
+          زياد
         </h1>
         <p>إمكانيات موظفين ذكاء اصطناعي لا حصر لها.</p>
       </header>

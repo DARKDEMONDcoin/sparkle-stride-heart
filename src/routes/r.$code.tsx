@@ -8,9 +8,9 @@ import { LogoMark } from "@/components/site/LogoMark";
 
 export const Route = createFileRoute("/r/$code")({
   head: () => ({ meta: [
-    { title: "دعوة إلى سهل | فريقك الذكي للعمل" },
-    { name: "description", content: "دعوة شخصية لتجربة سهل وبناء فريق موظفين ذكاء اصطناعي يعمل بالعربية." },
-    { property: "og:title", content: "دعوة إلى سهل" },
+    { title: "دعوة إلى زياد | فريقك الذكي للعمل" },
+    { name: "description", content: "دعوة شخصية لتجربة زياد وبناء فريق موظفين ذكاء اصطناعي يعمل بالعربية." },
+    { property: "og:title", content: "دعوة إلى زياد" },
     { property: "og:description", content: "ابدأ مع فريق موظفين ذكاء اصطناعي يعمل بالعربية، عبر دعوة شخصية." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
@@ -33,7 +33,7 @@ function ReferralLanding() {
         <motion.div className="absolute -left-16 -top-16 size-64 rounded-full border border-gold/20" animate={{ scale: [1, 1.08, 1] }} transition={{ duration: 5, repeat: Infinity }} aria-hidden="true" />
         <motion.div className="absolute bottom-8 left-10 text-gold/20" animate={{ y: [0, -10, 0], rotate: [0, 6, 0] }} transition={{ duration: 4, repeat: Infinity }} aria-hidden="true"><Coins className="size-28" /></motion.div>
         <div className="relative z-10 max-w-2xl">
-          <Link to="/" className="mb-10 inline-flex items-center gap-2 text-sm font-black"><LogoMark className="size-9" size={36} /> سهل.</Link>
+          <Link to="/" className="mb-10 inline-flex items-center gap-2 text-sm font-black"><LogoMark className="size-9" size={36} /> زياد.</Link>
            <p className="mb-3 flex items-center gap-2 text-sm font-bold text-gold"><Crown className="size-4" /> وصلك ترشيح شخصي</p>
           <h1 className="font-display text-3xl font-black leading-tight sm:text-5xl">كوّن فريقك الذكي، وخلّي الشغل يتحرّك.</h1>
           <p className="mt-4 max-w-xl text-sm leading-7 text-primary-foreground/75 sm:text-base">ستة موظفين ذكاء اصطناعي بالعربية يساعدونك في التسويق والمبيعات وخدمة العملاء والتنظيم، وكل خطوة حساسة تبقى تحت موافقتك.</p>

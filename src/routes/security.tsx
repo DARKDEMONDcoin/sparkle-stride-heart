@@ -7,13 +7,13 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/security")({
   head: () => ({
     meta: [
-      { title: "الأمان | تشفير، صلاحيات دنيا، وسجل تدقيق كامل — سهل" },
+      { title: "الأمان | تشفير، صلاحيات دنيا، وسجل تدقيق كامل — زياد" },
       {
         name: "description",
         content:
           "كيف نحمي حساباتك: تشفير أثناء النقل والتخزين، خزنة أسرار منفصلة، صلاحيات قابلة للسحب، وسجل تدقيق لكل إجراء.",
       },
-      { property: "og:title", content: "الأمان في سهل" },
+      { property: "og:title", content: "الأمان في زياد" },
       { property: "og:description", content: "تحكّم كامل، وسجل يوضح من فعل ماذا ومتى." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -13,7 +13,7 @@ import { BrandLoader } from "@/components/site/BrandLoader";
 export const Route = createFileRoute("/app/tasks")({
   head: () => ({
     meta: [
-      { title: "المهام | سهل" },
+      { title: "المهام | زياد" },
       { name: "description", content: "تابع كل مهمة يعمل عليها فريقك خطوة بخطوة." },
       { name: "robots", content: "noindex" },
     ],

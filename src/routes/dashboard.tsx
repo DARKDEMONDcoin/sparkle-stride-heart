@@ -10,8 +10,8 @@ export const Route = createFileRoute("/dashboard")({
   },
   head: () => ({
     meta: [
-      { title: "لوحة التحكم | سهل" },
-      { name: "description", content: "مساحة عملك في سهل." },
+      { title: "لوحة التحكم | زياد" },
+      { name: "description", content: "مساحة عملك في زياد." },
       { name: "robots", content: "noindex" },
     ],
   }),

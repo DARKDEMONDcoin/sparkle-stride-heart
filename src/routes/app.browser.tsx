@@ -19,9 +19,9 @@ export const Route = createFileRoute("/app/browser")({
   }),
   head: () => ({
     meta: [
-      { title: "المتصفح المنفّذ | سهل" },
+      { title: "المتصفح المنفّذ | زياد" },
       { name: "description", content: "مهام تصفح متعددة الخطوات ومقارنات بين المواقع بأمان كامل وموافقتك." },
-      { property: "og:title", content: "المتصفح المنفّذ | سهل" },
+      { property: "og:title", content: "المتصفح المنفّذ | زياد" },
       { property: "og:description", content: "مهام تصفح متعددة الخطوات ومقارنات بين المواقع بأمان كامل وموافقتك." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

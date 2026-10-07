@@ -18,13 +18,13 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/features")({
   head: () => ({
     meta: [
-      { title: "المزايا | عربية أصيلة، تكامل كامل، وتحكّم مطلق — سهل" },
+      { title: "المزايا | عربية أصيلة، تكامل كامل، وتحكّم مطلق — زياد" },
       {
         name: "description",
         content:
           "لهجة محلية حقيقية، صور بنص عربي سليم، ربط آمن مع 40 تطبيقاً، موافقات قبل التنفيذ، وتقارير تقول لك ماذا تفعل بعدها.",
       },
-      { property: "og:title", content: "مزايا منصة سهل" },
+      { property: "og:title", content: "مزايا منصة زياد" },
       {
         property: "og:description",
         content: "كل ما يجعل فريقك الرقمي يعمل بثقة داخل حساباتك — بالعربية.",
@@ -122,7 +122,7 @@ function FeaturesPage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="لماذا سهل"
+        eyebrow="لماذا زياد"
         title="ذكاء اصطناعي يفهم سوقك، لا مجرد نموذج يتكلم عربي"
         lead="بنينا كل تفصيلة حول واقع صاحب المشروع العربي: اللهجة، المنصات، طرق الدفع، وساعات الذروة المحلية."
       />

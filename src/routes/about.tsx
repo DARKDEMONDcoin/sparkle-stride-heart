@@ -7,13 +7,13 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "من نحن | بنينا سهل لصاحب المشروع العربي" },
+      { title: "من نحن | بنينا زياد لصاحب المشروع العربي" },
       {
         name: "description",
         content:
-          "قصة سهل ومبادئه: عربية أصيلة أولاً، تحكّم كامل للمستخدم، وشفافية في الأسعار والنتائج.",
+          "قصة زياد ومبادئه: عربية أصيلة أولاً، تحكّم كامل للمستخدم، وشفافية في الأسعار والنتائج.",
       },
-      { property: "og:title", content: "من نحن — سهل" },
+      { property: "og:title", content: "من نحن — زياد" },
       { property: "og:description", content: "لماذا بنينا فريق موظفين رقميين يعمل بالعربية." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -61,7 +61,7 @@ function AboutPage() {
       <PageHero
         eyebrow="من نحن"
         title="بنينا الفريق الذي تمنّينا وجوده حين بدأنا"
-        lead="سهل شركة منتجات تقنية عربية، هدفها أن يحصل كل صاحب مشروع على قوة فريق تسويق ومبيعات كامل — من هاتفه."
+        lead="زياد شركة منتجات تقنية عربية، هدفها أن يحصل كل صاحب مشروع على قوة فريق تسويق ومبيعات كامل — من هاتفه."
       />
 
       <section className="mx-auto max-w-4xl px-5 py-14">

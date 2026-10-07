@@ -23,9 +23,9 @@ import { splitReview, STALE_REVIEW_DAYS } from "@/lib/task-freshness";
 export const Route = createFileRoute("/app/approvals")({
   head: () => ({
     meta: [
-      { title: "الموافقات | سهل" },
+      { title: "الموافقات | زياد" },
       { name: "description", content: "راجع ما أنجزه فريقك واعتمده قبل النشر." },
-      { property: "og:title", content: "الموافقات | سهل" },
+      { property: "og:title", content: "الموافقات | زياد" },
       { property: "og:description", content: "راجع ما أنجزه فريقك واعتمده قبل النشر." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

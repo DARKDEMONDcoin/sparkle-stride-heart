@@ -47,12 +47,12 @@ import { BrandLoader } from "@/components/site/BrandLoader";
 export const Route = createFileRoute("/app/calendar")({
   head: () => ({
     meta: [
-      { title: "تقويم المحتوى | سهل" },
+      { title: "تقويم المحتوى | زياد" },
       {
         name: "description",
         content: "خطة محتوى شهرية جاهزة بالنصوص والصور من سِراج — راجع، عدّل، وانشر بضغطة.",
       },
-      { property: "og:title", content: "تقويم المحتوى | سهل" },
+      { property: "og:title", content: "تقويم المحتوى | زياد" },
       {
         property: "og:description",
         content: "شهر كامل من المنشورات بالصور — يبقى لك زر النشر فقط.",
@@ -535,7 +535,7 @@ function CalendarPage() {
               {learnMutation.data.source === "live"
                 ? "من حساباتك المربوطة"
                 : learnMutation.data.source === "internal"
-                  ? "من منشورات سهل"
+                  ? "من منشورات زياد"
                   : "لا بيانات بعد"}
             </span>
           </p>

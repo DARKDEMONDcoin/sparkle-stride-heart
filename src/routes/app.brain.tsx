@@ -22,11 +22,11 @@ import { BrandLoader } from "@/components/site/BrandLoader";
 export const Route = createFileRoute("/app/brain")({
   head: () => ({
     meta: [
-      { title: "عقل العلامة | سهل" },
+      { title: "عقل العلامة | زياد" },
       { name: "description", content: "صوت علامتك وقواعدها ومستنداتها — يستخدمها فريقك عندما تشغّلها." },
       { name: "robots", content: "noindex" },
-      { property: "og:title", content: "عقل العلامة | سهل" },
-      { property: "og:description", content: "مرجع موحد لمعرفة العلامة وصوتها يستخدمه فريق سهل كله." },
+      { property: "og:title", content: "عقل العلامة | زياد" },
+      { property: "og:description", content: "مرجع موحد لمعرفة العلامة وصوتها يستخدمه فريق زياد كله." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
