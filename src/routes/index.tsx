@@ -30,8 +30,8 @@ export const Route = createFileRoute("/")({
             {
               "@type": "Organization",
               name: "زياد",
-              alternateName: "Sahl",
-              url: "https://stride-forge-spark.lovable.app",
+              alternateName: "Ziad",
+              url: "https://getziad.com",
               description:
                 "منصة عربية تمنح أصحاب المشاريع فريق موظفين بالذكاء الاصطناعي ينشر ويصمّم ويردّ ويبيع على مدار الساعة.",
             },

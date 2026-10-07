@@ -91,7 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "زياد يمنحك فريق موظفين بالذكاء الاصطناعي يعملون 24/7: تسويق ونشر على السوشيال، رد على العملاء، مبيعات، وتصميم — بالعربي وبفهم كامل للسوق.",
       },
-      { name: "author", content: "Sahl" },
+      { name: "author", content: "Ziad" },
       { property: "og:title", content: "زياد | فريق موظفين ذكاء اصطناعي لشركتك" },
       {
         property: "og:description",
