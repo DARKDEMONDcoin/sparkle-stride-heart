@@ -131,7 +131,7 @@ function Welcome() {
         {step === 0 && <section className="welcome-centered">
           <span className="welcome-eyebrow"><Sparkles className="size-4" /> البداية</span>
           <h1 className="welcome-title">فريقك يبدأ من قصتك.</h1>
-          <p className="welcome-lead">كيف تريد أن يساعدك سهل؟</p>
+          <p className="welcome-lead">كيف تريد أن يساعدك زياد؟</p>
            <div className="welcome-choices">{[["business", "لإدارة مشروعي", "تسويق ومبيعات وتنظيم في مكان واحد"], ["job", "لعملي اليومي", "فريق يساعدك في المهام ويوفر وقتك"], ["personal", "لاستكشاف الإمكانيات", "تعرّف على الفريق ثم قرر"]].map(([value, label, hint]) => <Button key={value} type="button" variant="outline" aria-pressed={purpose === value} onClick={() => { if (purpose !== value) { setWebsite(""); setPreview(null); setIndustry(""); setOtherSelected(false); setRecommendation(null); } setPurpose(value ?? ""); }} className={cn("welcome-choice", purpose === value && "welcome-choice-active")}><span className="min-w-0 flex-1 text-start"><strong className="block text-sm sm:text-base">{label}</strong><span className="block whitespace-normal text-xs font-normal text-muted-foreground">{hint}</span></span><span className="welcome-radio">{purpose === value && <Check className="size-3" />}</span></Button>)}</div>
         </section>}
         {step === 1 && <section className="welcome-centered welcome-website">
