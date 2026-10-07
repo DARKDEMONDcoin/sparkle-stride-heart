@@ -284,8 +284,10 @@ async function freeChatInner(
         return await withRetry(() =>
           callOpenAICompatible(GEMINI, geminiKey, model, messages, scoped()),
         );
-      } catch {
-        /* المزوّد التالي */
+      } catch (error) {
+        // نحفظ سبب فشل Gemini حتى لا يختفي خلف خطأ المزوّد التالي.
+        lastError = `Gemini: ${(error as Error).message}`;
+        console.error("[ai] gemini failed:", lastError.slice(0, 300));
       }
     }
   }
