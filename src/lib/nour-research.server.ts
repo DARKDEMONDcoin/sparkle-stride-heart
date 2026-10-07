@@ -127,7 +127,7 @@ async function callModel(
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "https://stride-forge-spark.lovable.app",
+      "HTTP-Referer": "https://getziad.com",
       "X-Title": "Ziad AI Team",
     },
     body: JSON.stringify({
