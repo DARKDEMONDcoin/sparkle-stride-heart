@@ -40,7 +40,13 @@ const priorityFields = (endpoint: string, model: string) =>
 /** نماذج Google AI Studio (المزوّد الأساسي) بالترتيب. */
 // flash-lite أولاً: يردّ في ~7 ثوانٍ بجودة قريبة، بينما 3.6-flash يتجاوز 50 ثانية
 // ويُقطع بمهلة الطلب (30 ثانية) فيُهدر الوقت قبل الاحتياطي.
-export const GEMINI_MODELS = ["gemini-3.5-flash-lite", "gemini-3.6-flash"];
+export const GEMINI_MODELS = [
+  "gemini-2.5-flash-lite",
+  "gemini-2.5-flash",
+  "gemini-2.0-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.6-flash",
+];
 
 /**
  * أفضل النماذج المجانية على OpenRouter بترتيب مُختبَر (جودة عربية + سرعة + توافر)،
