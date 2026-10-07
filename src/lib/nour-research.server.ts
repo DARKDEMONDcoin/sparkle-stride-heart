@@ -312,7 +312,11 @@ async function freeChatInner(
       const fatal = errors.find(
         (e) => e instanceof DailyFreeLimitError || e.message.includes("مفتاح OpenRouter"),
       );
-      if (fatal) throw fatal;
+      if (fatal) {
+        if (lastError && fatal.message.includes("مفتاح OpenRouter"))
+          throw new Error(`${fatal.message} (${lastError.slice(0, 160)})`);
+        throw fatal;
+      }
       lastError = errors[0]?.message ?? "فشل النموذجان الأسرع";
     }
   }
