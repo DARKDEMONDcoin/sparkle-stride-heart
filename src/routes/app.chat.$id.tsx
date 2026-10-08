@@ -64,7 +64,7 @@ import { OutputActions } from "@/components/app/OutputActions";
 import { SaveChatOutputs } from "@/components/app/SaveChatOutputs";
 import { composeChatOutputs, readChatOutputs } from "@/lib/chat-outputs";
 import { requestedPublishTargets } from "@/lib/platforms";
-import { askedForPublishableOutput, extractPostText, isNonPostReply } from "@/lib/post-format";
+import { askedForPublishableOutput, extractPostText, isFollowUp, isNonPostReply, splitDeliverableItems } from "@/lib/post-format";
 import { detectHandoff } from "@/lib/handoff";
 import { HandoffCard } from "@/components/app/HandoffCard";
 import { PublishToWordPress } from "@/components/app/PublishToWordPress";
@@ -1014,7 +1014,10 @@ function ChatView({
     let last = "";
     return (messages ?? []).map((message) => {
       const before = last;
-      if (message.role === "user") last = splitUserBody(message.body).text || message.body;
+      if (message.role === "user") {
+        const text = splitUserBody(message.body).text || message.body;
+        last = last && isFollowUp(text) ? `${last}\n${text}` : text;
+      }
       return before;
     });
   }, [messages]);
@@ -1462,14 +1465,21 @@ function ChatView({
                         !m.body.includes("(/app/tasks)") &&
                         askedForPublishableOutput(priorRequest) &&
                         looksPostable(m.body, priorRequest) ? (
-                          <PostCards
-                            workspaceId={workspace.id}
-                            employeeId={id}
-                            taskId={savedTask}
-                            channel={requestedPublishTargets(priorRequest)[0] ?? "instagram"}
-                            request={priorRequest}
-                            body={m.body}
-                          />
+                          (() => {
+                            const parts = splitDeliverableItems(m.body);
+                            const channel = requestedPublishTargets(priorRequest)[0] ?? "instagram";
+                            if (!parts.length)
+                              return (
+                                <PostCards workspaceId={workspace.id} employeeId={id} taskId={savedTask} channel={channel} request={priorRequest} body={m.body} />
+                              );
+                            return (
+                              <div className="mt-3 flex flex-wrap gap-2">
+                                {parts.map((p, i) => (
+                                  <PostCards key={i} label={p.title} workspaceId={workspace.id} employeeId={id} taskId={savedTask} channel={channel} request={priorRequest} body={p.body} />
+                                ))}
+                              </div>
+                            );
+                          })()
                         ) : null}
 
                         {(() => {

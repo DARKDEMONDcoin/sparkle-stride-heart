@@ -12,7 +12,9 @@ function PostCardsView({
   request,
   body,
   channel,
+  label,
 }: {
+  label?: string;
   workspaceId: string;
   employeeId: string;
   taskId?: string | null;
@@ -27,14 +29,15 @@ function PostCardsView({
         type="button"
         variant="outline"
         size="sm"
-        className="mt-3 rounded-full text-xs font-bold"
+        className="mt-3 h-auto max-w-full whitespace-normal rounded-full text-xs font-bold"
         onClick={() => setOpened(true)}
       >
-        <Send className="size-3.5" /> انشر هذا المنشور
+        <Send className="size-3.5" /> {label ? `انشر «${label}»` : "انشر هذا المنشور"}
       </Button>
     );
   }
   return (
+    <div className="w-full">
     <PublishPanel
       workspaceId={workspaceId}
       employeeId={employeeId}
@@ -44,6 +47,7 @@ function PostCardsView({
       channel={channel ?? "instagram"}
       defaultOpen
     />
+    </div>
   );
 }
 
