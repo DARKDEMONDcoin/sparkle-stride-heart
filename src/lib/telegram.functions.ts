@@ -50,6 +50,12 @@ export const telegramStatus = createServerFn({ method: "POST" })
         console.error("[telegram] shared webhook refresh failed:", error);
       }
     }
+    if (config?.botToken && !config.shared) {
+      // بوت العميل الخاص: نفس الإصلاح الذاتي بعد نقل الموقع إلى عنوان جديد.
+      await registerWebhook(data.workspaceId, config.botToken).catch((error) =>
+        console.error("[telegram] custom webhook refresh failed:", error),
+      );
+    }
     return {
       connected: Boolean(config?.botToken),
       usesSharedBot: Boolean(config?.shared),
