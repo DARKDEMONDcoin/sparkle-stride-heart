@@ -465,7 +465,7 @@ function ProductFrame({
               alt={alt}
               width={2560}
               height={1640}
-              loading={hero ? "eager" : "lazy"}
+              loading="eager"
               fetchPriority={hero ? "high" : "auto"}
               decoding="async"
             />
