@@ -375,12 +375,12 @@ export async function runEmployeeTurn(
         .limit(80),
       supabase
         .from("messages")
-        .select("role, body, sender_name")
+        .select("role, body, sender_name, outputs")
         .eq("workspace_id", data.workspaceId)
         .eq("employee_id", data.employeeId)
         .eq("conversation_id", data.conversationId)
         .order("created_at", { ascending: false })
-        .limit(12),
+        .limit(24),
       supabase
         .from("pipedream_accounts")
         .select("provider")
@@ -535,6 +535,8 @@ export async function runEmployeeTurn(
         .eq("id", data.conversationId);
     }
 
+    const CONTINUATION =
+      /^(?:يا\s+\S+\s+)?(كمل|كمّل|أكمل|اكمل|كملي|تمام|ماشي|اوك|أوك|ok|نفذ|نفّذ|يلا|ابدأ|ابدا|مراجعة|راجع|راجعه|عدّل|عدل|غيّر|غير|بدّل|بدل|خليه|خليها|اجعله|اجعلها|أقصر|اقصر|أطول|اطول|نسخة|كمان|زود|زوّد|ضيف|أضف|اضف|احذف|شيل|الأول|الاول|الثاني|التاني|الثالث|التالت|الأخير|الاخير|نعم|أيوه|ايوه|اه|موافق)(?![\p{L}])/iu;
     const longForm =
       /مقال|خطة\s*(سيو|محتوى|تسويق)|\d{3,4}\s*كلمة|صفحة هبوط|دليل شامل|حملة كاملة/.test(
         data.message,
@@ -543,7 +545,20 @@ export async function runEmployeeTurn(
     // نيّة الرسالة: عمل (مخرج جاهز) أم سؤال/دردشة يُجاب عليها فقط بلا فرض خدمات.
     const { intentBlock, wantsImageRequest, refusesImageRequest } =
       await import("./chat-intent");
-    const turnPlan = planTurn(data.message, longForm);
+    // متابعة قصيرة («كمل»، «مراجعة»، «غيّر الثاني»، «أقصر») ترث طلب العمل السابق
+    // بدل أن تُصنَّف دردشة فيُمنع المخرج — الخطة والعدد ومعايير النجاح من الطلب الأصلي.
+    const prevWorkRequest =
+      (history ?? []).find(
+        (m) => m.role === "user" && m.body && m.body !== data.message && m.body.trim().length > 25,
+      )?.body ?? "";
+    const isContinuation =
+      !!prevWorkRequest &&
+      data.message.trim().length <= 60 &&
+      CONTINUATION.test(data.message.trim()) &&
+      planTurn(prevWorkRequest).intent === "work";
+    const planText = isContinuation ? `${prevWorkRequest}\n(متابعة من المالك: ${data.message})` : data.message;
+    const basePlan = planTurn(planText, longForm);
+    const turnPlan = isContinuation ? { ...basePlan, intent: "work" as const, verifyOutput: true } : basePlan;
     const intent = turnPlan.intent;
     // توجيه ذكي تلقائي: طلب عمل خارج اختصاص موظف المحادثة يتولاه الزميل المختص
     // خلف الكواليس (تعليماته وأدواته وإجراءاته)، وتعود النتيجة في نفس المحادثة.
@@ -1076,10 +1091,21 @@ export async function runEmployeeTurn(
       .slice()
       .reverse()
       // Shared team chat: label each human turn with its author so the employee follows who asked what.
-      .map((m) => ({
-        role: m.role === "user" ? "user" : "assistant",
-        content: m.role === "user" && m.sender_name ? `[${m.sender_name}]: ${m.body}` : m.body,
-      }));
+      .map((m) => {
+        if (m.role === "user")
+          return { role: "user", content: m.sender_name ? `[${m.sender_name}]: ${m.body}` : m.body };
+        // المخرجات المتعددة تُحفظ منفصلة عن نص الرد: نعيدها للسياق مرقّمة كي يعمل
+        // «عدّل الثاني» أو «أقصر الأخير» على النص الفعلي لا على الملخص.
+        const outs = Array.isArray(m.outputs) ? (m.outputs as { title?: string; body?: string }[]) : [];
+        const items =
+          outs.length > 1
+            ? "\n\n" +
+              outs
+                .map((o, i) => `### ${i + 1}. ${o.title ?? "مخرج"}\n${String(o.body ?? "").replace(/!\[[^\]]*\]\([^)]*\)\s*/g, "").slice(0, 1500)}`)
+                .join("\n\n")
+            : "";
+        return { role: "assistant", content: `${m.body}${items}` };
+      });
 
     // قراءة فعلية لكل الوسائط: صور وفيديوهات ومستندات، بنفس المسار لكل الموظفين.
     let mediaRead = "";
@@ -1583,7 +1609,7 @@ export async function runEmployeeTurn(
     const originalReply = reply;
     // المخرجات القصيرة (منشور، بريد، ردّ جاهز) كانت تمرّ بلا مراجعة — والآن تُراجَع أيضاً،
     // فجودة المخرج القصير لا تقلّ أهمية عن التقرير الطويل.
-    const shouldJudge = intent === "work" && reply.length > 120;
+    const shouldJudge = turnPlan.verifyOutput && reply.length > 120;
 
     if (shouldJudge) emit({ type: "step", label: "أراجع جودة المخرج قبل تسليمه لك" });
     const judgeTask = !shouldJudge
@@ -1592,7 +1618,7 @@ export async function runEmployeeTurn(
           .then(({ judgeAndImprove }) =>
             judgeAndImprove({
               employeeId: agentId,
-              request: data.message,
+              request: planText,
               output: reply,
               criteria: qualityCriteria[agentId] ?? [],
               bannedWords: workspace.banned_words ?? [],
