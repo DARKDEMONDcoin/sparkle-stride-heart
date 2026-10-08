@@ -1331,6 +1331,18 @@ function ChatView({
                   {rotatingGreeting}
                   <span className="typewriter-caret" aria-hidden="true" />
                 </p>
+                <div className="mt-5 flex flex-wrap justify-center gap-2" aria-label="ابدأ بطلب جاهز">
+                  {employeeCopy.prompts.slice(0, 3).map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => setDraft(p.replace(/…$/, ""))}
+                      className="max-w-full rounded-full border border-border bg-card px-3.5 py-2 text-start text-xs font-bold text-foreground transition-colors hover:border-primary/50 hover:bg-secondary sm:text-sm"
+                    >
+                      {p.replace(/…$/, "")}
+                    </button>
+                  ))}
+                </div>
               </div>
             ) : null}
 
