@@ -15,6 +15,7 @@ function cleanBody(body: string): string {
   return stripOwnerNotes(body)
     .replace(/^#{1,6}\s+/gmu, "")
     .replace(/^\s*-{3,}\s*$/gmu, "")
+    .replace(/^\s*\**\s*(?:افتراضات?ي?|الافتراض|ملاحظة|الموضوع|عنوان\s*الرسالة|سطر\s*الموضوع)\s*\**\s*[:：].*$/gmu, "")
     .replace(/\*\*(.+?)\*\*/gu, "$1")
     .replace(/\n{3,}/gu, "\n\n")
     .trim()
