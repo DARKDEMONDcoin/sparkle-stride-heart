@@ -158,6 +158,19 @@ async function readResponsesStream(res: Response): Promise<string> {
 }
 
 export async function callLovableRewrite(messages: ChatMessage[]): Promise<string> {
+  try {
+    return await callGatewayRewrite(messages);
+  } catch (error) {
+    // على استضافة خارجية قد يغيب مفتاح البوابة أو يُرفض؛ ننفّذ عبر سلسلة النماذج المشتركة.
+    console.warn("[post-improve] gateway failed, using fallback:", error instanceof Error ? error.message : error);
+    const { freeChat } = await import("./nour-research.server");
+    const out = (await freeChat("", messages, { timeoutMs: 45_000 })).trim();
+    if (!out) throw error;
+    return out;
+  }
+}
+
+async function callGatewayRewrite(messages: ChatMessage[]): Promise<string> {
   const key = await getSecret("LOVABLE_API_KEY");
   if (!key) throw new Error("إعداد Lovable AI غير مكتمل. أعد المحاولة بعد تفعيل المفتاح.");
 

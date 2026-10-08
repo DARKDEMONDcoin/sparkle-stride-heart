@@ -396,7 +396,7 @@ export function PlatformPreviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="inset-x-0 bottom-0 top-auto max-h-[96dvh] w-full max-w-none translate-x-0 translate-y-0 grid-cols-[minmax(0,1fr)] gap-0 overflow-hidden rounded-b-none p-0 sm:inset-x-1/2 sm:bottom-auto sm:top-1/2 sm:w-[min(94vw,58rem)] sm:max-w-[58rem] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg">
+      <DialogContent className="left-0! right-0! bottom-0! top-auto! max-h-[96dvh] w-full max-w-none translate-x-0! translate-y-0! grid-cols-[minmax(0,1fr)] gap-0 overflow-hidden rounded-b-none p-0 data-[state=open]:zoom-in-100 sm:left-1/2! sm:right-auto! sm:bottom-auto! sm:top-1/2! sm:w-[min(94vw,58rem)] sm:max-w-[58rem] sm:-translate-x-1/2! sm:-translate-y-1/2! sm:rounded-lg">
         <div className="border-b border-border p-4 pr-12">
           <DialogTitle className="font-display text-base font-black">معاينة على المنصة</DialogTitle>
           <DialogDescription className="text-xs">

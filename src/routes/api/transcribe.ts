@@ -49,9 +49,41 @@ export const Route = createFileRoute("/api/transcribe")({
 
         const { getSecret } = await import("@/lib/secrets.server");
         const apiKey = await getSecret("LOVABLE_API_KEY");
-        if (!apiKey) return Response.json({ error: "خدمة تحويل الصوت غير مهيّأة." }, { status: 500 });
-
+        const geminiKey = (await getSecret("GEMINI_API_KEY")) || (await getSecret("GOOGLE_API_KEY"));
         const mime = (file.type || "audio/webm").replace(/^video\//, "audio/").split(";")[0]!;
+
+        // بديل يعمل على أي استضافة: Gemini مباشرة، بنفس شكل أحداث البث الذي تقرأه الواجهة.
+        const viaGemini = async (): Promise<Response | null> => {
+          if (!geminiKey) return null;
+          const bytes = new Uint8Array(await file.arrayBuffer());
+          let bin = "";
+          for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [
+                { text: "اكتب نص هذا التسجيل حرفياً بلغته ولهجته كما قيل، بلا أي تعليق أو مقدمة." },
+                { inline_data: { mime_type: mime, data: btoa(bin) } },
+              ] }],
+            }),
+            signal: request.signal,
+          });
+          if (!res.ok) {
+            console.error(`[transcribe] gemini failed [${res.status}]: ${(await res.text()).slice(0, 300)}`);
+            return null;
+          }
+          const j = (await res.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
+          const text = (j.candidates?.[0]?.content?.parts ?? []).map((x) => x.text ?? "").join("").trim();
+          if (!text) return null;
+          const sse = `data: ${JSON.stringify({ type: "transcript.text.delta", delta: text })}\n\ndata: ${JSON.stringify({ type: "transcript.text.done", text })}\n\ndata: [DONE]\n\n`;
+          return new Response(sse, { headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-store" } });
+        };
+
+        if (!apiKey) {
+          const fallback = await viaGemini();
+          return fallback ?? Response.json({ error: "خدمة تحويل الصوت غير مهيّأة." }, { status: 500 });
+        }
         const ext = mime.includes("mp4") ? "m4a" : mime.includes("ogg") ? "ogg" : mime.includes("wav") ? "wav" : "webm";
         const upstreamForm = new FormData();
         upstreamForm.append("model", "google/gemini-3.5-transcribe");
@@ -67,6 +99,10 @@ export const Route = createFileRoute("/api/transcribe")({
         if (!upstream.ok || !upstream.body) {
           const body = await upstream.text().catch(() => "");
           console.error(`[transcribe] failed [${upstream.status}]: ${body.slice(0, 300)}`);
+          if (upstream.status === 401 || upstream.status === 403 || upstream.status >= 500) {
+            const fallback = await viaGemini();
+            if (fallback) return fallback;
+          }
           const message =
             upstream.status === 402
               ? "رصيد الذكاء الاصطناعي خلص — اشحن الرصيد وجرب تاني."
