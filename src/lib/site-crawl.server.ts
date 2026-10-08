@@ -13,7 +13,7 @@ export type CrawlPage = {
 };
 export type CrawlIssue = { kind: string; url: string; detail: string };
 
-const UA = "SahlBot/1.0 (+https://stride-forge-spark.lovable.app)";
+const UA = "ZiadBot/1.0 (+https://getziad.com)";
 const SKIP = /\.(jpg|jpeg|png|gif|webp|svg|pdf|zip|mp4|mp3|css|js|ico|woff2?|xml)(\?|$)/i;
 
 function pick(html: string, re: RegExp) {

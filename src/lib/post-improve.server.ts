@@ -4,7 +4,6 @@
  * بالضبط، ثم نعيد القياس ونحتفظ بالأفضل. لا شيء تجميلي: إن لم ترتفع الدرجة
  * نُبقي النص الأصلي.
  */
-import { getSecret } from "./secrets.server";
 import { sanitizePostBody } from "./post-format";
 import { scorePost, type QualityReport } from "./post-quality";
 import { PROVIDER_LABEL } from "./platforms";
