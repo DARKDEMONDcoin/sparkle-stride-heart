@@ -58,7 +58,11 @@ async function aiTranslate(text: string, key: string): Promise<SearchTranslation
       reasoning: { effort: "low" },
     }),
   });
-  if (!res.ok || !res.body) return null;
+  if (!res.ok || !res.body) {
+    const { reportLovableStatus } = await import("./ai-key-health.server");
+    reportLovableStatus(res.status, "search-translate");
+    return null;
+  }
   const reader = res.body.getReader();
   const dec = new TextDecoder();
   let buf = "";
