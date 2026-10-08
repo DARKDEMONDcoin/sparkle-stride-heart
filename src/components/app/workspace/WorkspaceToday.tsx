@@ -49,7 +49,21 @@ export function WorkspaceToday({ tasks, projects, people, meId, ownWorkspaceId, 
   );
 
   return (
-    <section className="mt-7 space-y-6" aria-label="النهاردة">
+    <section className="mt-7 space-y-6" aria-label="اليوم">
+      {tasks.length === 0 && waitingCount === 0 ? (
+        <div className="rounded-2xl border border-primary/25 bg-primary/5 p-4 sm:p-6">
+          <p className="font-display text-base font-black sm:text-lg">ابدأ أول عمل لنشاطك الآن</p>
+          <p className="mt-1 text-sm text-muted-foreground">اختر موظفاً واطلب منه ما تحتاجه بلغتك — أو أنشئ مشروعاً من قالب جاهز.</p>
+          <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
+            {team.slice(0, 6).map((m) => (
+              <Link key={m.id} to="/app/chat/$id" params={{ id: m.id }} className="flex flex-col items-center gap-1.5 rounded-xl p-2 text-center transition-colors hover:bg-background">
+                <span className="block size-11 overflow-hidden rounded-full"><Portrait memberId={m.id} name={m.name} className="size-full" /></span>
+                <span className="text-xs font-bold">{m.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat icon={Inbox} label="مستني قرارك" value={waitingCount} urgent={waitingCount > 0} />
         <Stat icon={Loader2} label="جارٍ التنفيذ" value={aiRunning.length} />
