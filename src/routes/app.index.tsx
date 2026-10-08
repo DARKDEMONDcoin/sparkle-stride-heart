@@ -200,7 +200,7 @@ function AppHome() {
           {workspace ? <MorningBriefingCard workspaceId={workspace.id} /> : null}
           <section className="app-command-head">
             <div>
-              <p>SAHL / EXECUTIVE CONTROL</p>
+              <p>زياد · لوحة القيادة</p>
               <h2 className="flex items-center gap-2.5">
                 {" "}
                 <LayoutDashboard className="size-6 text-primary" /> مركز قيادة العمل والنتائج{" "}
