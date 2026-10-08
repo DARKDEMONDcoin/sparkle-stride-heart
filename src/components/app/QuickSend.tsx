@@ -43,7 +43,7 @@ export function extractMessages(body: string): { title: string; body: string }[]
   return whole.length >= 20 ? [{ title: "", body: whole }] : [];
 }
 
-function QuickSendView({ body, label, request }: { body: string; label?: string; request?: string | null }) {
+function QuickSendView({ body, label, request }: { body: string; label?: string | undefined; request?: string | null }) {
   const [copied, setCopied] = useState(false);
   const text = cleanBody(body);
   if (text.length < 20) return null;
