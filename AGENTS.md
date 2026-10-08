@@ -39,8 +39,10 @@
 - Invitees accept/decline in the AppShell NotificationBell (`invite-inbox.functions.ts`); inviters get a `user_notifications` row. Why: no reliance on copied links.
 - Project spaces get a team block (members + sender) in employee turns; stream passes verified client+sender. Why: chats address the team.
 - Referral earnings require verified payments and refund maturity; users cannot write them.
-- Feedback/support records are private behind RLS.
+- Feedback/support are private (RLS).
 - Chat media uses `ChatAttachments` with bounded sizing, fullscreen viewing and avatar-side assistant alignment. Why: preserve sender attribution.
 - AccountMenu owns UI; AppShell owns auth/data. Account entry points only; uniform stays in settings to avoid duplicates.
-- Settings use router search state for links/history.
-- Employee IDs (sonny/eva/sam=Siraj/Amal/Salem) are permanent; never rename (stored in DB, URLs).
+- Settings links/history use router search.
+- Employee IDs are permanent (DB/URLs).
+- Brand references: bounded PDF/Office extraction, owner auth, private originals; why: protect source documents.
+- Brand links reuse onboarding safe reader; why: avoid bot-block divergence.
