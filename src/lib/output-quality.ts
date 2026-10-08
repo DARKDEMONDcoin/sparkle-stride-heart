@@ -1,3 +1,4 @@
+import { requestedCount } from "./turn-plan";
 /**
  * فاحص جودة حتمي لمخرجات الموظفين غير المنشورات (مقال، بريد، تقرير، مقترح، موجز تصميم).
  *
@@ -174,6 +175,18 @@ export function auditOutput(input: {
       "احذف كل فراغ قالب ([اسم…]، {{…}}، XXX) واستبدله بمعلومة حقيقية من سياق المالك أو بصياغة طبيعية بلا فراغ.",
       18,
     );
+
+  // العدد المطلوب («٣ منشورات»، «خمس مقالات»): نعدّ العناصر المسلَّمة فعلاً.
+  const wanted = requestedCount(input.request ?? "");
+  if (wanted && wanted.count >= 2 && wanted.count <= 30) {
+    const heads = text.split("\n").filter((l) => /^\s*(?:#{1,6}\s+\S|\*\*[^*]{2,90}\*\*\s*:?\s*$|(?:\d{1,2}|[٠-٩]{1,2})[.)\-]\s+\S)/u.test(l)).length;
+    if (heads > 0 && heads < wanted.count)
+      add(
+        "count",
+        `المطلوب ${wanted.count} ${wanted.item} بالضبط وسُلِّم ${heads} فقط — أكمل الناقص، كل عنصر تحت عنوان مستقل مرقّم وبزاوية مختلفة.`,
+        30,
+      );
+  }
 
   const bannedShort = (input.bannedWords ?? []).filter(
     (w) => w.trim() && norm.includes(normalizeArabic(w.trim())),
