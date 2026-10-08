@@ -79,6 +79,10 @@ async function aiTranslate(text: string, key: string): Promise<SearchTranslation
       }
     }
   }
+  return parseTranslation(out);
+}
+
+function parseTranslation(out: string): SearchTranslation | null {
   const line = out.trim().split("\n")[0]?.trim() ?? "";
   if (!line) return null;
   if (/KEEP_ARABIC/i.test(line)) return { query: "", lang: "ar", source: "ai" };
