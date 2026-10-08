@@ -1,0 +1,11 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createRootRoute, createRouter, RouterProvider } from '@tanstack/react-router';
+import { KnowledgeLibrary } from './components/app/KnowledgeLibrary';
+import './styles.css';
+const client = new QueryClient();
+const route = createRootRoute({component:()=> <QueryClientProvider client={client}><KnowledgeLibrary /></QueryClientProvider>});
+const router = createRouter({routeTree:route});
+const element = document.getElementById('qa');
+if(element) createRoot(element).render(<RouterProvider router={router} />);
