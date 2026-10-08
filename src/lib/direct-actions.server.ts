@@ -8,6 +8,7 @@
  * لا يمرّ أي توكن على خوادمنا: الوكيل هو من يضيف بيانات اعتماد الحساب المربوط.
  */
 import { proxyRequest, type PipedreamConfig } from "./pipedream.server";
+import { stripOwnerNotes } from "./post-format";
 
 export type DirectContext = {
   config: PipedreamConfig;
@@ -230,12 +231,12 @@ export const directActions: Record<string, (ctx: DirectContext) => Promise<unkno
   /* البريد والتقويم */
   "eva-send-email": (ctx) =>
     api(ctx, "https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
-      json: { raw: base64Url(rfc822(v(ctx, "to"), v(ctx, "subject"), v(ctx, "body"))) },
+      json: { raw: base64Url(rfc822(v(ctx, "to"), v(ctx, "subject"), stripOwnerNotes(v(ctx, "body")))) },
     }),
   "eva-draft-email": (ctx) =>
     api(ctx, "https://gmail.googleapis.com/gmail/v1/users/me/drafts", {
       json: {
-        message: { raw: base64Url(rfc822(v(ctx, "to"), v(ctx, "subject"), v(ctx, "body"))) },
+        message: { raw: base64Url(rfc822(v(ctx, "to"), v(ctx, "subject"), stripOwnerNotes(v(ctx, "body")))) },
       },
     }),
   "eva-outlook-send": (ctx) =>
@@ -243,7 +244,7 @@ export const directActions: Record<string, (ctx: DirectContext) => Promise<unkno
       json: {
         message: {
           subject: v(ctx, "subject"),
-          body: { contentType: "Text", content: v(ctx, "body") },
+          body: { contentType: "Text", content: stripOwnerNotes(v(ctx, "body")) },
           toRecipients: [{ emailAddress: { address: v(ctx, "to") } }],
         },
         saveToSentItems: true,
