@@ -17,6 +17,6 @@ export const speakText = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!ws) throw new Error("غير مصرّح.");
     const { synthesizeSpeech } = await import("./voice.server");
-    const bytes = await synthesizeSpeech(data.text);
-    return { audio: Buffer.from(bytes).toString("base64"), mime: "audio/mpeg" };
+    const speech = await synthesizeSpeech(data.text);
+    return { audio: Buffer.from(speech.bytes).toString("base64"), mime: speech.mime };
   });

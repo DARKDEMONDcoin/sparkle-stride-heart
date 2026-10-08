@@ -5,6 +5,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/integrations/supabase/types";
+import { SITE_ORIGIN } from "./site-origin";
 
 type Admin = SupabaseClient<Database>;
 
@@ -20,12 +21,11 @@ export type TelegramConfig = {
 
 const API = "https://api.telegram.org";
 
-/** الأصل العام الثابت للمشروع — تيليجرام يتطلب رابط https يمكنه الوصول إليه. */
-const PROJECT_ID = "418d8bba-a90d-4687-82f7-20df33512e4c";
+/** الأصل العام للموقع — تيليجرام يتطلب رابط https يمكنه الوصول إليه. */
 export function publicOrigin(): string {
   const fromEnv = (process.env["PUBLIC_APP_ORIGIN"] ?? "").trim().replace(/\/+$/, "");
   if (fromEnv.startsWith("https://")) return fromEnv;
-  return `https://project--${PROJECT_ID}.lovable.app`;
+  return SITE_ORIGIN;
 }
 
 export function webhookUrlFor(workspaceId: string): string {

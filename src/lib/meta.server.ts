@@ -133,7 +133,7 @@ export async function verifyState(
  * بينما لوحة ميتا تقبل روابط مسجّلة فقط. نستخدم النطاق الثابت للمشروع دائماً.
  * يُضبط عبر META_REDIRECT_ORIGIN؛ القيمة أدناه احتياطية فقط لبيئة المعاينة.
  */
-const META_FALLBACK_ORIGIN = "https://project--541025ee-163e-49a6-8c43-600f36bcb147.lovable.app";
+const META_FALLBACK_ORIGIN = "https://getziad.com";
 
 export function metaCanonicalOrigin(): string {
   const configured = process.env["META_REDIRECT_ORIGIN"] || process.env["PUBLIC_SITE_ORIGIN"] || "";

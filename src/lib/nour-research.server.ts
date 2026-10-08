@@ -9,6 +9,7 @@ import {
   type SerpResult,
 } from "./seo-research.server";
 import { nowAnchorLine } from "./time-awareness.server";
+import { reportLovableStatus } from "./ai-key-health.server";
 import { gscSnapshotFor } from "./gsc.functions";
 import { ga4SnapshotFor } from "./ga4.functions";
 
@@ -197,6 +198,7 @@ async function callOpenAICompatible(
     ),
   });
   if (!res.ok) {
+    if (endpoint === LOVABLE) reportLovableStatus(res.status, "chat");
     const text = await res.text().catch(() => "");
     throw new Error(`${model}: ${res.status} ${text.slice(0, 200)}`);
   }
@@ -368,6 +370,7 @@ async function callStream(
     ),
   });
   if (!res.ok || !res.body) {
+    if (endpoint === LOVABLE) reportLovableStatus(res.status, "chat-stream");
     const text = await res.text().catch(() => "");
     throw new Error(`${model}: ${res.status} ${text.slice(0, 200)}`);
   }

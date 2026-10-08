@@ -45,7 +45,13 @@ async function callVision(
     }),
     signal: AbortSignal.timeout(35_000),
   });
-  if (!res.ok) throw new Error(`${model}: ${res.status}`);
+  if (!res.ok) {
+    if (endpoint === LOVABLE) {
+      const { reportLovableStatus } = await import("./ai-key-health.server");
+      reportLovableStatus(res.status, "media-vision");
+    }
+    throw new Error(`${model}: ${res.status}`);
+  }
   const payload = (await res.json()) as { choices?: { message?: { content?: string } }[] };
   const content = payload.choices?.[0]?.message?.content ?? "";
   if (!content.trim()) throw new Error(`${model}: رد فارغ`);

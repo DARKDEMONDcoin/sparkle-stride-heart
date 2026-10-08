@@ -48,7 +48,8 @@ export const Route = createFileRoute("/api/transcribe")({
         }
 
         const { getSecret } = await import("@/lib/secrets.server");
-        const apiKey = await getSecret("LOVABLE_API_KEY");
+        const { usableLovableKey, reportLovableStatus } = await import("@/lib/ai-key-health.server");
+        const apiKey = await usableLovableKey();
         const geminiKey = (await getSecret("GEMINI_API_KEY")) || (await getSecret("GOOGLE_API_KEY"));
         const mime = (file.type || "audio/webm").replace(/^video\//, "audio/").split(";")[0]!;
 
@@ -98,6 +99,7 @@ export const Route = createFileRoute("/api/transcribe")({
         });
         if (!upstream.ok || !upstream.body) {
           const body = await upstream.text().catch(() => "");
+          reportLovableStatus(upstream.status, "transcribe");
           console.error(`[transcribe] failed [${upstream.status}]: ${body.slice(0, 300)}`);
           if (upstream.status === 401 || upstream.status === 403 || upstream.status >= 500) {
             const fallback = await viaGemini();

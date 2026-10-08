@@ -30,6 +30,8 @@ const ALLOWED_RETURN_HOSTS = new Set([
   `project--${PROJECT_ID}-dev.lovable.app`,
   `id-preview--${PROJECT_ID}.lovable.app`,
   "stride-forge-spark.lovable.app",
+  "getziad.com",
+  "www.getziad.com",
   "localhost:8080",
 ]);
 

@@ -26,9 +26,9 @@
 - Public site origin comes from `src/lib/site-origin.ts`; do not hard-code other lovable.app hosts.
 - Chat research requests run `runBrowserAgent` inside the turn and stream `browser`/`step` events to the chat; employees never redirect users to colleagues (routing is silent). Why: users need real results and live visibility, not hand-off ping-pong.
 - Signup CTAs enter /welcome then /auth; external Google OAuth returns to public /auth before /app. Bind website drafts only to new accounts. Why: preserve introduction and invite intent without cross-account reuse.
-- Pre-signup site previews read a few same-site pages (fetch → Jina → Browserbase → Tavily), then one rate-limited, per-host-cached AI pass builds the business profile. Why: deep understanding at bounded anonymous cost.
+- Pre-signup previews read few same-site pages, then one rate-limited, host-cached AI pass. Why: bounded anonymous cost.
 - Website swatches use declared theme and same-site brand tokens, not color frequency or defaults, to preserve branding.
-- Public pre-signup industry recommendations are short, rate-limited, validated AI suggestions grounded in a selected sector and optional public-site evidence; no account data or market metrics are implied. Why: visitors get useful next actions without confusing hypotheses with verified findings.
+- Pre-signup recommendations: short, rate-limited, validated, grounded in sector/public site; no implied metrics.
 - Welcome purpose variants live in a browser-safe shared module used by every tour/recommendation path, avoiding business-only claims.
 - Chat capabilities and owner guidelines derive from shared skills; guideline rows are scoped to one employee.
 - Each workspace has one persistent conversation per employee across web/Telegram; preserve history and unread state.
@@ -46,3 +46,5 @@
 - Employee IDs are permanent (DB/URLs).
 - Brand references: bounded PDF/Office extraction, owner auth, private originals; why: protect source documents.
 - Brand links reuse onboarding safe reader; why: avoid bot-block divergence.
+- Gateway key via `ai-key-health.server.ts`; rejected keys fall back to Gemini. Why: Vercel may hold a stale key.
+- Webhook/login/OAuth origins default to `SITE_ORIGIN`; Vercel maxDuration set in vite.config. Why: old hosts are dead.

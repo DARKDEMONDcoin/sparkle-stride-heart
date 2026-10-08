@@ -82,9 +82,32 @@ async function downloadFile(botToken: string, fileId: string): Promise<{ bytes: 
 
 /** رسالة صوتية → نص عبر Lovable AI (نموذج التفريغ المخصص). */
 async function transcribe(bytes: ArrayBuffer, mime: string, name: string): Promise<string> {
-  const { getSecret } = await import("./secrets.server");
-  const key = await getSecret("LOVABLE_API_KEY");
-  if (!key) throw new Error("خدمة تحويل الصوت غير مهيّأة.");
+  const { usableLovableKey, reportLovableStatus, geminiKey } = await import("./ai-key-health.server");
+  const key = await usableLovableKey();
+  const viaGemini = async (): Promise<string | null> => {
+    const g = await geminiKey();
+    if (!g) return null;
+    const u8 = new Uint8Array(bytes);
+    let bin = "";
+    for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode(...u8.subarray(i, i + 0x8000));
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${g}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ parts: [
+        { text: "اكتب نص هذا التسجيل حرفياً بلغته ولهجته كما قيل، بلا أي تعليق أو مقدمة." },
+        { inline_data: { mime_type: mime.split(";")[0] || "audio/ogg", data: btoa(bin) } },
+      ] }] }),
+      signal: AbortSignal.timeout(60_000),
+    });
+    if (!r.ok) { console.error(`[telegram] gemini transcription failed [${r.status}]`); return null; }
+    const j = (await r.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
+    return (j.candidates?.[0]?.content?.parts ?? []).map((x) => x.text ?? "").join("").trim() || null;
+  };
+  if (!key) {
+    const text = await viaGemini();
+    if (text !== null) return text;
+    throw new Error("خدمة تحويل الصوت غير مهيّأة.");
+  }
   const form = new FormData();
   form.append("model", "google/gemini-3.5-transcribe");
   form.append("file", new File([bytes], name, { type: mime }), name);
@@ -97,6 +120,9 @@ async function transcribe(bytes: ArrayBuffer, mime: string, name: string): Promi
   const body = await res.text();
   if (!res.ok) {
     console.error(`[telegram] transcription failed [${res.status}]: ${body.slice(0, 300)}`);
+    reportLovableStatus(res.status, "telegram-transcribe");
+    const fallback = await viaGemini().catch(() => null);
+    if (fallback) return fallback;
     if (res.status === 402) throw new Error("رصيد الذكاء الاصطناعي خلص — اشحن الرصيد وجرب تاني.");
     if (res.status === 429) throw new Error("ضغط كبير دلوقتي — ابعت الرسالة الصوتية تاني بعد دقيقة.");
     throw new Error("ماقدرتش أسمع الرسالة الصوتية — جرب تبعتها تاني أو اكتبها.");

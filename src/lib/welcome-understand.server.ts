@@ -31,8 +31,8 @@ export function cachedAnalysis(host: string): WelcomePreview | null {
 }
 
 async function understand(preview: WelcomePreview, corpus: string): Promise<WelcomeProfile | null> {
-  const { getSecret } = await import("./secrets.server");
-  const key = await getSecret("LOVABLE_API_KEY");
+  const { usableLovableKey, reportLovableStatus } = await import("./ai-key-health.server");
+  const key = await usableLovableKey();
   if (corpus.length < 80) return null;
   const facts = {
     name: preview.name, url: preview.url, platform: preview.platform, products: preview.products, offers: preview.offers,
@@ -60,6 +60,7 @@ async function understand(preview: WelcomePreview, corpus: string): Promise<Welc
       const data = (await res.json()) as { output_text?: string; output?: { type?: string; content?: { type?: string; text?: string }[] }[] };
       raw = (data.output_text ?? data.output?.flatMap((o) => o.content ?? []).filter((c) => c.type === "output_text").map((c) => c.text ?? "").join("") ?? "").trim();
     } else {
+      if (res) reportLovableStatus(res.status, "welcome-understand");
       if (res) console.warn("[welcome-understand] gateway", res.status, (await res.text()).slice(0, 200));
       // استضافة خارجية (Vercel) بلا مفتاح بوابة صالح: نفس المهمة عبر سلسلة Gemini/OpenRouter.
       const { freeChat } = await import("./nour-research.server");

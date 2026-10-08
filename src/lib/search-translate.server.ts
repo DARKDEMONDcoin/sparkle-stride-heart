@@ -58,7 +58,11 @@ async function aiTranslate(text: string, key: string): Promise<SearchTranslation
       reasoning: { effort: "low" },
     }),
   });
-  if (!res.ok || !res.body) return null;
+  if (!res.ok || !res.body) {
+    const { reportLovableStatus } = await import("./ai-key-health.server");
+    reportLovableStatus(res.status, "search-translate");
+    return null;
+  }
   const reader = res.body.getReader();
   const dec = new TextDecoder();
   let buf = "";
@@ -100,8 +104,8 @@ export async function translateSearch(text: string, waitMs = 3_500): Promise<Sea
   const hit = cache.get(k);
   if (hit && Date.now() - hit.at < CACHE_TTL) return hit.value;
 
-  const { getSecret } = await import("./secrets.server");
-  const apiKey = await getSecret("LOVABLE_API_KEY");
+  const { usableLovableKey } = await import("./ai-key-health.server");
+  const apiKey = await usableLovableKey();
   let job = inflight.get(k);
   if (!job) {
     job = (apiKey ? aiTranslate(q, apiKey).catch(() => null) : Promise.resolve(null))

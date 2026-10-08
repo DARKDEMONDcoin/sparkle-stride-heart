@@ -7,7 +7,7 @@ import { latinQuery } from "./query-translate";
 
 export type WebImage = { url: string; title: string; source: string; page: string };
 
-const UA = "SahlBot/1.0 (+https://stride-forge-spark.lovable.app)";
+const UA = "ZiadBot/1.0 (+https://getziad.com)";
 
 /** «هات صورة من النت / صورة حقيقية / ابحث عن صورة» — جلب لا توليد. */
 const WEB_IMAGE_RE =

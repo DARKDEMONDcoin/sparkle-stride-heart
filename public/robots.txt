@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://huggable-code-swap.lovable.app/sitemap.xml
+Sitemap: https://getziad.com/sitemap.xml

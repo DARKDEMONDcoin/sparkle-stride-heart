@@ -216,6 +216,8 @@ async function gatewayImage(
       body: JSON.stringify({ model: "google/gemini-3-pro-image-preview", prompt, n: 1, size }),
     });
     if (!res.ok) {
+      const { reportLovableStatus } = await import("./ai-key-health.server");
+      reportLovableStatus(res.status, "image");
       console.error("[image] gateway image failed:", res.status);
       return null;
     }
