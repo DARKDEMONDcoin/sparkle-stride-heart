@@ -60,7 +60,7 @@ import { VoiceInput } from "@/components/app/VoiceInput";
 import { Markdown } from "@/components/app/Markdown";
 import { ChatAttachments, splitMessageMedia, splitUserBody } from "@/components/app/ChatAttachments";
 import { PostCards } from "@/components/app/PostCards";
-import { QuickSend, wantsQuickSend } from "@/components/app/QuickSend";
+import { extractMessages, QuickSend, wantsQuickSend } from "@/components/app/QuickSend";
 import { OutputActions } from "@/components/app/OutputActions";
 import { SaveChatOutputs } from "@/components/app/SaveChatOutputs";
 import { composeChatOutputs, readChatOutputs } from "@/lib/chat-outputs";
@@ -1464,6 +1464,7 @@ function ChatView({
                         {!isUser &&
                         workspace &&
                         !m.body.includes("(/app/tasks)") &&
+                        !wantsQuickSend(id, priorRequest) &&
                         askedForPublishableOutput(priorRequest) &&
                         looksPostable(m.body, priorRequest) ? (
                           (() => {
@@ -1482,12 +1483,10 @@ function ChatView({
                             );
                           })()
                         ) : null}
-                        {!isUser && workspace && m.body.length > 40 && wantsQuickSend(id, priorRequest)
-                          ? (() => {
-                              const parts = splitDeliverableItems(m.body);
-                              if (!parts.length) return <QuickSend body={m.body} request={priorRequest} />;
-                              return parts.map((p, i) => <QuickSend key={i} label={p.title} body={p.body} request={priorRequest} />);
-                            })()
+                        {!isUser && workspace && m.body.length >= 120 && wantsQuickSend(id, priorRequest)
+                          ? extractMessages(m.body).map((p, i, all) => (
+                              <QuickSend key={i} label={all.length > 1 ? p.title : undefined} body={p.body} request={priorRequest} />
+                            ))
                           : null}
 
                         {(() => {
