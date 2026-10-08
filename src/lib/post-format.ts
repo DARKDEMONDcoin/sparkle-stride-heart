@@ -427,3 +427,15 @@ export function stripLeakedImagePrompt(body: string): string {
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
+
+/** تنظيف خفيف لنصوص تُرسل كما هي (بريد/رسائل): يحذف كلام الموظف للمالك فقط ويُبقي الروابط والتنسيق. */
+export function stripOwnerNotes(input: string | null | undefined): string {
+  if (!input) return "";
+  const out = skipMetaSections(input)
+    .split("\n")
+    .filter((line) => !DELIVERABLE_HEADING.test(line) && !(line.trim() && OWNER_META_LINE.test(line)))
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  return out || input.trim();
+}
