@@ -98,9 +98,27 @@ const DROP_LINE = [
  * ينظّف نص المنشور: يزيل صيغ الماركداون وكل ما هو موجَّه للمستخدم داخل الشات،
  * ويُبقي نص المنشور نفسه فقط. يُطبَّق في الواجهة وفي الخادم قبل الإرسال للمنصة.
  */
+/** يتخطّى أقسام كلام الموظف كاملة (على النص الخام قبل حذف العناوين). */
+function skipMetaSections(input: string): string {
+  const out: string[] = [];
+  let skipping = false;
+  for (const line of input.split("\n")) {
+    if (META_SECTION.test(line)) {
+      skipping = true;
+      continue;
+    }
+    if (skipping) {
+      if (!SECTION_HEADING.test(line)) continue;
+      skipping = false;
+    }
+    out.push(line);
+  }
+  return out.join("\n");
+}
+
 export function sanitizePostBody(input: string | null | undefined): string {
   if (!input) return "";
-  let text = input
+  let text = skipMetaSections(input)
     // أكواد وبقايا JSON لا تُنشر أبداً.
     .replace(/```[\s\S]*?```/g, "")
     .replace(/`([^`]+)`/g, "$1")
@@ -143,18 +161,8 @@ export function sanitizePostBody(input: string | null | undefined): string {
 
   const lines = text.split("\n");
   const kept: string[] = [];
-  let skipping = false;
   for (const line of lines) {
     if (CUT_FROM.some((re) => re.test(line))) break;
-    if (META_SECTION.test(line)) {
-      skipping = true;
-      continue;
-    }
-    if (skipping) {
-      if (!SECTION_HEADING.test(line)) continue;
-      skipping = false;
-      if (DELIVERABLE_HEADING.test(line)) continue;
-    }
     if (DELIVERABLE_HEADING.test(line)) continue;
     if (line.trim() && DROP_LINE.some((re) => re.test(line))) continue;
     if (line.trim() && OWNER_NOTE_LINE.some((re) => re.test(line))) continue;
