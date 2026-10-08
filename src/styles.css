@@ -18727,6 +18727,7 @@ section:has(> .integration-grid-wave) {
   transform: translateX(-50%);
 }
 .sahl-device-screen {
+  background-color: var(--muted);
   overflow: hidden;
   border-radius: 5px 5px 2px 2px;
   background: var(--home-bg);
