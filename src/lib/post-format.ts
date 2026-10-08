@@ -113,7 +113,8 @@ function skipMetaSections(input: string): string {
     }
     out.push(line);
   }
-  return out.join("\n");
+  const result = out.join("\n");
+  return result.trim().length < 20 ? input : result;
 }
 
 export function sanitizePostBody(input: string | null | undefined): string {
