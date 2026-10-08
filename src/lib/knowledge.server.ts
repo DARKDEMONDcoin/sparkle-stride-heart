@@ -73,6 +73,27 @@ export async function embed(inputs: string[]): Promise<number[][]> {
   return out;
 }
 
+/** تقطيع يحترم الفقرات ثم الجمل، مع تداخل بسيط حتى لا تنقطع الفكرة. */
+export function chunkText(text: string): string[] {
+  const clean = text.replace(/\r/g, "").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+  if (!clean) return [];
+  const chunks: string[] = [];
+  let start = 0;
+  while (start < clean.length) {
+    let end = Math.min(start + CHUNK, clean.length);
+    if (end < clean.length) {
+      const slice = clean.slice(start, end);
+      const cut = Math.max(slice.lastIndexOf("\n\n"), slice.lastIndexOf(". "), slice.lastIndexOf("۔"), slice.lastIndexOf("؟ "));
+      if (cut > CHUNK * 0.5) end = start + cut + 1;
+    }
+    const piece = clean.slice(start, end).trim();
+    if (piece) chunks.push(piece);
+    if (end >= clean.length) break;
+    start = Math.max(end - OVERLAP, start + 1);
+  }
+  return chunks.slice(0, 400);
+}
+
 /** قراءة نص صفحة ويب كبيانات فقط. */
 export async function fetchPageText(url: string): Promise<{ title: string; text: string }> {
   const { readBusinessPage } = await import("./welcome-preview.server");
