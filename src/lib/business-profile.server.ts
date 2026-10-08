@@ -45,6 +45,30 @@ function normalizeUrl(raw: string): string {
 }
 
 async function fetchHtml(url: string): Promise<{ html: string; headers: Headers } | null> {
+  const direct = await fetchDirect(url);
+  if (direct && direct.html.length > 500) return direct;
+  // مواقع خلف حماية (Cloudflare…) ترفض الطلب المباشر: نقرأها عبر Jina Reader بصيغة HTML.
+  try {
+    const { jinaHeaders } = await import("./jina.server");
+    const reader = `https://r.jina.ai/${url}`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
+    const res = await fetch(reader, {
+      headers: { ...jinaHeaders(reader), "X-Return-Format": "html", Accept: "text/html" },
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (res.ok) {
+      const html = await res.text();
+      if (html.length > 200) return { html, headers: res.headers };
+    }
+  } catch {
+    /* ننتقل للنتيجة المباشرة إن وجدت */
+  }
+  return direct;
+}
+
+async function fetchDirect(url: string): Promise<{ html: string; headers: Headers } | null> {
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 9000);

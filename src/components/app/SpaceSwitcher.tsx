@@ -251,7 +251,7 @@ function CreateProjectDialog({ open, onOpenChange, onCreated }: { open: boolean;
       const finalInvites = email.trim() ? [...invites, email.trim().toLowerCase()] : invites;
       const { id } = await create({ data: { name: name.trim(), industry: industry.trim() || undefined, website: website.trim() || undefined, logoPath, invites: finalInvites } });
       await qc.invalidateQueries({ queryKey: ["human-spaces"] });
-      toast.success(finalInvites.length ? `اتعمل المساحة واتبعتت ${finalInvites.length} دعوة` : "اتعمل المساحة");
+      toast.success(finalInvites.length ? `تم إنشاء مساحة العمل وإرسال ${finalInvites.length} دعوة` : "تم إنشاء مساحة العمل بنجاح", { duration: 3000, position: "bottom-center" });
       onOpenChange(false);
       setName(""); setIndustry(""); setWebsite(""); setInvites([]); setFile(null); setEmail("");
       onCreated(id);

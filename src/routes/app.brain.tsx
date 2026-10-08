@@ -39,7 +39,7 @@ function BrainPage() {
   const ws = workspace as (typeof workspace & { website?: string | null; profile?: unknown }) | undefined;
 
   return (
-    <AppShell title="عقل العلامة" lead="اختياري — شغّل ما تريد أن يلتزم به فريقك، وأوقف ما لا تريده.">
+    <AppShell title="عقل العلامة" lead="أساس كل ما يكتبه فريقك — كلما اكتمل، صارت المخرجات أدق وأقرب لصوت علامتك.">
       <div className="mx-auto grid w-full min-w-0 max-w-3xl grid-cols-[minmax(0,1fr)] gap-4 sm:gap-5">
         <WorkspaceCard />
         {ws ? (
