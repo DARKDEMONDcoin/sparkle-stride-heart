@@ -46,3 +46,5 @@
 - Employee IDs are permanent (DB/URLs).
 - Brand references: bounded PDF/Office extraction, owner auth, private originals; why: protect source documents.
 - Brand links reuse onboarding safe reader; why: avoid bot-block divergence.
+- AI calls read the gateway key through `src/lib/ai-key-health.server.ts`; a rejected key (401/402/403) is skipped for 15 min and services fall back to Gemini. Why: external hosts (Vercel) may hold a stale gateway key.
+- Webhook/login/OAuth origins default to `SITE_ORIGIN` (env override allowed); never old project hosts. Vercel functions get maxDuration 300 via vite.config nitro.vercel. Why: old hosts return 403 after the move.
