@@ -11,59 +11,64 @@ const CHUNK = 1400;
 const OVERLAP = 200;
 const BATCH = 16;
 
-async function apiKey(): Promise<string> {
-  const s = await getSecrets(["LOVABLE_API_KEY"] as const).catch(() => null);
-  const key = s?.LOVABLE_API_KEY || process.env["LOVABLE_API_KEY"];
-  if (!key) throw new Error("خدمة الذاكرة الذكية غير مهيأة.");
-  return key;
+const GEMINI = "https://generativelanguage.googleapis.com/v1beta/openai/embeddings";
+
+/**
+ * نفس النموذج (gemini-embedding-2، 3072) عبر طريقين: مفتاح Gemini المباشر يعمل على أي استضافة
+ * (Vercel وغيرها)، وبوابة Lovable احتياط. لا نخلط نماذج مختلفة في العمود نفسه.
+ */
+async function routes(): Promise<{ url: string; key: string; model: string }[]> {
+  const s = await getSecrets(["LOVABLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY"] as const).catch(() => null);
+  const gemini = s?.GEMINI_API_KEY || s?.GOOGLE_API_KEY || process.env["GEMINI_API_KEY"] || process.env["GOOGLE_API_KEY"];
+  const lovable = s?.LOVABLE_API_KEY || process.env["LOVABLE_API_KEY"];
+  const out: { url: string; key: string; model: string }[] = [];
+  if (gemini) out.push({ url: GEMINI, key: gemini, model: "gemini-embedding-2" });
+  if (lovable) out.push({ url: GATEWAY, key: lovable, model: MODEL });
+  if (!out.length) throw new Error("خدمة الذاكرة الذكية غير مهيأة.");
+  return out;
 }
 
-/** تقطيع يحترم الفقرات ثم الجمل، مع تداخل بسيط حتى لا تنقطع الفكرة. */
-export function chunkText(text: string): string[] {
-  const clean = text.replace(/\r/g, "").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
-  if (!clean) return [];
-  const chunks: string[] = [];
-  let start = 0;
-  while (start < clean.length) {
-    let end = Math.min(start + CHUNK, clean.length);
-    if (end < clean.length) {
-      const slice = clean.slice(start, end);
-      const cut = Math.max(slice.lastIndexOf("\n\n"), slice.lastIndexOf(". "), slice.lastIndexOf("۔"), slice.lastIndexOf("؟ "));
-      if (cut > CHUNK * 0.5) end = start + cut + 1;
-    }
-    const piece = clean.slice(start, end).trim();
-    if (piece) chunks.push(piece);
-    if (end >= clean.length) break;
-    start = Math.max(end - OVERLAP, start + 1);
+async function embedBatch(route: { url: string; key: string; model: string }, batch: string[]): Promise<number[][]> {
+  let res: Response | null = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    res = await fetch(route.url, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${route.key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ model: route.model, input: batch, dimensions: 3072 }),
+    });
+    if (res.status !== 429 && res.status < 500) break;
+    await new Promise((r) => setTimeout(r, 800 * 2 ** attempt + Math.random() * 300));
   }
-  return chunks.slice(0, 400);
+  if (!res || !res.ok) {
+    const status = res?.status ?? 0;
+    console.error("[knowledge] embed failed", status, res ? (await res.text()).slice(0, 300) : "network");
+    if (status === 402) throw new Error("نفد رصيد الذكاء الاصطناعي — أضف رصيداً ثم أعد المحاولة.");
+    throw Object.assign(new Error("تعذّر تحليل المستند الآن. حاول مرة أخرى بعد قليل."), { status });
+  }
+  const json = (await res.json()) as { data: { index: number; embedding: number[] }[] };
+  const ordered: number[][] = new Array(batch.length);
+  for (const item of json.data) ordered[item.index] = item.embedding;
+  if (ordered.some((v) => v?.length !== 3072)) throw new Error("استجابة ناقصة من خدمة الذاكرة.");
+  return ordered;
 }
 
 export async function embed(inputs: string[]): Promise<number[][]> {
-  const key = await apiKey();
+  const all = await routes();
   const out: number[][] = [];
   for (let i = 0; i < inputs.length; i += BATCH) {
     const batch = inputs.slice(i, i + BATCH);
-    let res: Response | null = null;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      res = await fetch(GATEWAY, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: MODEL, input: batch }),
-      });
-      if (res.status !== 429 && res.status < 500) break;
-      await new Promise((r) => setTimeout(r, 800 * 2 ** attempt + Math.random() * 300));
+    let lastError: unknown = null;
+    let done: number[][] | null = null;
+    for (const route of all) {
+      try {
+        done = await embedBatch(route, batch);
+        break;
+      } catch (error) {
+        lastError = error;
+      }
     }
-    if (!res || !res.ok) {
-      const body = res ? await res.text() : "";
-      if (res?.status === 402) throw new Error("نفد رصيد الذكاء الاصطناعي — أضف رصيداً ثم أعد المحاولة.");
-      throw new Error(`تعذّر تحليل المستند الآن [${res?.status ?? "network"}] ${body.slice(0, 200)}`);
-    }
-    const json = (await res.json()) as { data: { index: number; embedding: number[] }[] };
-    const ordered: number[][] = new Array(batch.length);
-    for (const item of json.data) ordered[item.index] = item.embedding;
-    if (ordered.some((v) => !v?.length)) throw new Error("استجابة ناقصة من خدمة الذاكرة.");
-    out.push(...ordered);
+    if (!done) throw lastError instanceof Error ? lastError : new Error("تعذّر تحليل المستند الآن.");
+    out.push(...done);
   }
   return out;
 }
