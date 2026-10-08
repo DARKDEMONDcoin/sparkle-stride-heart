@@ -662,11 +662,6 @@ export function EditorialHomepage() {
   return (
     <div className="sahl-white-home" dir="rtl">
       <section className="sahl-hero" aria-labelledby="home-title">
-        <div className="sahl-hero-ribbon" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </div>
         <div className="sahl-shell sahl-hero-layout">
           <Reveal className="sahl-hero-copy">
             <div
