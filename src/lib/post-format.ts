@@ -447,7 +447,7 @@ export function stripOwnerNotes(input: string | null | undefined): string {
 export function splitDeliverableItems(input: string | null | undefined): { title: string; body: string }[] {
   const lines = String(input ?? "").split("\n");
   const HEAD = /^\s*(?:#{1,6}\s+|\*\*)(.{2,90}?)(?:\*\*)?\s*:?\s*$/u;
-  const ITEM = /(منشور|بوست|post|تغريدة|مقال|ستوري|ريلز|إعلان|اعلان|نسخة|فكرة|رسالة|بريد)/iu;
+  const ITEM = /(منشور|بوست|post|تغريدة|مقال|ستوري|ريلز|إعلان|اعلان|نسخة|فكرة|رسالة|بريد|تشويق|إطلاق|اطلاق|كشف|تذكير|عرض)/iu;
   const items: { title: string; lines: string[] }[] = [];
   let current: { title: string; lines: string[] } | null = null;
   for (const line of lines) {
