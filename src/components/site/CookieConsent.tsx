@@ -57,7 +57,7 @@ export function CookieConsent() {
           موافق
         </Button>
         <Button size="sm" variant="ghost" onClick={() => choose("declined")}>
-          لا شكرًا
+          لا، شكرًا
         </Button>
       </div>
     </aside>
