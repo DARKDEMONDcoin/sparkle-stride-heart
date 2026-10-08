@@ -70,9 +70,8 @@ export async function embed(inputs: string[]): Promise<number[][]> {
 
 /** قراءة نص صفحة ويب كبيانات فقط. */
 export async function fetchPageText(url: string): Promise<{ title: string; text: string }> {
-  const res = await fetch(url, { headers: { "User-Agent": "SahlBot/1.0 (+https://stride-forge-spark.lovable.app)" }, redirect: "follow" });
-  if (!res.ok) throw new Error(`تعذّر فتح الرابط (${res.status}).`);
-  const html = (await res.text()).slice(0, 2_000_000);
+  const { readBusinessPage } = await import("./welcome-preview.server");
+  const { html } = await readBusinessPage(url);
   const title = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? url).trim().slice(0, 200);
   const text = html
     .replace(/<(script|style|noscript|svg|nav|footer)[\s\S]*?<\/\1>/gi, " ")

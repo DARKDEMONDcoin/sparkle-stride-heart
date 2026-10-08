@@ -36,53 +36,8 @@ export type BusinessProfile = {
   confidence: "high" | "medium" | "low";
 };
 
-const UA = "Mozilla/5.0 (compatible; SahlBot/1.0; +https://sahl.app)";
-
 function normalizeUrl(raw: string): string {
-  const t = raw.trim();
-  if (!t) return "";
-  return /^https?:\/\//i.test(t) ? t : `https://${t}`;
-}
-
-async function fetchHtml(url: string): Promise<{ html: string; headers: Headers } | null> {
-  const direct = await fetchDirect(url);
-  if (direct && direct.html.length > 500) return direct;
-  // مواقع خلف حماية (Cloudflare…) ترفض الطلب المباشر: نقرأها عبر Jina Reader بصيغة HTML.
-  try {
-    const { jinaHeaders } = await import("./jina.server");
-    const reader = `https://r.jina.ai/${url}`;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 15000);
-    const res = await fetch(reader, {
-      headers: { ...jinaHeaders(reader), "X-Return-Format": "html", Accept: "text/html" },
-      signal: controller.signal,
-    });
-    clearTimeout(timer);
-    if (res.ok) {
-      const html = await res.text();
-      if (html.length > 200) return { html, headers: res.headers };
-    }
-  } catch {
-    /* ننتقل للنتيجة المباشرة إن وجدت */
-  }
-  return direct;
-}
-
-async function fetchDirect(url: string): Promise<{ html: string; headers: Headers } | null> {
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 9000);
-    const res = await fetch(url, {
-      headers: { "User-Agent": UA, "Accept-Language": "ar,en;q=0.7", Accept: "text/html,*/*" },
-      signal: controller.signal,
-      redirect: "follow",
-    });
-    clearTimeout(timer);
-    if (!res.ok) return null;
-    return { html: await res.text(), headers: res.headers };
-  } catch {
-    return null;
-  }
+  return /^https?:\/\//i.test(raw.trim()) ? raw.trim() : `https://${raw.trim()}`;
 }
 
 const SOCIAL_HOSTS: [RegExp, string][] = [
@@ -353,11 +308,17 @@ const arr = (v: unknown, max = 8) =>
 /** يبني ملف العلامة كاملاً من رابط الموقع. */
 export async function profileWebsite(rawUrl: string): Promise<BusinessProfile> {
   const home = normalizeUrl(rawUrl);
-  const first = await fetchHtml(home);
-  if (!first) throw new Error("تعذّر الوصول إلى الموقع — تأكد من الرابط أو جرّب لاحقاً.");
-
-  const signals = collectSignals(first.html, home, first.headers);
+  const { readBusinessPage } = await import("./welcome-preview.server");
+  const first = await readBusinessPage(home);
+  const signals = collectSignals(first.html, first.url, new Headers());
   const site = await collectSiteText(home);
+  if (site.text.trim().length < 150) {
+    const doc = parseHTML(first.html).document;
+    doc.querySelectorAll("script,style,noscript,nav,footer").forEach((el) => el.remove());
+    site.text = doc.body?.textContent?.replace(/\s+/g, " ").trim().slice(0, 30_000) ?? "";
+    site.headings = Array.from(doc.querySelectorAll("h1,h2,h3")).map((el) => el.textContent ?? "");
+    site.urls = [first.url];
+  }
   const stats = analyzeStyle(site.text, site.taglines);
   const dialect = dialectLabel[stats.dialect];
 

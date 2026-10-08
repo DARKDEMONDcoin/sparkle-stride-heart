@@ -175,6 +175,14 @@ const clean = (value: string | null | undefined, max = 180) => (value ?? "").rep
 const unique = (values: string[], max: number) => [...new Set(values.filter(Boolean))].slice(0, max);
 const types = (value: unknown) => Array.isArray(value) ? value.join(" ") : String(value ?? "");
 
+/** Authenticated brand reader shares safe redirects and browser fallbacks. */
+export async function readBusinessPage(raw: string) {
+  const url = publicWebsiteUrl(raw);
+  if (!url) throw new Error("أدخل رابط موقع عام صالح، مثل example.com");
+  try { return await readPage(url, null, true); }
+  catch { throw new Error("لم نتمكن من قراءة الموقع بعد تجربة القراءة المباشرة والمتصفح. قد يتطلب تحققًا؛ ارفع ملف الشركة أو أدخل معلوماتها يدويًا."); }
+}
+
 export async function previewWebsite(raw: string): Promise<WelcomePreview> {
   return (await readSite(raw)).preview;
 }
