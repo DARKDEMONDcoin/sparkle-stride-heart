@@ -116,9 +116,11 @@ function FirstRun({ workspace }: { workspace: { id: string } | null }) {
                         </li>
                       ))}
                     </ul>
-                    <Link to="/app/chat/$id" params={{ id: m.id }} className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
-                      تحدث مع {m.name} <ArrowLeft className="size-3.5" aria-hidden="true" />
-                    </Link>
+                    <Button asChild variant="link" size="sm" className="mt-4 h-auto max-w-full justify-start whitespace-normal p-0 text-start text-xs">
+                      <Link to="/app/chat/$id" params={{ id: m.id }}>
+                        <span>ابدأ التهيئة مع {m.name}</span> <ArrowLeft className="size-3.5 shrink-0" aria-hidden="true" />
+                      </Link>
+                    </Button>
                   </div>
                 )}
               </div>
