@@ -1177,7 +1177,7 @@ function ChatView({
   const submit = (text: string) => {
     const body = text.trim();
     if (!body || !workspace) return;
-    if (busy) {
+    if (sendBusy) {
       setQueuedMessage(body);
       setDraft("");
       return;
@@ -1202,11 +1202,11 @@ function ChatView({
   };
 
   useEffect(() => {
-    if (busy || !queuedMessage) return;
+    if (sendBusy || !queuedMessage) return;
     const next = queuedMessage;
     setQueuedMessage(null);
     submit(next);
-  }, [busy, queuedMessage]);
+  }, [sendBusy, queuedMessage]);
 
   /** إيقاف الطلب بعد الإرسال: نُعيد النص إلى مربع الإدخال ونُهمل النتيجة. */
   const stopSending = () => {
