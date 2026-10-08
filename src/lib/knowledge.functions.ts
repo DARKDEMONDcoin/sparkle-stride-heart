@@ -75,6 +75,8 @@ export const addKnowledge = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
+    const { data: owned } = await context.supabase.from("workspaces").select("id").eq("id", data.workspaceId).eq("owner_id", context.userId).maybeSingle();
+    if (!owned) throw new Error("حفظ معرفة الشركة متاح لمالك مساحة العمل فقط.");
     const { ingestKnowledge, fetchPageText } = await import("./knowledge.server");
     let title = data.title?.trim() || "";
     let text = data.text ?? "";
@@ -86,7 +88,7 @@ export const addKnowledge = createServerFn({ method: "POST" })
       text = page.text;
       source = data.url;
     } else {
-      title ||= text.trim().split("\n")[0]!.slice(0, 80);
+      title ||= (text.trim().split("\n")[0] ?? "مستند").slice(0, 80);
       source = `text:${title}`;
     }
     const chunks = await ingestKnowledge(context.supabase as never, { workspaceId: data.workspaceId, source, title, text });
@@ -97,6 +99,8 @@ export const deleteKnowledge = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => ws.extend({ source: z.string().max(600) }).parse(d))
   .handler(async ({ data, context }) => {
+    const { data: owned } = await context.supabase.from("workspaces").select("id").eq("id", data.workspaceId).eq("owner_id", context.userId).maybeSingle();
+    if (!owned) throw new Error("حذف معرفة الشركة متاح لمالك مساحة العمل فقط.");
     if (data.source.startsWith("file:")) {
       const path = data.source.slice(5);
       if (!path.startsWith(`${data.workspaceId}/references/`)) throw new Error("مسار ملف غير صالح.");

@@ -14,7 +14,7 @@ export async function extractReference(file: File): Promise<string> {
     try {
       if (pdf.numPages > 100) throw new Error("قسّم ملف PDF إلى ملفات لا تتجاوز 100 صفحة.");
       text = (await extractText(pdf, { mergePages: true })).text;
-    } finally { await pdf.destroy(); }
+    } finally { await pdf.cleanup(); }
   } else if (ext === "docx" || ext === "xlsx") {
     const zip = await JSZip.loadAsync(bytes);
     let expanded = 0;
