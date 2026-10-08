@@ -39,6 +39,23 @@ const OWNER_NOTE_LINE = [
   /^\s*[-•*]?\s*\**\s*(?:الجمهور\s+المستهدف|زاوية\s+المحتوى|نوع\s+المنشور|المنصة|الهدف)\s*\**\s*[:：]/u,
 ];
 
+/**
+ * كلام الموظف الموجَّه للمالك داخل أي مخرج (بريد، رد، تقرير، رسالة مبيعات…):
+ * «القرار المطلوب من المالك: …»، «الخلاصة: …»، «ملاحظة: …». المخرج يحمل النص المطلوب وحده.
+ */
+const OWNER_META_LINE =
+  /^\s*[-•*]?\s*\**\s*(?:القرار\s+المطلوب(?:\s+من\s+\S+)?|المطلوب\s+من\s+(?:المالك|حضرتك|ك)|المطلوب\s+منك|قرارك|قرار\s+المالك|الخلاصة|ملخص\s+(?:الرد|المهمة|الموقف)|ما\s+أنجزته|ما\s+عملته|ملاحظة(?:\s+(?:للمالك|لك|مهمة|داخلية))?|ملاحظات(?:\s+للمالك)?|الهدف\s+من\s+(?:الرد|الرسالة|البريد)|نبرة\s+(?:الرد|الرسالة)|السياق|الخطوة\s+التالية|الخطوات\s+التالية|التوصية|توصيتي|رأيي)\s*\**\s*[:：]/u;
+
+/** عناوين أقسام كلها كلام موظف — تُتخطّى حتى العنوان التالي. */
+const META_SECTION =
+  /^\s*(?:#{1,6}\s*)?\**\s*(?:الخلاصة|ما\s+أنجزته|ما\s+عملته|يحتاج\s+قرارك|القرار\s+المطلوب|قرارك|ملاحظات(?:\s+للمالك)?|ملاحظة|التقويم|الخطوة\s+التالية|الخطوات\s+التالية|لماذا\s+هذا\s+الرد|السياق)\s*\**\s*[:：]?\s*$/u;
+
+/** عناوين تسبق المخرج نفسه («المسودة»، «نص البريد») — نحذف العنوان ونُبقي ما تحته. */
+const DELIVERABLE_HEADING =
+  /^\s*(?:#{1,6}\s*)?\**\s*(?:المسودات|المسودة(?:\s+الجاهزة)?|مسودة\s+الرد|نص\s+(?:البريد|الرد|الرسالة)|الرد\s+المقترح|الرسالة)\s*\**\s*[:：]?\s*$/u;
+
+const SECTION_HEADING = /^\s*(?:#{1,6}\s+\S|\*\*[^*\n]{1,40}\*\*\s*[:：]?\s*$)/u;
+
 const DROP_LINE = [
   /انشر\s*الآن/u,
   /«?\s*جدولة\s*»?\s*(?:أسفل|من)/u,
@@ -126,10 +143,22 @@ export function sanitizePostBody(input: string | null | undefined): string {
 
   const lines = text.split("\n");
   const kept: string[] = [];
+  let skipping = false;
   for (const line of lines) {
     if (CUT_FROM.some((re) => re.test(line))) break;
+    if (META_SECTION.test(line)) {
+      skipping = true;
+      continue;
+    }
+    if (skipping) {
+      if (!SECTION_HEADING.test(line)) continue;
+      skipping = false;
+      if (DELIVERABLE_HEADING.test(line)) continue;
+    }
+    if (DELIVERABLE_HEADING.test(line)) continue;
     if (line.trim() && DROP_LINE.some((re) => re.test(line))) continue;
     if (line.trim() && OWNER_NOTE_LINE.some((re) => re.test(line))) continue;
+    if (line.trim() && OWNER_META_LINE.test(line)) continue;
     kept.push(line);
   }
   text = dedupeParagraphs(kept.join("\n"));
