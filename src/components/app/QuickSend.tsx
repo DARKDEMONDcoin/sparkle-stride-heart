@@ -14,9 +14,32 @@ export function wantsQuickSend(employeeId: string, request: string | null | unde
 function cleanBody(body: string): string {
   return stripOwnerNotes(body)
     .replace(/^#{1,6}\s+/gmu, "")
+    .replace(/^\s*-{3,}\s*$/gmu, "")
     .replace(/\*\*(.+?)\*\*/gu, "$1")
+    .replace(/\n{3,}/gu, "\n\n")
     .trim()
     .slice(0, 3500);
+}
+
+const HEADING = /^\s*#{1,6}\s+(.{1,90}?)\s*$/u;
+const META_HEADING = /الخطوة|الرسالتان|الرسائل|الرسالة\s*المقترحة\s*$|ملاحظ|خلاصة|الخلاصة|افتراض|لماذا|السبب|ما\s*أنجزته|قرار|نسخ\s*بديلة\s*$|المسودات/u;
+
+/** يستخرج نصوص الرسائل وحدها من رد الموظف: يتخطى المقدمة والملخصات والخطوة التالية. */
+export function extractMessages(body: string): { title: string; body: string }[] {
+  const lines = String(body ?? "").split("\n");
+  const sections: { title: string | null; lines: string[] }[] = [{ title: null, lines: [] }];
+  for (const line of lines) {
+    const m = line.match(HEADING);
+    if (m) sections.push({ title: m[1]!.replace(/\*\*/g, "").trim(), lines: [] });
+    else sections[sections.length - 1]!.lines.push(line);
+  }
+  const headed = sections.filter((s) => s.title && !META_HEADING.test(s.title));
+  const items = headed
+    .map((s) => ({ title: s.title!, body: cleanBody(s.lines.join("\n")) }))
+    .filter((s) => s.body.length >= 20);
+  if (items.length) return items;
+  const whole = cleanBody(body);
+  return whole.length >= 20 ? [{ title: "", body: whole }] : [];
 }
 
 function QuickSendView({ body, label, request }: { body: string; label?: string; request?: string | null }) {
