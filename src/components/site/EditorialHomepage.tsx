@@ -329,6 +329,16 @@ const versus = [
   },
 ] as const;
 
+
+/** مقارنة نوعية بالبدائل الشائعة — بلا أرقام أو أسماء منافسين. */
+const hireCompare = [
+  { q: "وقت البدء", staff: "أسابيع من الإعلان والمقابلات", agency: "أيام من العروض والعقود", ziad: "دقائق بعد إدخال رابط موقعك" },
+  { q: "ساعات العمل", staff: "دوام رسمي وإجازات", agency: "مواعيد الوكالة وجدولها", ziad: "متاح طوال اليوم، كل يوم" },
+  { q: "نطاق التخصصات", staff: "تخصص أو اثنان لكل موظف", agency: "حسب الباقة المتعاقد عليها", ziad: "ستة تخصصات في فريق واحد" },
+  { q: "التحكم والاعتماد", staff: "متابعة يومية منك", agency: "مراجعات دورية واجتماعات", ziad: "لا شيء يُنفَّذ قبل موافقتك" },
+  { q: "التوسع", staff: "توظيف جديد لكل حمل إضافي", agency: "تكلفة إضافية لكل خدمة", ziad: "ترقية الخطة بنقرة" },
+] as const;
+
 /** ضمانات التشغيل — مفصّلة في صفحة الأمان. */
 const guards = [
   {
@@ -968,6 +978,46 @@ export function EditorialHomepage() {
                   {row.sahl}
                 </span>
               </div>
+            ))}
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="sahl-section sahl-hire" aria-labelledby="home-hire-title">
+        <div className="sahl-shell">
+          <Reveal>
+            <header className="sahl-section-head">
+              <span>مقارنة البدائل</span>
+              <h2 id="home-hire-title">
+                موظف جديد، أو وكالة، أو فريق زياد؟
+              </h2>
+            </header>
+          </Reveal>
+          <Reveal className="sahl-hire-grid">
+            {(
+              [
+                ["staff", "توظيف موظف"],
+                ["agency", "التعاقد مع وكالة"],
+                ["ziad", "فريق زياد"],
+              ] as const
+            ).map(([key, title]) => (
+              <article key={key} className={`sahl-hire-card${key === "ziad" ? " is-ziad" : ""}`}>
+                <h3>
+                  {key === "ziad" && <LogoMark size={20} />}
+                  {title}
+                </h3>
+                <dl>
+                  {hireCompare.map((row) => (
+                    <div key={row.q}>
+                      <dt>{row.q}</dt>
+                      <dd>
+                        {key === "ziad" && <Check aria-hidden="true" />}
+                        {row[key]}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </article>
             ))}
           </Reveal>
         </div>
