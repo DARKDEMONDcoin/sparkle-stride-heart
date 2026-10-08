@@ -18,8 +18,10 @@ export async function providerKeys(): Promise<Keys> {
     "GOOGLE_API_KEY",
     "OPENROUTER_API_KEY",
   ] as const);
+  const { lovableKeyAlive } = await import("./ai-key-health.server");
   return {
-    lovable: found.LOVABLE_API_KEY,
+    // مفتاح رفضته البوابة على هذه الاستضافة يُتخطّى مؤقتاً فتذهب الطلبات إلى Gemini مباشرة.
+    lovable: lovableKeyAlive() ? found.LOVABLE_API_KEY : "",
     gemini: found.GEMINI_API_KEY || found.GOOGLE_API_KEY,
     openrouter: found.OPENROUTER_API_KEY,
   };
