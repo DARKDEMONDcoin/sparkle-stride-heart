@@ -7,18 +7,19 @@ import { faqs } from "@/components/site/Faq";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "زياد | أول منصة ذكاء اصطناعي عربية لفريقك" },
+      { title: "زياد | فريق ذكاء اصطناعي يعمل بالعربية لمشروعك" },
       {
         name: "description",
         content:
-          "زياد يجمع ستة موظفين رقميين بالعربية: للمحتوى والتصميم والمبيعات والتنظيم والبحث والتحليل، داخل مساحة عمل واحدة.",
+          "زياد يجمع ستة موظفين رقميين بالعربية للمحتوى والتصميم والمبيعات والتنظيم والبحث والتحليل، في مساحة عمل واحدة، وتراجع أنت كل خطوة قبل التنفيذ.",
       },
-      { property: "og:title", content: "زياد | أول منصة ذكاء اصطناعي عربية لفريقك" },
+      { property: "og:title", content: "زياد | فريق ذكاء اصطناعي يعمل بالعربية لمشروعك" },
       {
         property: "og:description",
-        content: "سِراج وأمَل وسالم ونور ودانة وآدم يعملون معًا، وأنت تراجع كل خطوة قبل التنفيذ.",
+        content: "زياد يجمع ستة موظفين رقميين بالعربية في مساحة عمل واحدة، وتراجع أنت كل خطوة قبل التنفيذ.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "ar_SA" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     scripts: [

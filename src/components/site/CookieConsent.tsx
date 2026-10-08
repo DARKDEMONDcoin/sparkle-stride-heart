@@ -50,14 +50,14 @@ export function CookieConsent() {
       aria-live="polite"
     >
       <p>
-        بنستخدم كوكيز بسيطة لتحسين تجربتك. <Link to="/privacy">سياسة الخصوصية</Link>
+        نستخدم ملفات تعريف الارتباط لتحسين تجربتك. <Link to="/privacy">سياسة الخصوصية</Link>
       </p>
       <div className="sahl-cookie-actions">
         <Button size="sm" onClick={() => choose("accepted")}>
           موافق
         </Button>
         <Button size="sm" variant="ghost" onClick={() => choose("declined")}>
-          لا شكرًا
+          لا، شكرًا
         </Button>
       </div>
     </aside>

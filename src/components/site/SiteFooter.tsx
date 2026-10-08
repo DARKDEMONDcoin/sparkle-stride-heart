@@ -112,7 +112,7 @@ export function SiteFooter() {
                 <span className="site-footer-dot" />
                 جميع الأنظمة تعمل
               </span>
-              <span className="site-footer-pill">صُنع بالعربية · يدعم كل الدول العربية</span>
+              <span className="site-footer-pill">صُنع بالعربية لأصحاب الأعمال في الخليج والعالم العربي</span>
             </div>
           </div>
         </div>
