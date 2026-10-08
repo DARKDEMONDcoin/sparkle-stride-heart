@@ -20,7 +20,8 @@ const GEMINI = "https://generativelanguage.googleapis.com/v1beta/openai/embeddin
 async function routes(): Promise<{ url: string; key: string; model: string }[]> {
   const s = await getSecrets(["LOVABLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY"] as const).catch(() => null);
   const gemini = s?.GEMINI_API_KEY || s?.GOOGLE_API_KEY || process.env["GEMINI_API_KEY"] || process.env["GOOGLE_API_KEY"];
-  const lovable = s?.LOVABLE_API_KEY || process.env["LOVABLE_API_KEY"];
+  const { lovableKeyAlive } = await import("./ai-key-health.server");
+  const lovable = lovableKeyAlive() ? s?.LOVABLE_API_KEY || process.env["LOVABLE_API_KEY"] : "";
   const out: { url: string; key: string; model: string }[] = [];
   if (gemini) out.push({ url: GEMINI, key: gemini, model: "gemini-embedding-2" });
   if (lovable) out.push({ url: GATEWAY, key: lovable, model: MODEL });
@@ -41,6 +42,7 @@ async function embedBatch(route: { url: string; key: string; model: string }, ba
   }
   if (!res || !res.ok) {
     const status = res?.status ?? 0;
+    if (route.url === GATEWAY) (await import("./ai-key-health.server")).reportLovableStatus(status, "knowledge");
     console.error("[knowledge] embed failed", status, res ? (await res.text()).slice(0, 300) : "network");
     if (status === 402) throw new Error("نفد رصيد الذكاء الاصطناعي — أضف رصيداً ثم أعد المحاولة.");
     throw Object.assign(new Error("تعذّر تحليل المستند الآن. حاول مرة أخرى بعد قليل."), { status });

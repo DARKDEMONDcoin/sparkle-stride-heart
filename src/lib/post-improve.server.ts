@@ -171,7 +171,8 @@ export async function callLovableRewrite(messages: ChatMessage[]): Promise<strin
 }
 
 async function callGatewayRewrite(messages: ChatMessage[]): Promise<string> {
-  const key = await getSecret("LOVABLE_API_KEY");
+  const { usableLovableKey } = await import("./ai-key-health.server");
+  const key = await usableLovableKey();
   if (!key) throw new Error("إعداد Lovable AI غير مكتمل. أعد المحاولة بعد تفعيل المفتاح.");
 
   const body = JSON.stringify({
@@ -202,6 +203,8 @@ async function callGatewayRewrite(messages: ChatMessage[]): Promise<string> {
 
     if (!res.ok) {
       const raw = await res.text().catch(() => "");
+      const { reportLovableStatus } = await import("./ai-key-health.server");
+      reportLovableStatus(res.status, "post-improve");
       lastError = userFacingGatewayError(res.status, raw);
       if (res.status !== 429 && res.status < 500) throw new Error(lastError);
       const retryAfter = Number(res.headers.get("Retry-After") ?? "");
