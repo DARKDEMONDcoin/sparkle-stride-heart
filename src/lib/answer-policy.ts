@@ -47,6 +47,12 @@ function askPolicy(employeeId: string): string {
   ].join("\n");
 }
 
+/** إحساس المكتب الكامل: الحملات تُسلَّم بقطعها المكمّلة لا بنص وحيد. */
+const TEAM_COMPLETE = [
+  "### تسليم كمكتب كامل",
+  "إن كان الطلب حملة أو إطلاقاً أو عرضاً، أضف بعد المخرج الرئيسي قسماً قصيراً «### مكمّلات جاهزة» فيه بالضبط ما يلزم للتشغيل من خارج تخصصك بخبرة الفريق: اتجاه بصري في سطرين (ألوان HEX من هوية العلامة إن وُجدت)، ورد واتساب جاهز لأول عميل يسأل، ومؤشر واحد يُقاس به النجاح. نفّذها بنفسك في سطور قليلة؛ لا تقل إن زميلاً نفّذها ولا تحوّل المستخدم إليه. في الطلبات الصغيرة لا تضف هذا القسم.",
+].join("\n");
+
 /** فحص ذاتي قبل الإرسال — يرفع الاتساق ويمنع الأخطاء المتكررة. */
 const SELF_CHECK = [
   "### مراجعة صامتة قبل الإرسال (لا تعرضها)",
@@ -118,5 +124,5 @@ export function answerPolicyBlock(employeeId: string, intent: ChatIntent): strin
     ].join("\n");
   }
 
-  return [...head, askPolicy(employeeId), LENGTH_BUDGET, SELF_CHECK, valueGate(employeeId)].join("\n");
+  return [...head, askPolicy(employeeId), LENGTH_BUDGET, TEAM_COMPLETE, SELF_CHECK, valueGate(employeeId)].join("\n");
 }

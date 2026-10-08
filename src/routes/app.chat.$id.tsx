@@ -61,6 +61,9 @@ import { Markdown } from "@/components/app/Markdown";
 import { ChatAttachments, splitMessageMedia, splitUserBody } from "@/components/app/ChatAttachments";
 import { PostCards } from "@/components/app/PostCards";
 import { extractMessages, QuickSend, wantsQuickSend } from "@/components/app/QuickSend";
+
+/** رد يطلب اختياراً قبل التنفيذ: لا أزرار نشر أو إرسال تحته. */
+const isChoiceQuestion = (body: string) => /قل الرقم فقط|اكتب\s*«?نفّ?ذ»?/u.test(body) && body.length < 1400;
 import { OutputActions } from "@/components/app/OutputActions";
 import { SaveChatOutputs } from "@/components/app/SaveChatOutputs";
 import { composeChatOutputs, readChatOutputs } from "@/lib/chat-outputs";
@@ -1464,6 +1467,7 @@ function ChatView({
                         {!isUser &&
                         workspace &&
                         !m.body.includes("(/app/tasks)") &&
+                        !isChoiceQuestion(m.body) &&
                         !wantsQuickSend(id, priorRequest) &&
                         askedForPublishableOutput(priorRequest) &&
                         looksPostable(m.body, priorRequest) ? (
@@ -1483,7 +1487,7 @@ function ChatView({
                             );
                           })()
                         ) : null}
-                        {!isUser && workspace && m.body.length >= 120 && wantsQuickSend(id, priorRequest)
+                        {!isUser && workspace && m.body.length >= 120 && !isChoiceQuestion(m.body) && wantsQuickSend(id, priorRequest)
                           ? extractMessages(m.body).map((p, i, all) => (
                               <QuickSend key={i} label={all.length > 1 ? p.title : undefined} body={p.body} request={priorRequest} />
                             ))
@@ -1573,7 +1577,7 @@ function ChatView({
                           </div>
                         ) : null}
 
-                        {!isUser && !busy && body.trim().length > 180 ? (
+                        {!isUser && !busy && body.trim().length > 180 && !isChoiceQuestion(body) ? (
                           <OutputActions
                             employeeId={id}
                             employeeName={member.name}
