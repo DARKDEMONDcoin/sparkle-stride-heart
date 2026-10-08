@@ -13,6 +13,43 @@ const schema = {
   tagNames: ["br", "sub", "sup", "mark", "kbd", "abbr", ...(defaultSchema.tagNames ?? [])],
 };
 
+const HEX_ONLY = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/iu;
+
+/** يستخرج ألوان HEX المذكورة في الرد (لوحات دانة وغيرها). */
+export function paletteColors(body: string): string[] {
+  const found = String(body ?? "").match(/#[0-9a-f]{6}\b/giu) ?? [];
+  return [...new Set(found.map((c) => c.toUpperCase()))].slice(0, 10);
+}
+
+/** لوحة ألوان حقيقية أسفل أي رد يقترح ٣ ألوان أو أكثر؛ الضغط ينسخ الكود. */
+function PaletteStrip({ body }: { body: string }) {
+  const colors = paletteColors(body);
+  if (colors.length < 3) return null;
+  return (
+    <div className="not-prose mt-3 rounded-2xl border border-border bg-card p-3" aria-label="لوحة الألوان">
+      <div className="flex h-14 overflow-hidden rounded-xl border border-border">
+        {colors.map((c) => (
+          <span key={c} className="flex-1" style={{ backgroundColor: c }} />
+        ))}
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2" dir="ltr">
+        {colors.map((c) => (
+          <button
+            key={c}
+            type="button"
+            title="انسخ اللون"
+            onClick={() => void navigator.clipboard?.writeText(c)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-1 font-mono text-[0.7rem] text-muted-foreground hover:text-foreground"
+          >
+            <span aria-hidden className="size-3 rounded-full border border-border" style={{ backgroundColor: c }} />
+            {c}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** عرض مخرجات الموظفين بتنسيق Markdown كامل (جداول، قوائم، عناوين، أكواد) بشكل احترافي وRTL. */
 function MarkdownView({
   body,
@@ -65,11 +102,16 @@ function MarkdownView({
               {children}
             </pre>
           ),
-          code: ({ children, className: codeClass }) => (
-            <code dir="auto" className={cn("[unicode-bidi:isolate]", codeClass)}>
-              {children}
-            </code>
-          ),
+          code: ({ children, className: codeClass }) => {
+            const text = typeof children === "string" ? children.trim() : "";
+            const hex = HEX_ONLY.test(text) ? text : null;
+            return (
+              <code dir="auto" className={cn("[unicode-bidi:isolate]", hex && "inline-flex items-center gap-1", codeClass)}>
+                {hex ? <span aria-hidden className="inline-block size-3 rounded-full border border-border" style={{ backgroundColor: hex }} /> : null}
+                {children}
+              </code>
+            );
+          },
           table: ({ children }) => (
             <div
               className="my-3 w-full min-w-0 overflow-x-auto rounded-lg border border-border focus-visible:outline-2 focus-visible:outline-ring"
@@ -110,6 +152,7 @@ function MarkdownView({
       >
         {body}
       </MessageResponse>
+      <PaletteStrip body={body} />
     </div>
   );
 }
