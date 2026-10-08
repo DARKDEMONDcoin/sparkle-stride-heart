@@ -319,13 +319,13 @@ export function extractPostText(input: string | null | undefined): string {
 /** هل طلب المستخدم فعلاً مخرجاً قابلاً للنشر (منشور/ريلز/مقال…)؟ */
 export function askedForPublishableOutput(request: string | null | undefined): boolean {
   if (!request) return false;
-  const mentions = /(منشور|بوست|post|ريلز?|reel|ستور(?:ي|يز)|story|تغريدة|تويت|tweet|كابشن|caption|مقال|بلوج|بلوق|blog|انشر|أنشر|نشر|اعلان|إعلان|كاروسيل|carousel|محتوى)/iu.test(
+  const mentions = /(منشور|بوست|post|ريلز?|reel|ستور(?:ي|يز)|story|تغريدة|تويت|tweet|كابشن|caption|مقال|بلوج|بلوق|blog|انشر|أنشر|نشر|اعلان|إعلان|كاروسيل|carousel|محتوى|حملة|حملات|campaign|تشويق|إطلاق|اطلاق)/iu.test(
     request,
   );
   if (!mentions) return false;
   // سؤال بحث/تحليل عن الإعلانات أو المحتوى («ابحث عن تكلفة الإعلانات») ليس طلب منشور.
   const research = /(ابحث|دوّ?ر|بحث|حلّ?ل|قارن|متوسط|تكلفة|تكاليف|أسعار|سعر|إحصائي|تقرير|معايير|كم\s|ليه|لماذا|إزاي|كيف)/iu.test(request);
-  const create = /(اكتب|أكتب|اعمل|أعمل|جهّ?ز|صمّ?م|انشر|أنشر|ولّ?د|حضّ?ر|write|create|draft)/iu.test(request);
+  const create = /(اكتب|أكتب|أطلق|اطلق|اعمل|أعمل|جهّ?ز|صمّ?م|انشر|أنشر|ولّ?د|حضّ?ر|write|create|draft)/iu.test(request);
   return !research || create;
 }
 
@@ -438,4 +438,35 @@ export function stripOwnerNotes(input: string | null | undefined): string {
     .replace(/\n{3,}/g, "\n\n")
     .trim();
   return out || input.trim();
+}
+
+/**
+ * يقسّم مخرجاً يحتوي عدة عناصر مستقلة (٣ منشورات، ٥ مقالات…) إلى عناصر،
+ * كل عنصر بعنوانه ونصه، ليُنشر أو يُعتمد كل واحد وحده. يعيد [] إن كان عنصراً واحداً.
+ */
+export function splitDeliverableItems(input: string | null | undefined): { title: string; body: string }[] {
+  const lines = String(input ?? "").split("\n");
+  const HEAD = /^\s*(?:#{1,6}\s+|\*\*)(.{2,90}?)(?:\*\*)?\s*:?\s*$/u;
+  const ITEM = /(منشور|بوست|post|تغريدة|مقال|ستوري|ريلز|إعلان|اعلان|نسخة|فكرة|رسالة|بريد)/iu;
+  const items: { title: string; lines: string[] }[] = [];
+  let current: { title: string; lines: string[] } | null = null;
+  for (const line of lines) {
+    const m = line.match(HEAD);
+    if (m && ITEM.test(m[1]!)) {
+      current = { title: m[1]!.replace(/\*\*/g, "").trim(), lines: [] };
+      items.push(current);
+    } else if (m && current) {
+      current = null; // قسم آخر (ملاحظات/خطوة تالية) ينهي العنصر.
+    } else if (current) current.lines.push(line);
+  }
+  const out = items
+    .map((it) => ({ title: it.title, body: sanitizePostBody(it.lines.join("\n")) }))
+    .filter((it) => it.body.replace(/\s+/g, " ").length >= 30);
+  return out.length >= 2 ? out : [];
+}
+
+/** ردود المتابعة القصيرة («مراجعة»، «كمل»، «تمام») ترث الطلب السابق. */
+export function isFollowUp(text: string): boolean {
+  const t = text.trim();
+  return t.length <= 30 && !askedForPublishableOutput(t);
 }
