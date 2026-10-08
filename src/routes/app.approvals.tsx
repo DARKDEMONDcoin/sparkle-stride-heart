@@ -345,7 +345,13 @@ function ApprovalsPage() {
                     ) : (
                       <Check className="size-4" />
                     )}
-                    اعتماد بدون نشر
+                    {cat === "post"
+                      ? "اعتماد بدون نشر"
+                      : /mail|email|gmail|outlook/i.test(`${a.kind} ${a.channel}`)
+                        ? "اعتمد البريد"
+                        : cat === "design"
+                          ? "اعتمد التصميم"
+                          : "اعتماد"}
                   </button>
                   <button
                     onClick={() => {
