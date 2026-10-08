@@ -721,6 +721,7 @@ function ChatView({
   /** البثّ الحقيقي: المرحلة التي ينفّذها الموظف الآن + نص ردّه وهو يُكتب. */
   const [liveStep, setLiveStep] = useState<string | null>(null);
   const [liveText, setLiveText] = useState("");
+  const sendStartedRef = useRef(0);
   const [liveSteps, setLiveSteps] = useState<string[]>([]);
   const [browser, setBrowser] = useState<BrowserEvent | null>(null);
   const [savedTask, setSavedTask] = useState<string | null>(null);
@@ -905,6 +906,7 @@ function ChatView({
 
   const send = useMutation({
     mutationFn: async (message: string) => {
+      sendStartedRef.current = Date.now();
       if (!conversationId) throw new Error("المحادثة ليست جاهزة بعد. حاول مرة أخرى.");
       const activeConversationId = conversationId;
       const payload = {
@@ -1012,7 +1014,17 @@ function ChatView({
     },
   });
 
-  const busy = send.isPending;
+  const sendBusy = send.isPending;
+  // الرد المحفوظ قد يصل (تحديث فوري) قبل أن يُغلق الخادم البث بعد المراجعة النهائية؛
+  // عندها لا نعرض فقاعة «يكتب الآن» بنص خام مكرر تحت الرد النهائي.
+  const replyLanded = useMemo(() => {
+    if (!sendBusy || !sendStartedRef.current) return false;
+    const last = (messages ?? [])[(messages ?? []).length - 1];
+    return Boolean(
+      last && last.role !== "user" && new Date(last.created_at).getTime() >= sendStartedRef.current - 2_000,
+    );
+  }, [messages, sendBusy]);
+  const busy = sendBusy && !replyLanded;
 
   const messageRequests = useMemo(() => {
     let last = "";
@@ -1165,7 +1177,7 @@ function ChatView({
   const submit = (text: string) => {
     const body = text.trim();
     if (!body || !workspace) return;
-    if (busy) {
+    if (sendBusy) {
       setQueuedMessage(body);
       setDraft("");
       return;
@@ -1190,11 +1202,11 @@ function ChatView({
   };
 
   useEffect(() => {
-    if (busy || !queuedMessage) return;
+    if (sendBusy || !queuedMessage) return;
     const next = queuedMessage;
     setQueuedMessage(null);
     submit(next);
-  }, [busy, queuedMessage]);
+  }, [sendBusy, queuedMessage]);
 
   /** إيقاف الطلب بعد الإرسال: نُعيد النص إلى مربع الإدخال ونُهمل النتيجة. */
   const stopSending = () => {
