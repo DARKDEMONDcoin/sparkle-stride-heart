@@ -34,6 +34,17 @@ const PROMPT = [
   "Output format: <lang-code>|<query>   e.g. en|logo design trends 2026   or   KEEP_ARABIC",
 ].join("\n");
 
+/** بديل يعمل على أي استضافة عبر سلسلة النماذج المشتركة. */
+async function fallbackTranslate(text: string): Promise<SearchTranslation | null> {
+  try {
+    const { freeChat } = await import("./nour-research.server");
+    const out = await freeChat("", [{ role: "system", content: PROMPT }, { role: "user", content: text }], { timeoutMs: 12_000, maxTokens: 60, noTimeAnchor: true });
+    return parseTranslation(out);
+  } catch {
+    return null;
+  }
+}
+
 async function aiTranslate(text: string, key: string): Promise<SearchTranslation | null> {
   const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
     method: "POST",
@@ -88,8 +99,9 @@ export async function translateSearch(text: string, waitMs = 3_500): Promise<Sea
   const { getSecret } = await import("./secrets.server");
   const apiKey = await getSecret("LOVABLE_API_KEY");
   let job = inflight.get(k);
-  if (!job && apiKey) {
-    job = aiTranslate(q, apiKey)
+  if (!job) {
+    job = (apiKey ? aiTranslate(q, apiKey).catch(() => null) : Promise.resolve(null))
+      .then(async (v) => v ?? (await fallbackTranslate(q)))
       .catch(() => null)
       .then((v) => {
         if (v) cache.set(k, { at: Date.now(), value: v });
