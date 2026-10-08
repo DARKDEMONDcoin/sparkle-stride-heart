@@ -18727,6 +18727,7 @@ section:has(> .integration-grid-wave) {
   transform: translateX(-50%);
 }
 .sahl-device-screen {
+  background-color: var(--muted);
   overflow: hidden;
   border-radius: 5px 5px 2px 2px;
   background: var(--home-bg);
@@ -46605,7 +46606,7 @@ html {
 }
 .sahl-sample-tabs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   width: min(100%, 680px);
   margin: 0 auto 16px;

@@ -92,7 +92,7 @@ const capabilities = [
   {
     icon: BarChart3,
     kicker: "سالم · المبيعات",
-    title: "كل فرصة لها رسالة وخطوة تالية.",
+    title: "لكل فرصة رسالة وخطوة تالية.",
     body: "يبحث عن العميل المناسب، يخصص التواصل، ويسلمك الفرص الجاهزة للمكالمة.",
     image: samDesktopAsset.url,
     mobileImage: samMobileAsset.url,
@@ -103,7 +103,7 @@ const capabilities = [
   {
     icon: SearchCheck,
     kicker: "نور · المحتوى والسيو",
-    title: "إجابة عربية يجدها عميلك وقت البحث.",
+    title: "إجابة عربية يجدها عميلك لحظة البحث.",
     body: "ترصد السؤال، تبني خطة موضوعات، وتكتب صفحات أصلية مرتبطة بما يطلبه السوق.",
     image: nourDesktopAsset.url,
     mobileImage: nourMobileAsset.url,
@@ -125,7 +125,7 @@ const capabilities = [
   {
     icon: BrainCircuit,
     kicker: "آدم · تحليل البيانات",
-    title: "التقرير ينتهي بقرار، لا برقم.",
+    title: "تقرير ينتهي بقرار، لا برقم فقط.",
     body: "يجمع أداء القنوات، يرصد التغير، ويحدد أين تتحرك الميزانية والجهد بعد ذلك.",
     image: adamDesktopAsset.url,
     mobileImage: adamMobileAsset.url,
@@ -249,7 +249,7 @@ const sampleBoards = [
     ],
   },
   {
-    business: "متجر لمار · تجزئة إلكترونية",
+    business: "متجر لمار · متجر إلكتروني على سلة · الرياض",
     prompt:
       "اكتب لي فقرة افتتاحية لمقال في مدونة متجرنا عن كيف يختار العميل هدية عملية بأقل من 200 ريال",
     cards: [
@@ -265,7 +265,7 @@ const sampleBoards = [
     ],
   },
   {
-    business: "عيادة صفا · عيادة أسنان",
+    business: "عيادة صفا · عيادة أسنان · دبي",
     prompt: "اكتب لي رد واتساب على عميل يسأل عن سعر تنظيف الأسنان وموعد متاح هذا الأسبوع",
     cards: [
       {
@@ -276,6 +276,21 @@ const sampleBoards = [
         image: null as string | null,
         publish: null,
         body: "الموضوع: استفسار موعد تنظيف الأسنان\n\nحياك الله، سعر تنظيف الأسنان يعتمد على نوع التنظيف المطلوب، ونوضح لك السعر المعتمد قبل تثبيت الحجز، وفي حال احتاجت اللثة تنظيفًا عميقًا يحدد الطبيب التكلفة بعد الفحص. بخصوص حجز موعد، يحتاج التوافر إلى مراجعة الجدول؛ لتحديد أقرب موعد متاح لك، هل تفضل الفترة الصباحية أم المسائية؟",
+      },
+    ],
+  },
+  {
+    business: "مكتب دار الخليج · عقارات · الكويت",
+    prompt: "ابي رسالة واتساب قصيرة لعميل سأل عن شقة 3 غرف في السالمية، الإيجار 650 دينار، والمعاينة متاحة الخميس 4 عصرًا",
+    cards: [
+      {
+        employeeId: "sam",
+        employee: "سالم",
+        role: "مدير المبيعات",
+        quality: 84,
+        image: null as string | null,
+        publish: null,
+        body: "### رسالة المتابعة\nأهلًا بك، شكرًا لاهتمامك بشقة السالمية.\n\n- 3 غرف · الإيجار 650 دينارًا شهريًا\n- المعاينة متاحة الخميس 4 عصرًا\n\nهل يناسبك الموعد لنثبّته لك؟ وإن كان وقت آخر أنسب فأخبرني وأرتّبه.\n\n### الخطوة التالية\nتذكير تلقائي بالموعد قبل المعاينة بساعتين بعد موافقتك.",
       },
     ],
   },
@@ -339,10 +354,10 @@ const guards = [
 ] as const;
 
 const trustPoints = [
-  "العربية ولهجاتها",
+  "يفهم العربية ولهجاتها",
   "ذاكرة تعرف مشروعك",
-  "ستة تخصصات تتعاون",
-  "موافقتك قبل التنفيذ",
+  "ستة تخصصات تعمل معًا",
+  "لا تنفيذ دون موافقتك",
   "أدواتك في مكان واحد",
   "سجل واضح لكل خطوة",
 ] as const;
@@ -450,7 +465,7 @@ function ProductFrame({
               alt={alt}
               width={2560}
               height={1640}
-              loading={hero ? "eager" : "lazy"}
+              loading="eager"
               fetchPriority={hero ? "high" : "auto"}
               decoding="async"
             />
@@ -663,11 +678,11 @@ export function EditorialHomepage() {
               </span>
               <i aria-hidden="true">•</i>
               <span>
-                <b>يتذكّر</b> سياقك
+                <b>يتذكّر</b> سياق عملك
               </span>
               <i aria-hidden="true">•</i>
               <span>
-                <b>يستأذن</b> قبل الإجراء
+                <b>يستأذنك</b> قبل أي إجراء
               </span>
             </div>
             <h1 id="home-title">
@@ -718,9 +733,6 @@ export function EditorialHomepage() {
       <section className="sahl-trust" aria-label="مزايا تشغيل فريق زياد">
         <div className="sahl-shell">
           <strong className="sahl-arabic-first">مصمم للعمل بالعربية، من أول طلب حتى آخر قرار</strong>
-          <p>
-            <b>مصمم للعمل العربي</b> من أول طلب حتى آخر قرار
-          </p>
           <div className="sahl-trust-row">
             {trustPoints.map((point, index) => (
               <span key={point}>
@@ -740,7 +752,7 @@ export function EditorialHomepage() {
               <div>
                 <span>نتائج حقيقية، دون تجميل</span>
                 <h2>
-                  اطلبها بكلماتك.
+                  اطلبها بكلماتك،
                   <br />
                   <em>واستلمها جاهزة لقرارك.</em>
                 </h2>
@@ -762,8 +774,8 @@ export function EditorialHomepage() {
                     setSampleExpanded(false);
                   }}
                 >
-                  <span aria-hidden="true">{index === 0 ? "☕" : index === 1 ? "◫" : "+"}</span>
-                  {index === 0 ? "مطعم ومقهى" : index === 1 ? "متجر إلكتروني" : "عيادة"}
+                  <span aria-hidden="true">{["☕", "◫", "+", "⌂"][index]}</span>
+                  {["مطعم ومقهى", "متجر إلكتروني", "عيادة", "عقارات"][index]}
                 </Button>
               ))}
             </div>
@@ -790,7 +802,7 @@ export function EditorialHomepage() {
           </Reveal>
           <Reveal>
             <p className="sahl-sample-note">
-              <CheckCircle2 aria-hidden="true" /> الأرقام والعروض في الأمثلة من طلب المستخدم نفسه —
+              <CheckCircle2 aria-hidden="true" /> مثال توضيحي · الأرقام والعروض في الأمثلة من طلب المستخدم نفسه؛
               الفريق لا يخترع سعرًا ولا وعدًا من عنده.
             </p>
           </Reveal>
@@ -803,9 +815,9 @@ export function EditorialHomepage() {
             <header className="sahl-section-head">
               <span>ستة تخصصات بسياق واحد</span>
               <h2>
-                كل موظف ينجز دوره.
+                كل موظف ينجز دوره،
                 <br />
-                <em>وكل نتيجة تسلّم التالية.</em>
+                <em>وكل نتيجة تُسلَّم إلى الدور التالي.</em>
               </h2>
               <p>
                 سِراج يبدأ الحملة، دانة تجهز صورتها، نور توسع قصتها، سالم يحول الاهتمام إلى فرصة،
@@ -835,7 +847,7 @@ export function EditorialHomepage() {
                     </aside>
                   )}
                   <Link to="/features">
-                    شاهد مهامه <ArrowLeft />
+                    استعرض مهامه <ArrowLeft />
                   </Link>
                 </div>
                 {item.frame ? (
@@ -1424,11 +1436,11 @@ export function EditorialHomepage() {
           <Reveal>
             <span>اكتب أول نتيجة تريدها</span>
             <h2>
-              الفريق يوزع العمل.
+              الفريق يوزّع العمل،
               <br />
               وأنت تعتمد القرار.
             </h2>
-            <p>كوّن فريقك، أرسل الهدف مرة واحدة، وراجع الخطة قبل أن يبدأ التنفيذ.</p>
+            <p>كوّن فريقك، أرسل هدفك مرة واحدة، وراجع الخطة قبل أن يبدأ التنفيذ.</p>
             <div className="sahl-actions">
               <Button asChild size="lg">
                 <Link to="/welcome">
