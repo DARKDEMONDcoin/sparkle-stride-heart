@@ -1568,7 +1568,7 @@ export async function runEmployeeTurn(
                 imageMode === "manual"
                   ? await literalBrief(userImagePrompt)
                   : await imageBrief({
-                      request: data.message,
+                      request: planText,
                       title: deliverables[0]?.title ?? null,
                       body: deliverables[0]?.body ?? reply,
                       brand: {
@@ -1670,7 +1670,7 @@ export async function runEmployeeTurn(
               auditOutput({
                 text: d.body,
                 employeeId: agentId,
-                request: data.message,
+                request: planText,
                 bannedWords: workspace.banned_words ?? [],
               }).penalty > 0,
           )
@@ -1680,7 +1680,7 @@ export async function runEmployeeTurn(
           weak.map((d) =>
             judgeAndImprove({
               employeeId: agentId,
-              request: data.message,
+              request: planText,
               output: d.body,
               criteria: qualityCriteria[agentId] ?? [],
               bannedWords: workspace.banned_words ?? [],
@@ -1952,7 +1952,7 @@ export async function runEmployeeTurn(
         messageId: assistantRow.id,
         taskId: createdTaskId,
         capability: intent,
-        request: data.message,
+        request: planText,
         originalOutput: originalReply,
         finalOutput: reply,
         qualityScore,

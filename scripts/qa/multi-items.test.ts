@@ -16,3 +16,8 @@ test("المتابعة ترث طلب الحملة", () => {
   expect(isFollowUp("مراجعة")).toBe(true);
   expect(askedForPublishableOutput("أطلق منتجي الجديد بحملة تبدأ بالتشويق")).toBe(true);
 });
+import { auditOutput } from "../../src/lib/output-quality";
+test("الناقص في العدد يُكتشف ويُصلَح", () => {
+  const r = auditOutput({ text: "## منشور 1\nنص أول طويل بما يكفي للمراجعة هنا.\n## منشور 2\nنص ثاني طويل بما يكفي.", employeeId: "sonny", request: "اكتبلي ٣ منشورات" });
+  expect(r.issues.some((i) => i.id === "count")).toBe(true);
+});
