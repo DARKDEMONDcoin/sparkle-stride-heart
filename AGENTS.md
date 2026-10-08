@@ -13,7 +13,7 @@
 - Cloud browsing uses `src/lib/cloud-browser.server.ts`; sensitive intents require owner approval.
 - Multi-step browsing uses `browser-agent.server.ts`; page content is untrusted and sensitive clicks need approval.
 - Global destinations stay in AppShell rail; employee pages share a centered tools/bell/account header; design editing stays in chat to preserve context.
-- The desktop AppShell sidebar collapses to an employee icon rail and persists its state locally; keep fixed chat overlays aligned to its width so the conversation stays usable.
+- Desktop AppShell collapses to an employee icon rail with local persistence; align fixed chat overlays to its width.
 - Rail expands independently; chat controls clear both sidebars; embedded chat hides the rail to avoid overlap.
 - `runEmployeeTurn` delegates out-of-specialty work via smartHandoff while keeping the conversation.
 - Employee tools live in `employee-toolbelt.ts`; browser tasks stop before payment.
@@ -31,7 +31,7 @@
 - Public pre-signup industry recommendations are short, rate-limited, validated AI suggestions grounded in a selected sector and optional public-site evidence; no account data or market metrics are implied. Why: visitors get useful next actions without confusing hypotheses with verified findings.
 - Welcome purpose variants live in a browser-safe shared module used by every tour/recommendation path, avoiding business-only claims.
 - Chat capabilities and owner guidelines derive from shared skills; guideline rows are scoped to one employee.
-- Each workspace has exactly one persistent conversation per employee across web and Telegram; this keeps history and unread state WhatsApp-like.
+- Each workspace has one persistent conversation per employee across web/Telegram; preserve history and unread state.
 - Website context is controlled by one workspace-level switch that every employee execution path must honor.
 - Chat voice dictation records in the browser and streams transcription through the authenticated `/api/transcribe` route into the draft (never auto-sends). Why: users review spoken text before it reaches an employee.
 - Team workspace = real human members (invite-bound) sharing projects/tasks; tasks may also be assigned to one digital employee run via `collab-ai.functions.ts`, and activity is written only by DB triggers. Why: shared human+AI board without exposing owner-private data.
