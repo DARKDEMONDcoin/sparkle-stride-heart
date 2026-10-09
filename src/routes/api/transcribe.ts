@@ -13,12 +13,15 @@ export const Route = createFileRoute("/api/transcribe")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const url = process.env["SUPABASE_URL"];
-        const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
-        if (!url || !key) return new Response("Not configured", { status: 500 });
+        const url = process.env["SUPABASE_URL"] || process.env["VITE_SUPABASE_URL"] || import.meta.env["VITE_SUPABASE_URL"];
+        const key =
+          process.env["SUPABASE_PUBLISHABLE_KEY"] ||
+          process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ||
+          import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
+        if (!url || !key) return Response.json({ error: "خدمة تحويل الصوت غير مهيّأة." }, { status: 500 });
         const auth = request.headers.get("authorization") ?? "";
         const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-        if (!token || token.split(".").length !== 3) return new Response("Unauthorized", { status: 401 });
+        if (!token || token.split(".").length !== 3) return Response.json({ error: "سجّل دخولك من جديد." }, { status: 401 });
         const supabase = createClient<Database>(url, key, {
           auth: { persistSession: false, autoRefreshToken: false },
           global: {
@@ -31,7 +34,7 @@ export const Route = createFileRoute("/api/transcribe")({
           },
         });
         const { data: claims, error } = await supabase.auth.getClaims(token);
-        if (error || !claims?.claims?.sub) return new Response("Unauthorized", { status: 401 });
+        if (error || !claims?.claims?.sub) return Response.json({ error: "سجّل دخولك من جديد." }, { status: 401 });
 
         let form: FormData;
         try {
@@ -59,13 +62,23 @@ export const Route = createFileRoute("/api/transcribe")({
           const bytes = new Uint8Array(await file.arrayBuffer());
           let bin = "";
           for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+          const b64 = btoa(bin);
+          // Gemini لا يعلن دعم webm/mp4 صراحة: نجرب النوع الأصلي ثم بديلاً متوافقاً.
+          const types = Array.from(new Set([mime, mime.includes("webm") ? "audio/ogg" : mime.includes("mp4") ? "audio/aac" : mime]));
+          for (const t of types) {
+            const r = await geminiOnce(b64, t);
+            if (r) return r;
+          }
+          return null;
+        };
+        const geminiOnce = async (b64: string, mimeType: string): Promise<Response | null> => {
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               contents: [{ parts: [
                 { text: "اكتب نص هذا التسجيل حرفياً بلغته ولهجته كما قيل، بلا أي تعليق أو مقدمة." },
-                { inline_data: { mime_type: mime, data: btoa(bin) } },
+                { inline_data: { mime_type: mimeType, data: b64 } },
               ] }],
             }),
             signal: request.signal,
