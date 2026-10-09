@@ -49,7 +49,10 @@ async function embedBatch(route: { url: string; key: string; model: string }, ba
   }
   const json = (await res.json()) as { data: { index: number; embedding: number[] }[] };
   const ordered: number[][] = new Array(batch.length);
-  for (const item of json.data) ordered[item.index] = item.embedding;
+  (json.data ?? []).forEach((item, i) => {
+    const at = Number.isInteger(item?.index) ? item.index : i;
+    if (at >= 0 && at < batch.length) ordered[at] = item.embedding;
+  });
   if (ordered.some((v) => v?.length !== 3072)) throw new Error("استجابة ناقصة من خدمة الذاكرة.");
   return ordered;
 }
@@ -122,6 +125,10 @@ export async function ingestKnowledge(
   const chunks = chunkText(input.text);
   if (!chunks.length) throw new Error("لا يوجد نص قابل للحفظ.");
   const vectors = await embed(chunks.map((c) => `${input.title}\n${c}`));
+  if (vectors.length !== chunks.length || vectors.some((v) => !Array.isArray(v) || v.length !== 3072 || v.some((n) => !Number.isFinite(n)))) {
+    console.error("[knowledge] invalid embeddings", vectors.length, chunks.length);
+    throw new Error("تعذّر تحليل الملف الآن، أعد المحاولة بعد قليل.");
+  }
   await db.from("knowledge_chunks").delete().eq("workspace_id", input.workspaceId).eq("source", input.source);
   const rows = chunks.map((content, position) => ({
     workspace_id: input.workspaceId,
@@ -133,7 +140,10 @@ export async function ingestKnowledge(
   }));
   for (let i = 0; i < rows.length; i += 50) {
     const { error } = await db.from("knowledge_chunks").insert(rows.slice(i, i + 50) as never);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[knowledge] insert failed", error.message);
+      throw new Error("تعذّر حفظ الملف في عقل العلامة الآن، أعد المحاولة بعد قليل.");
+    }
   }
   return chunks.length;
 }
